@@ -1,0 +1,27 @@
+.heading {
+  text-align: center;
+}
+
+body{
+  display: flex;
+  inset: 0;
+  text-align: center;
+  align-items: center;
+  background-color: #EEEEEE;
+  justify-content: center;
+  position: absolute;
+}
+
+#wrapper {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: #ffffff;
+  padding: 24px 40px;
+  width: 240px;
+  border-radius: 30px;
+  /* 添加边框 */
+  border: 1px solid #AAAAAA;
+}
