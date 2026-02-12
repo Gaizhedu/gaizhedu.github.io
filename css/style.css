@@ -1324,14 +1324,14 @@ body.dark-theme .highlight .code .meta {
 }
 @font-face {
   font-family: "SourceHanSans";
-  src: url("../fonts/source-han-sans/siyuan-Regular.otf") format("opentype");
+  src: url("../fonts/source-han-sans/siyuan-Regular.woff") format("woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "SourceHanSans";
-  src: url("../fonts/source-han-sans/siyuan-Bold.otf") format("opentype");
+  src: url("../fonts/source-han-sans/siyuan-Bold.woff") format("woff");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
