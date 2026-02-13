@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Gaizhedu">
+
+
+
+
+
+<title>C程序设计语言（K&amp;R）第一章 | Gaizhedu的博客</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Gaizhedu&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">文章</a>
+                
+                <a class="menu-item" href="/tag">标签</a>
+                
+                <a class="menu-item" href="/about">关于本站</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Gaizhedu&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">文章</a>
+                
+                <a class="menu-item" href="/tag">标签</a>
+                
+                <a class="menu-item" href="/about">关于本站</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开全部</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">跳转底部</a>
+    </div>
+</div>
+
+<script>
+
+    var tocI18n = {
+        expandAll: '展开全部',  // EJS 写法，NJK 用 {{ __('toc_expand_all') }}
+        collapseAll: '全部折叠' // 先在 zh-CN.yml 里加这个键
+    };
+
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? tocI18n.expandAll : tocI18n.collapseAll;
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">C程序设计语言（K&amp;R）第一章</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Gaizhedu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2025-08-12&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="第一章"><a href="#第一章" class="headerlink" title="第一章"></a>第一章</h1><p>第一章主要通过华氏温度转换器来讲解例子</p>
+<p>首先需要注意的一个点是这个</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d\t%d\n&quot;</span>,fahr，celsius);</span><br></pre></td></tr></table></figure>
+<p>这里可以等价Python中的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;fahr&#125;</span> <span class="subst">&#123;celsius&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>每个百分号表示其他的参数，这里的话就是后面的两个参数<code>fahr</code>和<code>celsius</code></p>
+<p>而<code>\t</code>代表留一个制表符的位置</p>
+<p>其他内容与Python没什么区别（例如while）</p>
+<p>这就是一开始的代码，在之后我们会一点点完善：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">main()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> fahr, celsius;</span><br><span class="line">	<span class="type">int</span> lower, upper, step;</span><br><span class="line"></span><br><span class="line">	lower = <span class="number">0</span>;</span><br><span class="line">	upper = <span class="number">300</span>;</span><br><span class="line">	step = <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line">	fahr = lower;</span><br><span class="line">	<span class="keyword">while</span> (fahr &lt;= upper) &#123;</span><br><span class="line">		celsius = <span class="number">5</span> * (fahr - <span class="number">32</span>) / <span class="number">9</span>;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d\t%d\n&quot;</span>, fahr, celsius);</span><br><span class="line">		fahr += step;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先是第一个问题，我们在运行之后可以发现数据并不是右对齐的，所以不是很美观</p>
+<p>这时候我们可以在<code>%d</code>中间加上数字来指定打印宽度</p>
+<p>例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%3d\t%6d\n&quot;</span>, fahr, celsius);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%3d\t%3d\n&quot;</span>, fahr, celsius);</span><br></pre></td></tr></table></figure>
+<p>其输出如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">  <span class="number">0</span>        <span class="number">-17</span></span><br><span class="line">  <span class="number">0</span>     <span class="number">-17</span></span><br><span class="line"><span class="number">150</span>         <span class="number">65</span></span><br><span class="line"><span class="number">150</span>      <span class="number">65</span></span><br><span class="line"><span class="number">300</span>        <span class="number">148</span></span><br><span class="line"><span class="number">300</span>     <span class="number">148</span></span><br></pre></td></tr></table></figure>
+<p>可以看到，在指定打印宽度后，相对应的数据就会随之对齐，同时可以发现<code>%6d</code>会比<code>%3d</code>更宽</p>
+<h2 id="修改数据类型"><a href="#修改数据类型" class="headerlink" title="修改数据类型"></a>修改数据类型</h2><p>由于温度是必定有小数的，不可能是整数，所以这里必须要用到另一个数据类型：<strong>float（浮点数）</strong></p>
+<p>具体的话只需要修改一开始的声明即可：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">float</span> fahr, celsius;</span><br></pre></td></tr></table></figure>
+
+<p>这时候如果运行的话，可以发现并不是很美观，因为每个数字都带上了很长一串小数，这时候便要用到另一个东西：<strong>格式化文本</strong></p>
+<p>具体可以如下操作：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%3.1f\t%6.1f\n&quot;</span>, fahr, celsius);</span><br></pre></td></tr></table></figure>
+
+<p>这里需要注意一点的是：<code>%d</code>指的是整型类型，而<code>%f</code>指的是浮点数类型</p>
+<p>细心发现，这里比之前的文本多了个<code>.1</code>，这代表着精确到小数点后1位</p>
+<p>还有一点，前文的程序中出现了这个运算式：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">celsius = <span class="number">5</span> * (fahr - <span class="number">32</span>) / <span class="number">9</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这里不可以使用<code>5/9</code>这种形式</p>
+<p>这是因为按整型除法的计算规则，这两个数相除并舍位后得到的结果为<strong>0</strong></p>
+<p>但由于这个时候我们已经将数据类型改为浮点数了，那么便不会出现舍位的情况</p>
+<hr>
+<h3 id="小拓展：为什么会出现整型舍位的情况"><a href="#小拓展：为什么会出现整型舍位的情况" class="headerlink" title="小拓展：为什么会出现整型舍位的情况"></a>小拓展：为什么会出现整型舍位的情况</h3><p>接下来来讲讲为什么上文不可以为5&#x2F;9</p>
+<p>首先需要明白的一点是，这两个数的数据类型为整型，所以除出来的结果<strong>必定是一个整数</strong></p>
+<p>而5&#x2F;9的结果约为<code>0.55</code>，保留整数部分后为<code>0</code></p>
+<p>舍位，指的也就是舍掉某一位，这里是整型类型，所以必须舍掉小数部分</p>
+<hr>
+<p>另外，如果某个算术运算符的所有操作数有整型和浮点数，那么在开始运算之前所有的整型数都会被转换成浮点数</p>
+<p>比如说这里：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fahr - <span class="number">32</span></span><br></pre></td></tr></table></figure>
+<p>这里的话<code>32</code>会被转换为浮点数（32.0）再参加运算</p>
+<h2 id="For-循环语句"><a href="#For-循环语句" class="headerlink" title="For 循环语句"></a>For 循环语句</h2><p>接下来介绍C语言里面的For 循环语句</p>
+<p>其具体的框架如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(第一个式子; 第二个式子; 第三个式子)&#123;</span><br><span class="line">	表达式;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第一个式子"><a href="#第一个式子" class="headerlink" title="第一个式子"></a>第一个式子</h3><p>在<code>For语句</code>中，括号内第一个式子指的是初始化变量</p>
+<p>例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(fahr = <span class="number">0</span>; 第二个式子; 第三个式子)&#123;</span><br><span class="line">	表达式;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>需要注意的一点是这个式子可以省略，但必须保留分号：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(; 第二个式子; 第三个式子)&#123;</span><br><span class="line">	表达式;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但在这个时候初始化的工作就必须在<code>For</code>循环外面实现</p>
+<h3 id="第二个式子"><a href="#第二个式子" class="headerlink" title="第二个式子"></a>第二个式子</h3><p>第二个式子的作用是判断是否继续执行循环，如果为真（不为0），则继续执行</p>
+<p>如果为假（0），则结束循环</p>
+<p>例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(; fahr &lt;= <span class="number">300</span>; 第三个式子)&#123;</span><br><span class="line">	表达式;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个式子同样可以省略，但如果省略会导致无限循环，除非有<code>break</code>语句退出循环</p>
+<p>与上面一样，如果省略同样需要保留分号</p>
+<h3 id="第三个式子"><a href="#第三个式子" class="headerlink" title="第三个式子"></a>第三个式子</h3><p>第三个式子指的是每次循环后执行的语句，一般用于更新循环变量的值</p>
+<p>相应例子如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>( ; ; fahr += <span class="number">1</span>)&#123;</span><br><span class="line">	表达式;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第三个式子与前面一样，可以省略不写，但如果不在循环体内更新变量的话，可能会导致无限循环</p>
+<hr>
+<p>下面通过一个例子来说明具体的用法</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(fahr = <span class="number">0</span>; fahr &lt;= <span class="number">300</span>; fahr += <span class="number">150</span>)&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%3.1f\n&quot;</span>, fahr);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先这个循环先定义变量<code>fahr</code>为0，之后开始执行循环，每次循环打印一次<code>fahr</code></p>
+<p>同时在每次训话循环结束后，变量<code>fahr</code>的值增加150，直到<code>fahr</code>的值大于300的时候结束循环</p>
+<hr>
+<h2 id="符号常量"><a href="#符号常量" class="headerlink" title="符号常量"></a>符号常量</h2><p>符号常量指的是将一个符号定义为一个字符串</p>
+<p>例如，可以将300定义为<code>UPPER</code></p>
+<p>在C语言中，使用符号常量的办法是利用<code>#define</code></p>
+<p>具体操作方法如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> 符号常量名称 要替换的文本</span></span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> UPPER 300</span></span><br></pre></td></tr></table></figure>
+
+<p>利用这个小方法，我们之前的例子可以改写为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> LOWER 0</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> UPPER 300</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> STEP 150</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">float</span> fahr;</span><br><span class="line">		<span class="keyword">for</span> (fahr = LOWER; fahr &lt;= UPPER; fahr += STEP) &#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;%3.1f \t %6.1f\n&quot;</span>, fahr, (<span class="number">5.0</span> / <span class="number">9.0</span>) * (fahr - <span class="number">32</span>));</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>相较于之前的直接在<code>main()</code>里面定义变量，这种方法会更加直观（前提是你的符号常量是明确的，无歧义的）</p>
+<p>另外，细心的人可能发现了，用<code>#define</code>定义符号常量的时候并不需要在末尾加分号</p>
+<p>还需要注意一点的是，符号常量的名字一般来讲是大写，为了与其他用小写的变量名作区分</p>
+<h3 id="拓展内容"><a href="#拓展内容" class="headerlink" title="拓展内容"></a>拓展内容</h3><p>以下内容K&amp;R书中在第一章未提及</p>
+<p><strong>#define 的本质</strong><br>#define 的本质为文本替换，也就是说在编译前的<strong>预处理</strong>阶段，会把整个程序里面出现的符号变量的名字（不包括在引号里面的）替换为替换文本的东西</p>
+<p>以上面的例子为例，在预处理阶段会扫一遍有没有单独出现的<code>UPPER</code>，如果有，就替换为<code>300</code></p>
+<hr>
+<h2 id="文件复制"><a href="#文件复制" class="headerlink" title="文件复制"></a>文件复制</h2><p>接下来来讲讲文件复制</p>
+<p>在这里需要用到两个全新的函数<code>getchar()</code>和<code>putchar()</code></p>
+<p>其中<code>getchar()</code>为获取输入，例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c = getchar();</span><br></pre></td></tr></table></figure>
+
+<p>此时变量<code>c</code>就被赋予了对应的输入内容</p>
+<p>接下来是<code>putchar()</code>，作用为输出括号内的内容，例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">putchar</span>(c);</span><br></pre></td></tr></table></figure>
+
+<p>这样就输出了变量<code>c</code>的内容</p>
+<p>接下来通过一个具体的例子来说明一下使用的方法：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="type">int</span> c;</span><br><span class="line"></span><br><span class="line">	c = getchar();</span><br><span class="line">	<span class="keyword">while</span>(c != EOF)&#123;</span><br><span class="line">		<span class="built_in">putchar</span>(c);</span><br><span class="line">		c = getchar();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过上面的代码，我们便实现了一个输出的内容为输入的内容的小工具</p>
+<p>相当于复制后自动输出的效果</p>
+<p>这里要说明一下，<code>EOF</code>指的是<code>end of file</code>，通过按<code>Ctrl+Z</code>后回车即可触发</p>
+<p>当然，还可以把上面的这个写的更加紧凑一点：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="type">int</span> c;</span><br><span class="line"></span><br><span class="line">	;</span><br><span class="line">	<span class="keyword">while</span>((c = getchar()) != EOF)&#123;</span><br><span class="line">		<span class="built_in">putchar</span>(c);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来讲解一下</p>
+<p>首先循环第一步，请求输入，并把输入的内容赋值给<code>变量c</code>，而后开始判断，如果<code>变量c</code>不为<code>EOF</code>，则继续执行，否则直接结束循环</p>
+<p>这里要特别注意的一点是，<code>while</code>括号内必须这样写，才可以正常识别</p>
+<p>这是由于在C语言中，不等于运算符!&#x3D;的优先度是大于赋值运算符的&#x3D;，正因如此，如果没加括号，则会变成这样子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (c = (getchar() != EOF))&#123;</span><br><span class="line">	<span class="built_in">putchar</span>(c);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>会造成这样的原因与运算符的优先级有关，这一点会在之后讲到，这里先不进行拓展</p>
+<h2 id="文件复制-1"><a href="#文件复制-1" class="headerlink" title="文件复制"></a>文件复制</h2><p>接下来来讲讲文件复制</p>
+<p>在这里需要用到两个全新的函数<code>getchar()</code>和<code>putchar()</code></p>
+<p>其中<code>getchar()</code>为获取输入，例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c = getchar();</span><br></pre></td></tr></table></figure>
+
+<p>此时变量<code>c</code>就被赋予了对应的输入内容</p>
+<p>接下来是<code>putchar()</code>，作用为输出括号内的内容，例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">putchar</span>(c);</span><br></pre></td></tr></table></figure>
+
+<p>这样就输出了变量<code>c</code>的内容</p>
+<p>接下来通过一个具体的例子来说明一下使用的方法：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="type">int</span> c;</span><br><span class="line"></span><br><span class="line">	c = getchar();</span><br><span class="line">	<span class="keyword">while</span>(c != EOF)&#123;</span><br><span class="line">		<span class="built_in">putchar</span>(c);</span><br><span class="line">		c = getchar();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过上面的代码，我们便实现了一个输出的内容为输入的内容的小工具</p>
+<p>相当于复制后自动输出的效果</p>
+<p>这里要说明一下，<code>EOF</code>指的是<code>end of file</code>，通过按<code>Ctrl+Z</code>后回车即可触发</p>
+<p>当然，还可以把上面的这个写的更加紧凑一点：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="type">int</span> c;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span>((c = getchar()) != EOF)&#123;</span><br><span class="line">		<span class="built_in">putchar</span>(c);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来讲解一下</p>
+<p>首先循环第一步，请求输入，并把输入的内容赋值给<code>变量c</code>，而后开始判断，如果<code>变量c</code>不为<code>EOF</code>，则继续执行，否则直接结束循环</p>
+<p>这里要特别注意的一点是，<code>while</code>括号内必须这样写，才可以正常识别</p>
+<p>这是由于在C语言中，不等于运算符!&#x3D;的优先度是大于赋值运算符的&#x3D;，正因如此，如果没加括号，则会变成这样子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">int</span> c;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (c = (getchar() != EOF)) &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,c);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样就变成了先判断输入的数是不是EOF，如果不是，赋值<code>变量c</code>为1，如果是的话则赋值为0</p>
+<p>这样就变成了先判断输入的数是不是EOF，此时返回的结果为一个布尔值，<strong>True为1，False为0</strong></p>
+<p>此时变量c的结果只有<strong>1或0</strong></p>
+<p>需要注意的一点是，这里使用的类型为<code>int</code>，而不是<code>char</code></p>
+<p>这是因为<code>EOF</code>的值为<code>-1</code>，超出了<code>char</code>的范围（0~255）</p>
+<p>当然，也有一种情况<code>char</code>的范围为（-128<del>127），但在这种情况，有些字符会被判断为负值（例如扩展 ASCII 码的128</del>255），这个时候便会与<code>EOF</code>混淆</p>
+<h3 id="拓展内容-1"><a href="#拓展内容-1" class="headerlink" title="拓展内容"></a>拓展内容</h3><p>如果你试着执行上面括号不对的版本并输入</p>
+<p>你会发现输出的内容并不是一个单独的1</p>
+<p>这是因为你输入的内容都会进行一次判断，每次判断都会输出相应的内容</p>
+<p>比如你输入<code>123</code>，那么会以此判断<code>1</code>和<code>2</code>和<code>3</code></p>
+<p>这时候就又会发现，诶，输出怎么是4个1，这是因为你输入的时候还需要回车，回车是换行符<code>\n</code>，也需要进行一次判断，这就导致了有4个1</p>
+<h2 id="字符计数"><a href="#字符计数" class="headerlink" title="字符计数"></a>字符计数</h2><p>接下来学习一个新的运算符<code>++</code></p>
+<p>这个运算符的作用是使得这个变量加一，具体效果如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">++nc;</span><br></pre></td></tr></table></figure>
+
+<p>此时nc的值会加一</p>
+<p>那么有什么作用呢，接下来通过一个例子来说明</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="type">long</span> nc;</span><br><span class="line"></span><br><span class="line">	nc += <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span>(getchar() != EOF)&#123;</span><br><span class="line">		++nc;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%ld&quot;</span>,nc);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码的大意为：每次执行循环若不为<code>EOF</code>，则变量<code>nc</code>的值加一</p>
+<p>输入为<code>EOF</code>的时候，退出循环，并且打印<code>nc</code>的值</p>
+<p>这里还有一个需要补充的点</p>
+<p>可以看到这里有一个新的数据类型：<code>long</code></p>
+<p>这个类型的特点如下：</p>
+<p>在一些机器上<code>int</code>和<code>long</code>的长度相同，但在一些机器上，<code>int</code>类型长度只有16位的存储单元的长度(最大值为32767)</p>
+<p>而<code>long</code>类型的存储单元长度有<strong>32位</strong>(差不多21亿)，这就可以避免了输入过多导致报错的情况</p>
+<p>对应的格式为<code>%ld</code></p>
+<p>此外还有另外一个数据类型：<code>double</code>可以储存的长度为<strong>64位</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">double</span> nc;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (nc = <span class="number">0</span>; getchar() != EOF; nc++)</span><br><span class="line">		;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%.0f\n&quot;</span>, nc);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在这个语句中，for的循环体是空的，但由于C语言的语法规则要求必须有一个循环体，所以这里用一个单独的分号来表示</p>
+<p>像这样的单独一个分号被称为<strong>空语句</strong></p>
+<p>这里需要说明的一点是，<code>while语句</code>和<code>for语句</code>的一大有点就是在执行循环体之前就会对条件进行测试</p>
+<p>如果条件不满足，则不会执行循环体</p>
+<h2 id="行计数"><a href="#行计数" class="headerlink" title="行计数"></a>行计数</h2><p>接下来来讲讲行计数，这里对应原文的1.5.3的内容</p>
+<p>首先，为了实现行计数，我们需要用到前文提及到的几个点</p>
+<ul>
+<li>第一 <code>while</code>语句的检测是一个字符一个字符的检测</li>
+<li>第二 换行符<code>\n</code>虽然看不到输入，但也是实际存在的</li>
+</ul>
+<p>利用这几个点，便可以写出一个行计数的小程序</p>
+<p>接下来讲讲思路</p>
+<p>首先第一个，要先大概明白要干什么，主体的思路大概为检测输入的内容，如果出现了换行符，则次数加一，直到结束输出次数</p>
+<p>具体代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">int</span> c, nl;</span><br><span class="line"></span><br><span class="line">	nl = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span> ((c = getchar()) != EOF)</span><br><span class="line">		<span class="keyword">if</span> (c == <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">			++nl;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, nl);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里的<code>(c == &#39;\n&#39;)</code>需要注意的是必须为<strong>单引号</strong>，这是因为在C语言中这两者的作用并不相同（不跟Python一样）</p>
+<p>单引号表示字符常量，用于表示单个字符，一般用于给<code>char</code>变量赋值：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> c = <span class="string">&#x27;A&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>而双引号则表示一串字符（实际上为一个以<code>\0</code>结尾的字符数组），一般用于定义字符串</p>
+<p>这里要表示的是换行符<code>\n</code>，而不是这个字符串<code>\n</code>，所以应该用单引号</p>
+<h2 id="单词计数"><a href="#单词计数" class="headerlink" title="单词计数"></a>单词计数</h2><p>接下来讲讲单词计数的内容</p>
+<p>这部分的内容主要计数分成了几个点</p>
+<ul>
+<li>计数字符数</li>
+<li>计数单词数</li>
+<li>计数行数</li>
+</ul>
+<p>首先讲解一下思路，由于字符是无论怎么样，只要有输入就算是有的，所以可以在每一次检测的时候加一即可</p>
+<p>接下来是单词数，这里讲的单词指的是任何不包含<strong>空格、制表符或换行符的字符序列</strong>的字符</p>
+<p>最后的行数，其实也就是指换行符的数量<code>\n</code></p>
+<p>这时候可能就有个大概的思路了</p>
+<p>每次循环都加一（字符数），如果为换行符的话，则行数加一，如果不为空格、制表符等符号的话，则单词数加一</p>
+<p>稍微思考一下便可以得出这个例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">int</span> c, n_word, n_line, n_chara,isword;</span><br><span class="line"></span><br><span class="line">	isword = <span class="number">1</span>;</span><br><span class="line">	n_word = n_line = n_chara = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span> ((c = getchar()) != EOF) &#123;</span><br><span class="line">		++n_chara;</span><br><span class="line">		<span class="keyword">if</span> (c == <span class="string">&#x27; &#x27;</span> || c == <span class="string">&#x27;\n&#x27;</span> || c == <span class="string">&#x27;\t&#x27;</span>)</span><br><span class="line">			isword = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">if</span> (isword)</span><br><span class="line">			++n_word;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (c == <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			++n_line;</span><br><span class="line">			isword = <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			isword = <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;字符数：%d 单词数：%d 行数：%d&quot;</span>, n_chara, n_word, n_line);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当然，也可以使用K&amp;R里面的例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> IN 1</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> OUT 0</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">int</span> c, nl, ns, nw, state;</span><br><span class="line"></span><br><span class="line">	nl = ns = nw = <span class="number">0</span>;</span><br><span class="line">	state = OUT;</span><br><span class="line">	<span class="keyword">while</span> ((c = getchar()) != EOF) &#123;</span><br><span class="line">		++ns;</span><br><span class="line">		<span class="keyword">if</span> (c == <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">			++nl;</span><br><span class="line">		<span class="keyword">if</span> (c == <span class="string">&#x27; &#x27;</span> || c == <span class="string">&#x27;\n&#x27;</span> || c == <span class="string">&#x27;\t&#x27;</span>) &#123;</span><br><span class="line">			state = OUT;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (state == OUT)</span><br><span class="line">		&#123;</span><br><span class="line">			state = IN;</span><br><span class="line">			++nw;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;单词数：%d 行数：%d 字符数：%d&quot;</span>, ns, nl, nw);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><p>接下来来讲讲数组的内容，这里对应的是原文的1.6的部分</p>
+<p>首先简单介绍一下数组，数组是一个可以储存变量的容器，你可以往里面填入值</p>
+<p>格式如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ndigit[x] = y;</span><br></pre></td></tr></table></figure>
+<p>其中<code>x</code>为你要填入的位置（默认以0开始），<code>y</code>表示这个位置的值</p>
+<p>利用这个特性，我们便可以用更聪明的方式来统计东西</p>
+<p>首先我们需要明白一个点，在ASCII码中<code>0</code>~&#96;9&#96;是连一块的</p>
+<p>而如果我们将基准定为输入的数字（例如<code>2</code>）</p>
+<p>此时通过<code>2</code> - <code>0</code>，便可以得出位置<code>2</code>（对应数组里面的<strong>3号位</strong>）</p>
+<p>那么这样的话，便可以到这样的代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">10</span>; ++i) &#123;</span><br><span class="line">	<span class="comment">// 这里是初始化每个数字的次数</span></span><br><span class="line">	ndigit[i] = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">while</span> ((c = getchar()) != EOF) &#123;</span><br><span class="line">	<span class="keyword">if</span> (c &gt;= <span class="string">&#x27;0&#x27;</span> &amp;&amp; c &lt;= <span class="string">&#x27;9&#x27;</span>) &#123;</span><br><span class="line">		++ndigit[c - <span class="string">&#x27;0&#x27;</span>];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先第一个的<code>for语句</code>其作用为初始化每个数字出现的次数</p>
+<p>而下一个<code>while语句</code>便是重点</p>
+<p>首先循环体if语句的判定条件限定在了0~9，并且正如上面所讲的一样，判断内的部分为指定位置的值的增加（说白了就是增加次数到指定的位置上）</p>
+<p>这样有什么好处呢，这样的话便不用自己去定义位置，使代码更为简洁</p>
+<p>完整代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">int</span> c, i;</span><br><span class="line">	<span class="type">int</span> nwhite, nother;</span><br><span class="line">	<span class="type">int</span> ndigit[<span class="number">10</span>];</span><br><span class="line"></span><br><span class="line">	nwhite = nother = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">10</span>; ++i) &#123;</span><br><span class="line">		<span class="comment">// 这里是初始化每个数字的次数</span></span><br><span class="line">		ndigit[i] = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">while</span> ((c = getchar()) != EOF) &#123;</span><br><span class="line">		<span class="keyword">if</span> (c &gt;= <span class="string">&#x27;0&#x27;</span> &amp;&amp; c &lt;= <span class="string">&#x27;9&#x27;</span>) &#123;</span><br><span class="line">			++ndigit[c - <span class="string">&#x27;0&#x27;</span>];</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (c == <span class="string">&#x27; &#x27;</span> || c == <span class="string">&#x27;\n&#x27;</span> || c == <span class="string">&#x27;\t&#x27;</span>) &#123;</span><br><span class="line">			++nwhite;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			++nother;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;各个数字出现次数为：&quot;</span>);</span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">10</span>; ++i) &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, ndigit[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;空格数：%d 其他字符：%d&quot;</span>,nwhite,nother);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里用else语句而不是在一开始就加1的原因是这里为<strong>其他字符</strong>，而不是<strong>所有字符</strong></p>
+<p>所以放到最后面来兜底</p>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p>接下来讲讲函数方面的内容，这里对应书中的1.7 函数</p>
+<p>首先是一个简单的引入。在之前的例子中，我们有使用过这些内置的函数：<code>printf()</code>、<code>getrchar()</code>、<code>putchar()</code></p>
+<p>而这次的目的就是自己编写一个函数，并且成功调用这个函数</p>
+<h3 id="任务说明"><a href="#任务说明" class="headerlink" title="任务说明"></a>任务说明</h3><p>在Python中，有一个运算符<code>**</code>其作用为进行幂计算</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(x**y)</span><br></pre></td></tr></table></figure>
+<p>这里<code>变量x</code>代表底数，<code>变量y</code>代表幂，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="number">2</span> ** <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出：8（2的三次方）</span></span><br></pre></td></tr></table></figure>
+
+<p>而在C中，并没有类似的运算符，所以我们可以自己编写一个运算符</p>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>首先幂的计算便是n个底数进行相乘，所以这里有个简单的方法就是利用for语句进行多次循环，最后返回计算好的结果</p>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p>通过上面的思路，可以比较轻松的写出下面这个函数，接下来开始逐一介绍</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">power</span><span class="params">(<span class="type">int</span> base, <span class="type">int</span> n)</span> &#123;</span><br><span class="line">	<span class="type">int</span> i,p;</span><br><span class="line"></span><br><span class="line">	p = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">		p *= base;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先我们可以模拟一下运算的流程，比如说2的3次方</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">第一次：2</span><br><span class="line">第二次：4</span><br><span class="line">第三次：8</span><br></pre></td></tr></table></figure>
+
+<p>这里其实有个很巧的点，如果n为0的话，那就是2的0次方了，根据<code>for语句</code>条件<code>i &lt;= n</code>才会执行循环体内的内容</p>
+<p>此时由于n为0，不满足循环条件，所以并不执行循环</p>
+<p>但是很巧的一点是，<strong>2的0次方恰好为1</strong></p>
+<p>这也是设计的一个巧妙的点</p>
+<hr>
+<p>接下来开始说明</p>
+<p>首先函数<code>power</code>接受两个值：<code>base</code>和<code>n</code></p>
+<p>这里的话<code>base</code>作为底数，<code>n</code>作为幂</p>
+<p>由于循环判断条件是<code>i &lt;= n</code>，而循环体内的条件为每次循环都乘底数一遍，直到不循环为止</p>
+<p>最后循环结束，输出对应的值</p>
+<p>完整代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">int</span> <span class="title function_">power</span><span class="params">(<span class="type">int</span> m, <span class="type">int</span> n)</span>;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d,%d&quot;</span>, <span class="number">2</span>, power(<span class="number">2</span>, <span class="number">3</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">power</span><span class="params">(<span class="type">int</span> base, <span class="type">int</span> n)</span> &#123;</span><br><span class="line">	<span class="type">int</span> i, p;</span><br><span class="line"></span><br><span class="line">	p = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">		p *= base;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="语法笔记"><a href="#语法笔记" class="headerlink" title="语法笔记"></a>语法笔记</h3><p>上面为K&amp;R中提供的案例，接下来来讲讲K&amp;R里面的笔记</p>
+<h4 id="定义函数"><a href="#定义函数" class="headerlink" title="定义函数"></a>定义函数</h4><p>接下来来讲讲定义函数的部分、</p>
+<p>首先给出定义函数的结构：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">返回的类型 函数的名字(声明参数)</span><br><span class="line">&#123;</span><br><span class="line">	声明参数部分</span><br><span class="line"></span><br><span class="line">	函数语句</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的一点是，函数的定义可以在一个文件的任何地方，这跟Python是截然不同的（Python需要先定义才能调用，C可以把定义的部分放到最后面）</p>
+<h4 id="函数的参数"><a href="#函数的参数" class="headerlink" title="函数的参数"></a>函数的参数</h4><p>每个函数声明的参数仅在这个函数内部生效，不影响其他函数</p>
+<p>正因如此，其他函数便可以与之使用同样的参数名</p>
+<p>通常把函数定义中出现的参数称为<strong>形式参数</strong></p>
+<p>而把函数调用中与形式参数对应的值称为<strong>实际参数</strong></p>
+<p>举个例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">int</span> <span class="title function_">power</span><span class="params">(<span class="type">int</span> m, <span class="type">int</span> n)</span>;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d,%d&quot;</span>, <span class="number">2</span>, power(<span class="number">2</span>, <span class="number">3</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">power</span><span class="params">(<span class="type">int</span> base, <span class="type">int</span> n)</span> &#123;</span><br><span class="line">	<span class="type">int</span> i, p;</span><br><span class="line"></span><br><span class="line">	p = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">		p *= base;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面这个例子中，形式参数为<code>base</code>和<code>n</code>，实际参数为<code>2</code>和<code>3</code></p>
+<h4 id="return语句"><a href="#return语句" class="headerlink" title="return语句"></a>return语句</h4><p>在调用了函数后，我们要怎么让结果输出出去呢，这时候便可以使用到<code>return</code>语句了</p>
+<p>这个语句的效果是返回<code>return</code>后面的表达式，比如上面的例子就返回了<code>p</code></p>
+<hr>
+<p>如果你仔细观察的话，便可以发现<code>main</code>其实也是一个函数，但是这个函数可以省略<code>return</code>语句</p>
+<p>而其他函数如果有指定返回值的类型但是没有给出返回值，则属于 <strong>“未定义行为”</strong>（返回的结果不可以预测）</p>
+<p>这里的声明返回值类型指的是这里：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>main</code>前面的<code>int</code>便是指明了返回值的类型，</p>
+<h4 id="函数原型"><a href="#函数原型" class="headerlink" title="函数原型"></a>函数原型</h4><p>在作者的例子中还使用了<code>函数原型</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">power</span><span class="params">(<span class="type">int</span> m, <span class="type">int</span> n)</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">10</span>; ++i) &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d %d %d\n&quot;</span>, i, power(<span class="number">2</span>, i), power(<span class="number">-3</span>, i));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">power</span><span class="params">(<span class="type">int</span> base, <span class="type">int</span> n)</span> &#123;</span><br><span class="line">	<span class="type">int</span> i, p;</span><br><span class="line"></span><br><span class="line">	p = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">1</span>; i &lt;= n; ++i)</span><br><span class="line">		p *= base;</span><br><span class="line">	<span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>也就是上面这里例子中的<code>int power(int m, int n);</code></p>
+<p>这里表明了函数<code>power</code>有两个<code>int</code>类型的参数，并且返回一个<code>int</code>类型的值</p>
+<p>特别需要注意的一点是，函数原型必须与函数的定义和用法一致，否则会出现报错</p>
+<p>但函数原型和定义函数的参数名可以不相同，例如在上面这个例子中，函数原型的参数分别为<code>m</code>，<code>n</code></p>
+<p>而定义函数的时候为<code>base</code>和<code>n</code></p>
+<p>有趣的一点是，函数原型的参数名是可选的，也就是说你可以写成这样：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">power</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>不过一般为了说明，不会省略参数名</p>
+<h2 id="参数——传值调用"><a href="#参数——传值调用" class="headerlink" title="参数——传值调用"></a>参数——传值调用</h2><p>接下来简单讲一下传参的问题</p>
+<p>在C语言中，函数内部的所有参数值都是通过值传递的，传递的参数值都被传递到临时变量中，与原来的变量相隔开</p>
+<p>正因如此，被调用的函数不能修改外部主调函数的变量值，只能修改自己函数内部的值</p>
+<p>举个例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">power</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="type">int</span> c;</span><br><span class="line">	</span><br><span class="line">	c = getchar();</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;结果为：%d，幂为：%c\n&quot;</span>, power(<span class="number">2</span>, c),c);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">power</span><span class="params">(<span class="type">int</span> base ,<span class="type">int</span> n)</span>&#123;</span><br><span class="line">	<span class="type">int</span> p;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (p = <span class="number">1</span>; n - <span class="string">&#x27;0&#x27;</span> &gt; <span class="number">0</span>; --n) &#123;</span><br><span class="line">		p *= base;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面这个例子中，<code>函数power</code>的参数由<code>c</code>决定，也就是函数内的<code>n</code></p>
+<p>这里可以看到，在执行函数后，原本作为参数传进去的<code>c</code>并没有在外部修改，仍然保持原有的值</p>
+<p>当然，也可以让函数修改主调函数的变量，但需要用到指针，这里不展开说明</p>
+<h2 id="字符数组"><a href="#字符数组" class="headerlink" title="字符数组"></a>字符数组</h2><p>字符数组可以将一个单词的字母储存到这个数组的单个位置里面</p>
+<p>接下来我们通过一个例子来说明这一点</p>
+<p>这里的例子使用了K&amp;R中的例子：</p>
+<p>编写一个程序，使其在结束的时候打印出最长输入的那一行</p>
+<h3 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h3><p>首先我们先捋一捋思路，这里的关键词为 <strong>打印最长输入</strong>，既然有最长，那么肯定得用到比较大小，所以必然得用到<code>if语句</code>来对长度进行比较</p>
+<p>下一个点是为了打印出最长的输出，所以这里必然得储存输入，所以可能得用到临时变量来储存</p>
+<p>很好，来总结一下思路</p>
+<ul>
+<li>接受输入</li>
+<li>检查是否为最长</li>
+<li>如果是最长就储存输入，并且计算其长度用于比较</li>
+<li>如果不是最长就跳过换下一个输入</li>
+<li>最后结束返回储存的最长输入</li>
+</ul>
+<h3 id="难点"><a href="#难点" class="headerlink" title="难点"></a>难点</h3><p>在Python中有个函数专门来统计列表的长度:<code>len()</code>，但是在C语言里面则没有类似的函数</p>
+<p>这时候我们要思考怎么去编写这样的一个函数</p>
+<p>我们不妨可以联想到之前一直用到的一个点：<code>while</code>循环和<code>getchar()</code>可以一个一个字符查看</p>
+<p>而又因为换行符<code>\n</code>我们是看不到的，所以就可以用到这个思路：</p>
+<ul>
+<li>获取输入</li>
+<li>如果不是换行符就长度加一</li>
+<li>如果是换行符就返回长度</li>
+</ul>
+<h3 id="开始编写"><a href="#开始编写" class="headerlink" title="开始编写"></a>开始编写</h3><h4 id="返回长度"><a href="#返回长度" class="headerlink" title="返回长度"></a>返回长度</h4><p>首先是实现返回长度的功能：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">getline</span><span class="params">(<span class="type">char</span> s[], <span class="type">int</span> lim)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> c, i;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>;(c = getchar()) != EOF &amp;&amp; c != <span class="string">&#x27;\n&#x27;</span>;++i)</span><br><span class="line">	&#123;</span><br><span class="line">		s[i] = c;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (c == <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		s[i] = c;</span><br><span class="line">		++i;</span><br><span class="line">	&#125;</span><br><span class="line">	s[i] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line">	<span class="keyword">return</span> i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里<code>s[]</code>是一个临时数组，用于存储输入的值</p>
+<p>如果不为<code>EOF</code>或换行符<code>\n</code>的话，则说明是我们想要的内容，所以一个一个加到临时数组里面，同时每加一次，长度i就加一</p>
+<p>这时候可能就有人要问了，诶，那这里是干什么的呢？</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (c == <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">&#123;</span><br><span class="line">	s[i] = c;</span><br><span class="line">	++i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先让我们思考一下什么情况下我们不会加入到数组：输入为<code>EOF</code>或者<code>\n</code>的时候便不会继续循环</p>
+<p>那这里有人就又要问了，那这样子的话为什么不删去for语句里面的判断条件<code>c != &#39;\n&#39;</code>呢</p>
+<p>让我们再次回想一下我们要干什么：嗯，是为了查找输入最长的那一行</p>
+<p>那一行的末尾是什么呢？诶那就是换行符<code>\n</code>了</p>
+<p>这里如果不写上<code>c != &#39;\n&#39;</code>的话，那么循环会继续下去，就不是一行了，<strong>而是多行了</strong></p>
+<p>所以这里也就是为什么要多这么一个判断的原因</p>
+<p>那又有人要问了，这个是干什么的？</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s[i] = <span class="string">&#x27;\0&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这里需要科普的一点是，在C语言中，一个字符串结束的标志是<code>\0</code></p>
+<p>所以这里其实是在说这个字符串结束了，一个简单的收尾工作</p>
+<p>这个东西很重要，之后还有个函数依赖于这个特性</p>
+<p>接下来让我们思考一下，如果这里输入过多该咋办？所以需要加一个限制条件</p>
+<p>限制条件也就是最大长度，这里可以用到传进来的参数<code>lim</code></p>
+<p>所以这里在循环条件里面加一句，只能在这个范围里面执行循环</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>;i &lt; lim - <span class="number">1</span> &amp;&amp; (c = getchar()) != EOF &amp;&amp; c != <span class="string">&#x27;\n&#x27;</span>;++i)</span><br><span class="line">&#123;</span><br><span class="line">	s[i] = c;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里可能有疑惑了，诶，为什么这里要<code>- 1</code>啊</p>
+<p>首先让我们提前补充一个点，一个字符串的结尾，一般为<code>\0</code></p>
+<p>这个<code>\0</code>代表着字符串的结束，而这里的<code>- 1</code>的作用是为这个特殊的标志腾出空间</p>
+<p>因为这里如果不腾出空间的话，那么如果这个字符串有1000个字符（包括<code>\n</code>），那么最后一个结束的标志（<code>\0</code>）则会因为无法写入而导致报错，这也就是为什么要<code>- 1</code>的原因</p>
+<h4 id="复制最大的数组"><a href="#复制最大的数组" class="headerlink" title="复制最大的数组"></a>复制最大的数组</h4><p>接下来是复制最大的那个数组，以便在结束的时候可以输出这个最长的数组</p>
+<p>首先让我们思考一下要怎么做</p>
+<p>首先第一步是读取最长的那个数组</p>
+<p>然后一步一步把这个数组复制一遍</p>
+<p>诶，那要怎么看是不是复制完了呢？还记得上面的结尾是什么吗</p>
+<p>对，这里的判断条件便是<code>!= &#39;\n&#39;</code></p>
+<p>下面是完整代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">	...</span><br><span class="line">	<span class="keyword">while</span> ((len = getline(line,MAXLINE)) &gt; <span class="number">0</span>)</span><br><span class="line">		<span class="keyword">if</span> (len &gt; max)</span><br><span class="line">		&#123;</span><br><span class="line">			max = len;</span><br><span class="line">			copy(longest, line);</span><br><span class="line">		&#125;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">copy</span><span class="params">(<span class="type">char</span> to[], <span class="type">char</span> from[])</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line"></span><br><span class="line">	i = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span> ((to[i] = from[i]) != <span class="string">&#x27;\0&#x27;</span>)</span><br><span class="line">		++i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里顺带把<code>main</code>的一小部分截出来了，为了方便理解</p>
+<p>首先可以发现，这里的话<code>to[i]</code>是复制的那个列表，而<code>from[]</code>是原来的列表</p>
+<p>对应关系的话是这样子的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">from[] = s[] = line</span><br><span class="line"></span><br><span class="line">to[] = longest</span><br></pre></td></tr></table></figure>
+
+<p>之后每次执行循环都会使得数组的位数增加1个单位，直到到达末尾的<code>\n</code></p>
+<p>既然这里截出了<code>main</code>的一小块，那顺带也讲了吧</p>
+<p>这是一个比较简单的循环，其核心在于循环的条件<code>((len = getline(line,MAXLINE)) &gt; 0)</code></p>
+<p>这里发现调用了函数<code>getline()</code>，那么这个函数返回的什么呢？</p>
+<p>返回过去看看，可以发现返回的是这个数组的长度，所以说这里的目的是检测输入的内容是否大于0，并且赋值给变量<code>len</code></p>
+<h4 id="main"><a href="#main" class="headerlink" title="main"></a>main</h4><p>接下来讲讲<code>main</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAXLINE 1000</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">int</span> len;</span><br><span class="line">	<span class="type">int</span> max;</span><br><span class="line"></span><br><span class="line">	<span class="type">char</span> line[MAXLINE];</span><br><span class="line">	<span class="type">char</span> longest[MAXLINE];</span><br><span class="line">		</span><br><span class="line">	<span class="comment">// 开始初始化</span></span><br><span class="line">	max = <span class="number">0</span>; <span class="comment">//初始化最大值</span></span><br><span class="line">	<span class="keyword">while</span> ((len = getline(line,MAXLINE)) &gt; <span class="number">0</span>)</span><br><span class="line">		<span class="keyword">if</span> (len &gt; max)</span><br><span class="line">		&#123;</span><br><span class="line">			max = len;</span><br><span class="line">			copy(longest, line);</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="keyword">if</span> (max &gt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>, longest);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>while语句</code>的内容已经在上面讲过了，接下来往下讲<code>if语句</code></p>
+<p>这里的目的是为了判断是否存在这么个最大的行，这里没有一般为没输入就直接退出了</p>
+<p>最后输出内容为<code>longest</code>，也就是复制过后的<code>to[]</code></p>
+<h3 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAXLINE 1000</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">getline</span><span class="params">(<span class="type">char</span> line[], <span class="type">int</span> maxline)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">copy</span><span class="params">(<span class="type">char</span> to[], <span class="type">char</span> from[])</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">int</span> len;</span><br><span class="line">	<span class="type">int</span> max;</span><br><span class="line"></span><br><span class="line">	<span class="type">char</span> line[MAXLINE];</span><br><span class="line">	<span class="type">char</span> longest[MAXLINE];</span><br><span class="line">		</span><br><span class="line">	<span class="comment">// 开始初始化</span></span><br><span class="line">	max = <span class="number">0</span>; <span class="comment">//初始化最大值</span></span><br><span class="line">	<span class="keyword">while</span> ((len = getline(line,MAXLINE)) &gt; <span class="number">0</span>)</span><br><span class="line">		<span class="keyword">if</span> (len &gt; max)</span><br><span class="line">		&#123;</span><br><span class="line">			max = len;</span><br><span class="line">			copy(longest, line);</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="keyword">if</span> (max &gt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>, longest);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">getline</span><span class="params">(<span class="type">char</span> s[], <span class="type">int</span> lim)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> c, i;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>;</span><br><span class="line">		i &lt; lim - <span class="number">1</span> &amp;&amp; (c = getchar()) != EOF &amp;&amp; c != <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">		++i</span><br><span class="line">		)</span><br><span class="line">	&#123;</span><br><span class="line">		s[i] = c;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (c == <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		s[i] = c;</span><br><span class="line">		++i;</span><br><span class="line">	&#125;</span><br><span class="line">	s[i] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line">	<span class="keyword">return</span> i;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">copy</span><span class="params">(<span class="type">char</span> to[], <span class="type">char</span> from[])</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line"></span><br><span class="line">	i = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span> ((to[i] = from[i]) != <span class="string">&#x27;\0&#x27;</span>)</span><br><span class="line">		++i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的<code>MAXLINE</code>指的是最大可以支持的长度，说白了就是先把这个长度的数组给准备好，之后把输入一个一个填进去就行了，超过这个长度就没位置可以填了，所以也就是最大的长度了</p>
+<h2 id="外部变量与作用域"><a href="#外部变量与作用域" class="headerlink" title="外部变量与作用域"></a>外部变量与作用域</h2><p>接下来来讲讲这一方面</p>
+<h3 id="局部变量（自由变量）"><a href="#局部变量（自由变量）" class="headerlink" title="局部变量（自由变量）"></a>局部变量（自由变量）</h3><p>首先在之前的例子中我们可以发现一个点，<code>main()</code>函数内部使用了一些变量，这些变量是十分特别的，因为只能在<code>main()</code>内部使用，所以被称为<strong>私有变量或者局部变量</strong></p>
+<p>由于定义这些变量的位置位于函数内部，所以其他函数是不可以访问的</p>
+<p>相同的，这也就是为什么在上面的例子中，<code>getline()</code>和<code>copy()</code>都用到了变量名i，但是却无法通用的原因</p>
+<p>需要注意的一点是，这些局部变量只有在调用的时候才有用，函数调用结束，这些局部变量也就消失了，这也是为什么有些语言会把局部变量成为自动变量的原因</p>
+<p>这里可以思考一个点，自动变量会在函数结束的时候消失，那么如果我要在其他函数用到，得怎么办呢</p>
+<p>当然是重新声明</p>
+<p>需要注意的一点是，如果自动变量没有赋值，那么其中存放的就是无效值</p>
+<p>当然，既然有局部变量，那肯定就有外部变量</p>
+<h3 id="外部变量"><a href="#外部变量" class="headerlink" title="外部变量"></a>外部变量</h3><p>既然局部变量是只能在函数内部使用，那么按这个道理一推，便可以得知外部变量就是可以在任意函数中通用的变量</p>
+<p>外部变量可以用于函数之间交换数据，而并不使用参数表，并且在执行程序的时候<strong>外部变量会一直存在</strong></p>
+<p>首先，外部变量需要在任何函数之前就定义完，并且只能定义一次，在每个需要访问外部变量的函数中，必须要声明这个使用的外部变量，具体声明使用到<code>extern语句</code>，或者上下文隐式声明</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> 变量类型 变量名</span><br></pre></td></tr></table></figure>
+
+<p>由于C语言在C99标准后废除了隐式声明，所以这里不再提及</p>
+<p>需要说明一点的是，在一些情况下可以省略<code>extern声明</code>，如果在源文件中，外部变量的定义出现在他的函数之前，那么在那个函数中便可以不使用<code>extern声明</code></p>
+<p>一般来说，所有的外部变量的定义都放在最开头，这样就可以省略掉<code>extern声明</code></p>
+<hr>
+<p>接下来讲讲多个文件的情况</p>
+<p>如果你的一个变量位于文件A，而你在文件B使用到了这个变量，那么则需要使用<code>extern声明</code></p>
+<p>通常的做法是，把变量和函数的extern声明放到一个单独的文件中（一般称为<code>头文件</code>）</p>
+<p>并在每个文件的开头使用<code>#include</code>语句把要用的这些头文件包含进来</p>
+<p>而后缀<code>.h</code>是约定为头文件名的扩展名</p>
+<p>接下来看看之前的程序有什么地方可以用到外部变量吧</p>
+<h3 id="使用外部变量"><a href="#使用外部变量" class="headerlink" title="使用外部变量"></a>使用外部变量</h3><p>首先我们可以先看看<code>getline()</code>函数</p>
+<p>首先由<code>main()</code>可以得知，最大范围是由参数传给函数的，而这里的最大参数便可以使用<code>MAXLINE</code>来代替原有的<code>lim</code>参数</p>
+<p>接下来可以发现，原来的程序使用了一个参数<code>line</code>来储存句子</p>
+<p>而这个由于这个句子使用了<code>for循环</code>使得每次调用的时候位置都是会重新计算（i &#x3D; 0）的</p>
+<p>这就导致了这里无论调用多少次，开始存储的位置还是一样的，所以这里的第一个参数也可以换成外部变量</p>
+<p>最后的<code>getline函数</code>如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">getline</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> c, i;</span><br><span class="line">	<span class="keyword">extern</span> <span class="type">char</span> line[];</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>;</span><br><span class="line">		i &lt; MAXLINE - <span class="number">1</span> &amp;&amp; (c = getchar()) != EOF &amp;&amp; c != <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">		++i</span><br><span class="line">		)</span><br><span class="line">	&#123;</span><br><span class="line">		line[i] = c;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (c == <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		line[i] = c;</span><br><span class="line">		++i;</span><br><span class="line">	&#125;</span><br><span class="line">	line[i] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line">	<span class="keyword">return</span> i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到这里使用了外部变量<code>line[]</code></p>
+<p>而<code>MAXLINE</code>在开头的<code>#define</code>就定义过了，编译的时候会自动替换成后面的<code>1000</code></p>
+<p>这里需要注意的一点是，<code>getline()</code>的括号内部写的是<code>void</code></p>
+<p>这是因为在 <code>ANSI C</code>中，如果要声明空参数表，则必须使用关键字<code>void</code>进行显式声明</p>
+<p>接下来是<code>copy()</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">copy</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	<span class="keyword">extern</span> <span class="type">char</span> line[], longest[];</span><br><span class="line"></span><br><span class="line">	i = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span> ((longest[i] = line[i]) != <span class="string">&#x27;\0&#x27;</span>)</span><br><span class="line">		++i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过观察<code>main()</code>可以知道，原先的原先数组<code>from[]</code>实际可以替换为<code>line[]</code>，而输出的数组可以用到<code>longest[]</code></p>
+<p><code>longest[]</code>是在一开始就定义的外部变量，可以不借助参数而选择直接写入函数内部</p>
+<p>最后是完整的代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAXLINE 1000</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> max;</span><br><span class="line"><span class="type">int</span> <span class="title function_">getline</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">copy</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"><span class="type">char</span> line[MAXLINE];</span><br><span class="line"><span class="type">char</span> longest[MAXLINE];</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">int</span> len;</span><br><span class="line">	<span class="keyword">extern</span> <span class="type">int</span> max;</span><br><span class="line">	<span class="keyword">extern</span> <span class="type">char</span> longest[MAXLINE];</span><br><span class="line"></span><br><span class="line">	max = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span> ((len = getline()) &gt; <span class="number">0</span>)</span><br><span class="line">		<span class="keyword">if</span> (len &gt; max)</span><br><span class="line">		&#123;</span><br><span class="line">			max = len;</span><br><span class="line">			copy();</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="keyword">if</span> (max &gt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>, longest);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">getline</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> c, i;</span><br><span class="line">	<span class="keyword">extern</span> <span class="type">char</span> line[];</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>;</span><br><span class="line">		i &lt; MAXLINE - <span class="number">1</span> &amp;&amp; (c = getchar()) != EOF &amp;&amp; c != <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">		++i</span><br><span class="line">		)</span><br><span class="line">	&#123;</span><br><span class="line">		line[i] = c;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (c == <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		line[i] = c;</span><br><span class="line">		++i;</span><br><span class="line">	&#125;</span><br><span class="line">	line[i] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line">	<span class="keyword">return</span> i;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">copy</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	<span class="keyword">extern</span> <span class="type">char</span> line[], longest[];</span><br><span class="line"></span><br><span class="line">	i = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span> ((longest[i] = line[i]) != <span class="string">&#x27;\0&#x27;</span>)</span><br><span class="line">		++i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>需要说明的一点是，虽然外部变量很好用，但是如果过度使用的可能会导致数据之间的关系变得不清，并且如果将外部变量写入程序内部，会不传入参数进函数而导致函数失去了通用性</p>
+<h3 id="补充内容"><a href="#补充内容" class="headerlink" title="补充内容"></a>补充内容</h3><p>接下来补充几个小点</p>
+<p>上文在讲自动变量的时候提及了以下内容：</p>
+<blockquote>
+<p>如果自动变量没有赋值，那么其中存放的就是无效值<br>而如果外部变量没有初始化的话，那么编译器会<strong>自动初始化为0</strong></p>
+</blockquote>
+<p>此外还有有关<code>定义</code>和<code>声明</code>的区别</p>
+<p>定义指的是：表示创建变量或者分配存储单元</p>
+<p>而声明指的是：说明变量的性质，但并不分配存储单元</p>
+<p>举个例子：</p>
+<p>在外部变量中，定义如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> max;</span><br></pre></td></tr></table></figure>
+
+<p>而声明如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="type">int</span> max;</span><br></pre></td></tr></table></figure>
+<p>定义只能定义一次，而声明可以声明无限次</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>作者:</span>
+                        <span>Gaizhedu</span>
+                    </p>
+                
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E5%BD%92%E6%A1%A3/"># 归档</a>
+                    
+                        <a href="/tags/C/"># C</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">返回</a>
+                <span>· </span>
+                <a href="/">主页</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2025/08/22/k&r_ch2/">C程序设计语言（K&R）第二章</a>
+            
+            
+            <a class="next" rel="next" href="/2025/07/17/functions/">Python 中的函数</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Gaizhedu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

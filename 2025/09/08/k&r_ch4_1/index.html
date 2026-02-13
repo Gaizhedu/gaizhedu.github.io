@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Gaizhedu">
+
+
+
+
+
+<title>C程序设计语言（K&amp;R）第四章导言 | Gaizhedu的博客</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Gaizhedu&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">文章</a>
+                
+                <a class="menu-item" href="/tag">标签</a>
+                
+                <a class="menu-item" href="/about">关于本站</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Gaizhedu&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">文章</a>
+                
+                <a class="menu-item" href="/tag">标签</a>
+                
+                <a class="menu-item" href="/about">关于本站</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开全部</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">跳转底部</a>
+    </div>
+</div>
+
+<script>
+
+    var tocI18n = {
+        expandAll: '展开全部',  // EJS 写法，NJK 用 {{ __('toc_expand_all') }}
+        collapseAll: '全部折叠' // 先在 zh-CN.yml 里加这个键
+    };
+
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? tocI18n.expandAll : tocI18n.collapseAll;
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">C程序设计语言（K&amp;R）第四章导言</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Gaizhedu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2025-09-08&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="第四章导言处补充内容"><a href="#第四章导言处补充内容" class="headerlink" title="第四章导言处补充内容"></a>第四章导言处补充内容</h1><p>这里来讲一下由于篇幅问题没办法讲到的内容</p>
+<h2 id="ANSI标准新增的条件编译指令"><a href="#ANSI标准新增的条件编译指令" class="headerlink" title="ANSI标准新增的条件编译指令"></a>ANSI标准新增的条件编译指令</h2><p>在旧版本的C中，可能只有以下指令：<code>#ifdef</code>、<code>#ifndef</code>、<code>#endif</code></p>
+<p>但是新的预处理器新增了一些新东西，例如用于判断条件的<code>#if</code>，还有类似<code>else if</code>的<code>#elif</code>，以及<code>#else</code></p>
+<p>这样有什么实际的作用呢，比如说我想根据版本来推送对应的内容，那么我可以这样写：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> OS_VERSION 10</span></span><br><span class="line"><span class="meta">#<span class="keyword">if</span> OS_VERSION &gt;= 10</span></span><br><span class="line">    <span class="meta">#<span class="keyword">include</span> <span class="string">&quot;new_api.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">elif</span> OS_VERSION &gt;= 8</span></span><br><span class="line">    <span class="meta">#<span class="keyword">include</span> <span class="string">&quot;old_api.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">    <span class="meta">#<span class="keyword">error</span> <span class="string">&quot;不支持的系统&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p>类推一下，可以把上面的系统版本修改为各类系统的名称（例如Window、Linux、MacOS之类的）从而适配不同的设备</p>
+<h2 id="通过宏参数创建带引号的字符串的方法"><a href="#通过宏参数创建带引号的字符串的方法" class="headerlink" title="通过宏参数创建带引号的字符串的方法"></a>通过宏参数创建带引号的字符串的方法</h2><p>这里指的是在宏定义中，当#紧跟在参数后面时，那么预处理器会自动将这个参数转换为带双引号的字符串</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> STR(x) #x</span></span><br><span class="line"></span><br><span class="line">STR(hello)</span><br></pre></td></tr></table></figure>
+<p>上面<code>STR</code>输出的结果为”hello”，可以发现带上了双引号</p>
+<p>利用这个功能我们可以想到什么？对，就是<strong>任何可以用到双引号的地方</strong></p>
+<p>举个例子</p>
+<p>如果我们想要在输出的时候同时打印变量名和对应的值</p>
+<p>那么我们只需要这样写即可：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> PRINT_VAR(x) printf(#x <span class="string">&quot;= %d\n&quot;</span>,x)</span></span><br></pre></td></tr></table></figure>
+<p>由于<code>#x</code>输出的结果是一个带双引号的数值，那么对应的，这里也会带上双引号</p>
+<p>具体的情况如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> PRINT_VAR(x) printf(#x <span class="string">&quot;= %d\n&quot;</span>,x)</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">    PRINT_VAR(a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面例子运行的结果为：<code>a = 10</code></p>
+<p>这里可以看作是这样子的：<code>printf(&quot;a&quot; &quot;= %d\n&quot;,a)</code></p>
+<h2 id="对宏扩展更加严格"><a href="#对宏扩展更加严格" class="headerlink" title="对宏扩展更加严格"></a>对宏扩展更加严格</h2><p>什么叫做对宏扩展更加严格，说白了其实是<strong>减少了歧义的发生</strong></p>
+<p>其实这个点在之前已经有提到过了，这里再提及一次</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> ADD(x,y) x * y</span></span><br></pre></td></tr></table></figure>
+<p>这里如果传入的值为一个数，那当然没问题，可如果x或者y是一个<strong>表达式</strong>呢？</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> ADD(x,y)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 此处为了方便就省略具体的main了，也就是直接写出语句</span></span><br><span class="line">ADD(<span class="number">111</span>+<span class="number">222</span>,<span class="number">333</span>);</span><br></pre></td></tr></table></figure>
+<p>此时运算顺序是怎么样的？</p>
+<p>这条式子实际应该为这样子的：<code>111 + 222 * 333</code></p>
+<p>那么会先运行哪一部分呢？很明显会先运行后面的乘法运算，这样就跟我们想要的结果不太一样了</p>
+<p>那么要怎么操作才可以避免这种情况发生呢？其实只需要在给每一个参数加上括号即可，也就是这样子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> ADD(x,y) ((x) * (y))</span></span><br></pre></td></tr></table></figure>
+<p>加上这个括号之后，会优先运行括号内部的内容，这样就可以有效的避免歧义的发生</p>
+<hr>
+<p>还有一个点就是<strong>嵌套宏的情况</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> A 10</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> B(x) x * 10</span></span><br><span class="line"></span><br><span class="line">B(A);</span><br></pre></td></tr></table></figure>
+<p>在实际的编译过程中，会优先把宏展开，也就是把<code>A</code>展开为10，之后再带入<code>B(x)</code></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>作者:</span>
+                        <span>Gaizhedu</span>
+                    </p>
+                
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E5%BD%92%E6%A1%A3/"># 归档</a>
+                    
+                        <a href="/tags/C/"># C</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">返回</a>
+                <span>· </span>
+                <a href="/">主页</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2025/09/08/k&r_ch4/">C程序设计语言（K&R）第四章</a>
+            
+            
+            <a class="next" rel="next" href="/2025/09/02/k&r_ch3/">C程序设计语言（K&R）第三章</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Gaizhedu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
