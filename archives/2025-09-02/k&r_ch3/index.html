@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Gaizhedu">
+
+
+
+
+
+<title>C程序设计语言（K&amp;R）第三章 | Gaizhedu的博客</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Gaizhedu&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">文章</a>
+                
+                <a class="menu-item" href="/tag">标签</a>
+                
+                <a class="menu-item" href="/about">关于本站</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Gaizhedu&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">文章</a>
+                
+                <a class="menu-item" href="/tag">标签</a>
+                
+                <a class="menu-item" href="/about">关于本站</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开全部</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">跳转底部</a>
+    </div>
+</div>
+
+<script>
+
+    var tocI18n = {
+        expandAll: '展开全部',  // EJS 写法，NJK 用 {{ __('toc_expand_all') }}
+        collapseAll: '全部折叠' // 先在 zh-CN.yml 里加这个键
+    };
+
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? tocI18n.expandAll : tocI18n.collapseAll;
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">C程序设计语言（K&amp;R）第三章</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Gaizhedu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2025-09-02&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="第三章"><a href="#第三章" class="headerlink" title="第三章"></a>第三章</h1><p>控制流</p>
+<p>这一章主要讲控制流，一般来讲控制流语句就是用于控制各计算操作执行的次序</p>
+<p>在之前的例子中使用了大量的控制流结构，本章将详细的介绍控制流语句</p>
+<h2 id="语句与程序块"><a href="#语句与程序块" class="headerlink" title="语句与程序块"></a>语句与程序块</h2><p><strong>本节问题</strong></p>
+<ol>
+<li>什么是语句，什么是程序块</li>
+<li>如何使用这些语句和程序块，使用的时候要注意什么</li>
+</ol>
+<h3 id="语句"><a href="#语句" class="headerlink" title="语句"></a>语句</h3><p>什么是语句，简单来讲就是在一个表达式后面加上分号<code>;</code>就变成了语句</p>
+<p>例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="number">0</span>;</span><br><span class="line">i++;</span><br></pre></td></tr></table></figure>
+
+<p>这些表达式的后面加上了分号，代表这是一个语句</p>
+<h3 id="程序块"><a href="#程序块" class="headerlink" title="程序块"></a>程序块</h3><p>程序块指的是多个语句一起构成的复合语句，在语法上等价于单条语句</p>
+<p>具体的用法是用花括号将这些语句括起来：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (a &gt; b)&#123;</span><br><span class="line">    x = a + b;</span><br><span class="line">    y = a * b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>需要特别注意的一点是，如果不加花括号，那么程序只会识别最近的一条语句</strong></p>
+<p>这一点于Python不一样，C语言更加严格，所以为了避免这样的事情发生，建议每一条语句都使用花括号，即使只有一条语句</p>
+<p>并且与语句不同，用于结束程序块的右花括号后面并不需要加分号</p>
+<h2 id="if-else语句"><a href="#if-else语句" class="headerlink" title="if-else语句"></a>if-else语句</h2><p><strong>本节问题</strong></p>
+<ol>
+<li>什么是if-else语句，特征是什么</li>
+<li>在使用的时候有什么需要注意的点</li>
+</ol>
+<p><code>if-else语句</code>常用于判断，核心功能为<strong>非黑即白</strong>，也就是说，如果if条件是错的，那么一定执行else语句（这里考虑的是if-else语句，不涉及else-if语句）</p>
+<p>接下来通过例子来说明</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (a&gt;<span class="number">0</span>)&#123;</span><br><span class="line">    b = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    b = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来解释这个例子各个条件的触发方式，首先最简单的一点，当a大于0的时候，则b的值为1，反之，也就是小于<strong>等于</strong>0的时候，b的值为0</p>
+<p>需要注意的一点是，如果你只是想简单判断，可以不用加<code>else</code>，说白了就是<code>else</code>可以省略</p>
+<p>由于<code>if语句</code>只是简单测试表达式的数值，所以一些写法可以稍微的简化</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (a != <span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>由于判断就只有两个结果，要不为真（1），要不为假（0）</p>
+<p>所以这里<code> != 0</code>相当于等于1</p>
+<p>也就是可以这么写</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (a)</span><br></pre></td></tr></table></figure>
+
+<p>这种写法会相对比较简洁，但有些时候会导致表达模糊不清</p>
+<h3 id="配对else"><a href="#配对else" class="headerlink" title="配对else"></a>配对else</h3><p>在之前也说过，<code>else</code>语句是可以省略的，这就导致了在嵌套语句中一些省略<code>else语句</code>的<code>if语句</code>会出现一些匪夷所思的歧义</p>
+<p>解决方法也很简单，只需要加上花括号即可，这也就是为什么之前说即使只有一个语句也要养成加花括号的习惯</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (n &gt; <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">if</span> (a &gt; b)</span><br><span class="line">        z = a:</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        z = b;</span><br></pre></td></tr></table></figure>
+
+<p>加上花括号是这样的格式：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (n &gt; <span class="number">0</span>)&#123;</span><br><span class="line">    <span class="keyword">if</span> (a &gt; b)</span><br><span class="line">        z = a;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> </span><br><span class="line">    z = b;</span><br></pre></td></tr></table></figure>
+
+<p>这里可以发现，原来<code>else语句</code>是最外层的<code>if语句</code>的，而不是里面的<code>if语句</code>，这也就是为什么说不加花括号容易引起歧义</p>
+<p>那么具体的规则是什么呢？C语言的默认规则：<code>else语句</code>始终与“最近的、未配对的<code>if语句</code>”绑定</p>
+<p>什么叫未配对？<code>if-else语句</code>是一块的，只有<code>if语句</code>就是未配对</p>
+<h2 id="else-if语句"><a href="#else-if语句" class="headerlink" title="else-if语句"></a>else-if语句</h2><p>接下来讲讲<code>else-if语句</code>，这个语句的基本作用为弥补上面<code>if-else语句</code>的缺点——非黑即白</p>
+<p><code>else-if语句</code>可以进行多路判断，简单来说就是由之前的不是零就是一变成了可以有多个选择</p>
+<p>具体的语法如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (判断<span class="number">1</span>)&#123;</span><br><span class="line">    语句<span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(判断<span class="number">2</span>)&#123;</span><br><span class="line">    语句<span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(判断<span class="number">3</span>)&#123;</span><br><span class="line">    语句<span class="number">3</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    语句<span class="number">4</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>与上面的<code>if-else语句</code>一样，这里末尾的<code>else</code>一样可以省略</p>
+<p>接下来举个例子，我们想要判断你考试的分数是位于哪个等级</p>
+<p>那么便可以这样写：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">check</span><span class="params">(<span class="type">const</span> <span class="type">int</span> x)</span> &#123;</span><br><span class="line">    <span class="type">char</span> grade;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (x &gt; <span class="number">90</span>) &#123;</span><br><span class="line">        grade = <span class="string">&#x27;A&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (x &gt; <span class="number">80</span>) &#123;</span><br><span class="line">        grade = <span class="string">&#x27;B&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (x &gt; <span class="number">70</span>) &#123;</span><br><span class="line">        grade = <span class="string">&#x27;C&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        grade = <span class="string">&#x27;D&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> grade;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来模拟一下输入，首先假设输入的x为90，首先进入第一个判断（x &gt; 90），发现不符合结果，所以跳转到第二个判断（x &gt; 80）发现结果符合，所以等级就为B</p>
+<p>由于<code>else-if语句</code>是整块的，只要有一个判断满足便会直接退出判断，不会继续判断下去</p>
+<hr>
+<p>接下来通过十分经典的例题来说明</p>
+<p>题目为：用二分法求数字</p>
+<p>二分法这里不多概述，接下来讲讲思路</p>
+<p>首先要找到目标那个数，所以要逐步缩小区间，由于不知道到底要缩小多少次区间，所以这里得用到循环</p>
+<p>接下来是主体部分，首先第一个就是要判断中间那个数是否大于&#x2F;小于目标数，这是第一个判断</p>
+<p>接下来第二个判断，既然第一个判断是大于&#x2F;小于，那么第二个就是与之相反的</p>
+<p>最后这两种情况都判断了，剩下的也就是等于的情况了，所以直接留给<code>else</code></p>
+<p>那么这时候可以思考一下循环的条件，由于首先最基本的肯定是右边边界要大于左边边界</p>
+<p>要不要等于呢？看看循环内的条件，如果没有等于的话，最后的<code>else</code>永远都不会触发，所以这里条件要有等于</p>
+<p>接下来就是判断条件里面的内容了</p>
+<p>首先是第一个判断条件，这里假设为中间的数大于目标值</p>
+<p>这里直接想可能有点抽象，不妨让我们举个实际例子：</p>
+<p>目标值：20，最低为0，最高为100，那么中间的数就是50</p>
+<p>接下来可以看到，我们中间的数50大于目标值20</p>
+<p>那么请问怎么样才可以让这个中间的值逼近目标值呢</p>
+<p>既然中间值比目标值大，如果移动左边的最小值，那么中间值就会变大</p>
+<p>移动右边的最大值，那么中间值就会变小，因此这里要选移动最大值</p>
+<p>要移动多少合适呢由于中间值大于目标值，也就是说中间值到最大值这段范围都大于目标值</p>
+<p>所以这里要选择中间值吗？我们想想看，如果相等，那么就直接结束了，所以这里选的数为<strong>中间值 - 1</strong></p>
+<p>第二个也是同理</p>
+<p>最后代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">dichotomy</span><span class="params">(<span class="type">int</span> x)</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,dichotomy(<span class="number">7</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">dichotomy</span><span class="params">(<span class="type">int</span> x)</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> high = <span class="number">100</span>,low = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (high &gt;= low) &#123;</span><br><span class="line">        <span class="type">int</span> mid = low + (high - low) / <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">        ++count;</span><br><span class="line">        <span class="keyword">if</span> (mid &gt; x) &#123;</span><br><span class="line">            high = mid - <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (mid &lt; x) &#123;</span><br><span class="line">            low = mid + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> count;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里可能就有疑问了，最后面的<code>-1</code>是什么，这里我们观察一下，实现这个<code>-1</code>的情况是什么？</p>
+<p>对，就是那个没有被覆盖的情况：<strong>high &lt; low</strong></p>
+<p>如果你试着用断点调试，你会发现，到后面由于目标值一直大于中位数，所以左边界会一直加上去，直到不满足条件</p>
+<p>这样还是太费时间了，有没有更好的方法呢？</p>
+<p>有的，只需要在一开始就判断目标数是否符合条件皆可：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (x &gt; high || x &lt; low) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样的话，就可以稍微优化一下</p>
+<p>这里再次补充一点，为什么把这个判断写到这个循环里面，也就是：<code>(high &gt;= low &amp;&amp; x &lt;= high &amp;&amp; x &gt;= low)</code></p>
+<p>这样看虽然没有了单独的<code>if语句</code>，但是由于每次进入循环都得判断，相较于原来的版本，每次要多2次比较，所以实际上是不太好的，这种优化称为<strong>悲观优化</strong></p>
+<h3 id="补充内容：中间数计算"><a href="#补充内容：中间数计算" class="headerlink" title="补充内容：中间数计算"></a>补充内容：中间数计算</h3><p>在上面的代码中可能会发现一个奇怪的点，就是在计算中间数的表达式似乎不太常规</p>
+<p>也就是这里：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> mid = low + (high - low) / <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+
+<p>正常写是这样的：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> mid = (low + high) / <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这里可能就有人要说：“啊，这样写不就是为了炫技吗，在笔记写炫技内容合适吗？”</p>
+<p>这里还真不是炫技，不妨我们假设一个情况，两者的数值都无限逼近int的最大值，此时正常写的版本会怎么样？</p>
+<p>答案是<strong>数值溢出</strong></p>
+<p>而改进的版本很好的解决了这个问题</p>
+<h3 id="补充内容：语法糖"><a href="#补充内容：语法糖" class="headerlink" title="补充内容：语法糖"></a>补充内容：语法糖</h3><p>本节介绍的<code>else-if</code>语句实际上是一个<code>语法糖</code></p>
+<p>什么是语法糖，指计算机语言中添加的某种语法，这种语法对语言的功能没有影响，但是更方便程序员使用。它让程序更简洁，更清晰，更符合人的直觉。</p>
+<p>原先的话长这样：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ()&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>()&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样的话如果数量一多，那么将会十分难以阅读</p>
+<p>所以这也是为什么<code>else-if</code>语句是语法糖的原因</p>
+<h2 id="switch语句"><a href="#switch语句" class="headerlink" title="switch语句"></a>switch语句</h2><p>接下来讲一下<code>switch语句</code>，<code>switch语句</code>的作用是实现多路判定</p>
+<p>这个表达式可以测试是否与一些常量值的某一个值匹配，如果匹配的话就执行相应的分支动作</p>
+<p>这一点如果仔细观察的话就很像之前的<code>if语句</code></p>
+<p>具体的结构如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span>(判断内容)&#123;</span><br><span class="line">    <span class="keyword">case</span> 常量表达式: 语句序列</span><br><span class="line">    <span class="keyword">case</span> 常量表达式: 语句序列</span><br><span class="line">    <span class="keyword">default</span>: 语句序列</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>每一个分支都可以用多个常量来标记，如果都没有的话就执行<code>default语句</code></p>
+<p>与之前的if语句一样，这里的<code>default</code>也是可以省略的（等价于<code>else</code>）</p>
+<p>与if语句不同，<code>switch语句</code>中<code>case</code>的顺序是部分先后的，因为是查找是否一一对应</p>
+<p>如果需要在执行后立刻退出判断，可以使用<code>break</code>语句直接退出判断</p>
+<p>接下来我们用一个例子来说明这个用法</p>
+<p>在之前我们有写过一个统计输入的程序，当时是选择使用if…else的结构来实现，这次我们用switch语句实现</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> i, c ,nums_white = <span class="number">0</span>, nums_other = <span class="number">0</span>,nums_digit[<span class="number">10</span>];</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>;i &lt; <span class="number">10</span>;i++) &#123;</span><br><span class="line">        <span class="comment">// 初始化计数器</span></span><br><span class="line">        nums_digit[i] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> ((c = getchar()) != EOF) &#123;</span><br><span class="line">        <span class="keyword">switch</span> (c) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&#x27;1&#x27;</span>: <span class="keyword">case</span> <span class="string">&#x27;2&#x27;</span>: <span class="keyword">case</span> <span class="string">&#x27;3&#x27;</span>: <span class="keyword">case</span> <span class="string">&#x27;4&#x27;</span>: <span class="keyword">case</span> <span class="string">&#x27;5&#x27;</span>:</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&#x27;6&#x27;</span>: <span class="keyword">case</span> <span class="string">&#x27;7&#x27;</span>: <span class="keyword">case</span> <span class="string">&#x27;8&#x27;</span>: <span class="keyword">case</span> <span class="string">&#x27;9&#x27;</span>: <span class="keyword">case</span> <span class="string">&#x27;0&#x27;</span>:</span><br><span class="line">                ++nums_digit[c - <span class="string">&#x27;0&#x27;</span>];</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&#x27; &#x27;</span>: <span class="keyword">case</span> <span class="string">&#x27;\n&#x27;</span> : <span class="keyword">case</span> <span class="string">&#x27;\t&#x27;</span>:</span><br><span class="line">                ++nums_white;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                ++nums_other;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">10</span>;++i)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,nums_digit[i]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;white = %d,other = %d&quot;</span>,nums_white,nums_other);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里直接看到<code>switch语句</code>这里，可以列出了0~9的所有情况作为覆盖，只要有一个情况对得上就自动执行语句</p>
+<p>其他的也是相同的道理</p>
+<h2 id="while循环与for循环"><a href="#while循环与for循环" class="headerlink" title="while循环与for循环"></a>while循环与for循环</h2><p>接下讲讲这两种循环，这两种循环在之前的总多实例中已经使用过很多次了，这里将详细地介绍这两种循坏语句</p>
+<h3 id="while循环"><a href="#while循环" class="headerlink" title="while循环"></a>while循环</h3><p>首先先讲讲<code>while循环</code></p>
+<p>其基本结构如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (表达式) </span><br><span class="line">    语句</span><br></pre></td></tr></table></figure>
+<p>这里如果表达式的结果为真（1），那么则执行循环体内的语句</p>
+<p>如果为假（0），则不执行循环</p>
+<h3 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h3><p>接下来讲讲<code>for循环</code></p>
+<p>其基本的结构有在第一章的笔记中提及到，这里再次声明一下</p>
+<p>首先最基本的语句是：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(表达式<span class="number">1</span>;表达式<span class="number">2</span>;表达式<span class="number">3</span>)&#123;</span><br><span class="line">    循环语句</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里的第一个表达式为起始的表达式，一般执行循环一开始的时候会先执行这个表达式，之后在进入循环体</p>
+<p>接下来是第二个表达式，也叫做判断表达式，其基本的功能为判断条件是否满足，如果满足的话则执行循环，否则不执行循环</p>
+<p>最后一个为循环结束时的操作，也就是当一个循环结束的时候会额外干什么</p>
+<p>需要注意的是，每一个语句都可以省略，但特别需要注意的一点是，如果第二个用于判断是否循环的表达式省略了，那么循环会一只执行下去</p>
+<p>那么怎么避免这个问题呢？其实很简单，只需要在使用的时候在循环体中加入<code>break</code>或者<code>return</code>强制结束循环即可</p>
+<h3 id="两者的相似之处"><a href="#两者的相似之处" class="headerlink" title="两者的相似之处"></a>两者的相似之处</h3><p>接下来讲讲这两者有什么相似的地方</p>
+<p>你可以将<code>for循环</code>拆解成这样</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">表达式<span class="number">1</span></span><br><span class="line"><span class="keyword">while</span>(表达式<span class="number">2</span>)</span><br><span class="line">    语句</span><br><span class="line">    表达式<span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p>但需要注意的一点是，并不是任何情况这两者都是相同的，如果循环中出现了continue语句，那么结果会变得不太一样</p>
+<p>[TODO] Shellsort算法</p>
+<h3 id="逗号运算符"><a href="#逗号运算符" class="headerlink" title="逗号运算符"></a>逗号运算符</h3><p>接下来讲讲逗号运算符，逗号运算符是C语言中优先级最低的一个运算符，一般在for语句会用到它，被这个运算符分割的一对表达式会按从左到右的顺序进行求值，例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (i = <span class="number">1</span>,j = i + <span class="number">2</span>;;)</span><br></pre></td></tr></table></figure>
+<p>在上面这个<code>for循环</code>中，会先执行第一个语句，也就是<code>i = 1</code>，之后才会执行下一个表达式<code>j = i + 2</code></p>
+<p>利用这个功能，我们可以来实现书里面关于翻转字符的例子</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">reverse</span><span class="params">(<span class="type">char</span> s[])</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">char</span> s[] = <span class="string">&quot;Hello world!&quot;</span>;</span><br><span class="line">    reverse(s);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>,s);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">reverse</span><span class="params">(<span class="type">char</span> s[])</span> &#123;</span><br><span class="line">    <span class="type">int</span> i, j;</span><br><span class="line">    <span class="type">char</span> temp;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>,j = <span class="built_in">strlen</span>(s) - <span class="number">1</span>; i &lt; j ;i++,j--) &#123;</span><br><span class="line">        temp = s[i];</span><br><span class="line">        s[i] = s[j];</span><br><span class="line">        s[j] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来开始说明一下思路</p>
+<p>首先第一个点，我们需要知道我们要如何做，核心思想就是把两个字符的顺序反转，那么我们这里可以使用一个临时变量<code>temp</code>来存储我们想要交换的数字，然后让一开始的数字替换掉末尾的数字，之后把临时变量的值赋给没有交换的值（也就是开始的值）</p>
+<p>举个例子：</p>
+<p>第一位为：<code>H</code>，最后一位为：<code>!</code></p>
+<p>那么我们可以先用一个临时变量来储存<code>!</code>，之后将第一位的数字赋值给最后一位，这样就有了两个<code>H</code></p>
+<p>但是这时第一个<code>H</code>并没有交换，所以用临时变量（也就是刚才储存的最后一位）赋值给第一位</p>
+<p>这样，第一位就变成了<code>!</code>，而最后一位就变成了<code>H</code></p>
+<p>最后代码实现如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">reverse</span><span class="params">(<span class="type">char</span> s[])</span> &#123;</span><br><span class="line">    <span class="type">int</span> i, j;</span><br><span class="line">    <span class="type">char</span> temp;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>,j = <span class="built_in">strlen</span>(s) - <span class="number">1</span>; i &lt; j ;i++,j--) &#123;</span><br><span class="line">        temp = s[i];</span><br><span class="line">        s[i] = s[j];</span><br><span class="line">        s[j] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，这里先初始化i，之后再计算j的值，<code>strlen()</code>的作用是获得字符串的长度（str + len）</p>
+<p>使用需要引用这个头文件：<code>string.h</code></p>
+<h2 id="do-while-循环"><a href="#do-while-循环" class="headerlink" title="do-while 循环"></a>do-while 循环</h2><p>接下来讲讲do-while循环，这个循环使用的次数比较少，但在一些特定的场合显得十分有用</p>
+<p>首先需要明白一件事情，这个循环与我们之前遇到的循环有什么区别？</p>
+<p>像是之前的循环执行逻辑是这样的</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">判断是否满足 -&gt; 满足则执行循环体内的语句</span><br></pre></td></tr></table></figure>
+
+<p>而这个循环是这样的</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">先执行语句 -&gt; 判断是否满足 -&gt; 满足则继续执行循环，否则则退出循环</span><br></pre></td></tr></table></figure>
+
+<p>具体的结构如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span></span><br><span class="line">    语句</span><br><span class="line"><span class="keyword">while</span>(表达式);</span><br></pre></td></tr></table></figure>
+
+<p>接下来通过一个例子来说明一下实际的用途：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">itoa</span><span class="params">(<span class="type">int</span> n, <span class="type">char</span> s[])</span> &#123;</span><br><span class="line">    <span class="type">int</span> i,sign;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> ((sign = n) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        n = -n;</span><br><span class="line">    &#125;</span><br><span class="line">    i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">        s[i++] = n % <span class="number">10</span> + <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">    &#125; <span class="keyword">while</span> ((n /= <span class="number">10</span>) &gt; <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span> (sign &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        s[i++] = <span class="string">&#x27;-&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    s[i] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line">    reversed(s);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里直接看到重点部分，也就是<code>do-while语句</code>里面的内容</p>
+<p>首先，这个循环只有一个部分，也就是<code>s[i++] = n % 10 + &#39;0&#39;;</code></p>
+<p>这个语句的作用是提取这个数的最后一位数字，而在提取之后便进入了判断的环节，在这个环节原先的数字会失去最后一位（n = 10）</p>
+<p>如果还有数字则继续提取，反之则不提取</p>
+<p>由于是从最后一位开始提取的原因，这里的数字的顺序是反着的，所以也就是为什么需要将整个字符串反过来的原因</p>
+<h2 id="break语句与continue语句"><a href="#break语句与continue语句" class="headerlink" title="break语句与continue语句"></a>break语句与continue语句</h2><p>接下来讲讲break语句和continue语句，这两个语句共同的特点是<strong>当这两个语句位于循环中时，遇到这两个语句可以提前结束循环或开始新一轮的循环</strong></p>
+<h3 id="break语句"><a href="#break语句" class="headerlink" title="break语句"></a>break语句</h3><p>接下来讲讲break语句</p>
+<p>首先break语句的基本功能为结束当前的循环，举个例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">trim</span><span class="params">(<span class="type">char</span> s[])</span>&#123;</span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (n = <span class="built_in">strlen</span>(s) - <span class="number">1</span>;n &gt;= <span class="number">0</span>;n--)</span><br><span class="line">        <span class="keyword">if</span> (s[n] != <span class="string">&#x27; &#x27;</span>&amp;&amp; s[n] != <span class="string">&#x27;\t&#x27;</span>&amp;&amp; s[n] != <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    s[n+<span class="number">1</span>] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在上面这里例子中，<code>for循环</code>内部使用了break语句作为循环的中断</p>
+<p>这个语句的功能为，删去字符串中末尾的空格</p>
+<p>那么是如何实现的呢，这就要讲到一个老生常谈的东西了：<strong>字符串以\0</strong>结尾</p>
+<p>这里检测的是最靠近末尾的一个非空格，非制表符，非换行符的字符，所以只要找到这个字符，之后在它的下一位加上结束符<code>\0</code>,便可以实现截断末尾的功能</p>
+<h3 id="continue语句"><a href="#continue语句" class="headerlink" title="continue语句"></a>continue语句</h3><p>接下来讲讲continue语句</p>
+<p>continue语句的功能是跳过这个循环直接运行下一个循环</p>
+<p>具体的功能不多赘述，接下来讲讲一些比较关键的点：<strong>如果while循环与for循环中出现了continue语句，那么这两者的作用则实际运行结果则不相同</strong></p>
+<p>首先先讲一下<code>for循环</code>的情况</p>
+<p>如果在<code>for循环</code>中出现了continue语句，那么会先执行递增循环变量的这个不分（也就是第三个表达式）</p>
+<p>在执行之后，才会继续进行判断和循环</p>
+<p>举个例子来说明：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(i = <span class="number">0</span>;i&lt;<span class="number">1</span>;++i)&#123;</span><br><span class="line">    <span class="keyword">continue</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果执行这个循环会怎么样呢</p>
+<p>首先看循环体内部只有一个continue语句，也就是说这个循环在执行完循环体后会直接执行递增循环变量<code>++i</code></p>
+<p>此时i的值就变成了2，而2是不满足循环条件的，所以就导致了循环不会继续进行，也就直接跳出循环</p>
+<p>而<code>while循环</code>又是怎样呢？</p>
+<p>依旧通过一个例子来说明这个语句的实际效果</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> i = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span>(i &lt; <span class="number">1</span>)&#123;</span><br><span class="line">    <span class="keyword">continue</span>;</span><br><span class="line">    ++i</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那么执行这个循环会直接进行下一次判断，而不会继续执行之后的<code>++i</code></p>
+<p>由于判断条件为<code>i &lt; 1</code>，这就导致了无法退出循环，即一直在循环的问题</p>
+<p>这也就是为什么说这两者有区别的原因</p>
+<h2 id="goto语句与标号"><a href="#goto语句与标号" class="headerlink" title="goto语句与标号"></a>goto语句与标号</h2><p>接下来讲讲<code>goto语句</code>与标号</p>
+<p>首先需要介绍什么是<code>goto语句</code></p>
+<p>简单来讲，goto语句就是用于快速跳转到指定标号位置的语句</p>
+<p>例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">goto</span>(error);</span><br></pre></td></tr></table></figure>
+<p>这个语句会跳转到标号为<code>error</code>的语句中</p>
+<p>那么如何定义一个标号呢？只需要在标号后面加上冒号即可，例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error:</span><br></pre></td></tr></table></figure>
+
+<p>当然，在大多情况下使用goto语句的程序要比不使用goto语句的程序更加难以理解，一般来讲要尽量少使用goto语句</p>
+<p>补充一点，<strong>任何使用goto语句的程序都可以改写为不带goto语句的程序</strong></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>作者:</span>
+                        <span>Gaizhedu</span>
+                    </p>
+                
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/C/"># C</a>
+                    
+                        <a href="/tags/%E5%BD%92%E6%A1%A3/"># 归档</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">返回</a>
+                <span>· </span>
+                <a href="/">主页</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/archives/2025-09-08/k&r_ch4/">C程序设计语言（K&R）第四章</a>
+            
+            
+            <a class="next" rel="next" href="/archives/2025-08-22/k&r_ch2/">C程序设计语言（K&R）第二章</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Gaizhedu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
