@@ -214,26 +214,41 @@
 
                     
                         <span class="post-time">
-                        日期: <a href="#">2025-09-22&nbsp;&nbsp;0:00:00</a>
+                        日期: <a
+                                    href="#">2025-09-22&nbsp;&nbsp;0:00:00</a>
                         </span>
                     
                     
+                </div>
+                <div class="post-meta">
+                    <!-- 单篇文章字数 -->
+                    <span class="post-wordcount">
+                    字数：14.4k
+                    </span>
+                    <!-- 阅读时长 -->
+                    <span class="post-min2read">
+                    阅读时长：54 分钟
+                    </span>
                 </div>
             
         </header>
 
         <div class="post-content">
-            <h1 id="指针与数组"><a href="#指针与数组" class="headerlink" title="指针与数组"></a>指针与数组</h1><p>这一章将说明有关指针的内容</p>
-<h2 id="导言"><a href="#导言" class="headerlink" title="导言"></a>导言</h2><p>首先我们先理解一下什么是指针，指针是一种保存变量地址的变量。在C语言中，指针的使用十分广泛，并且如果合理使用指针，那么会大幅度的简化操作，完成更加高效和紧凑的代码</p>
+            <h1>指针与数组</h1>
+<p>这一章将说明有关指针的内容</p>
+<h2 id="导言">导言</h2>
+<p>首先我们先理解一下什么是指针，指针是一种保存变量地址的变量。在C语言中，指针的使用十分广泛，并且如果合理使用指针，那么会大幅度的简化操作，完成更加高效和紧凑的代码</p>
 <p>需要注意的一点是，从ANSI C后，指针使用void*代替char*作为通用指针的类型</p>
-<h2 id="指针与地址"><a href="#指针与地址" class="headerlink" title="指针与地址"></a>指针与地址</h2><p>接下来开始正式介绍指针</p>
-<h3 id="内存是怎么组织的"><a href="#内存是怎么组织的" class="headerlink" title="内存是怎么组织的"></a>内存是怎么组织的</h3><p>通常来讲，机器都有一些列连续编号或者编址的存储单元，这些存储单元你可以单个进行操纵，也可以连续的成组操纵</p>
+<h2 id="指针与地址">指针与地址</h2>
+<p>接下来开始正式介绍指针</p>
+<h3 id="内存是怎么组织的">内存是怎么组织的</h3>
+<p>通常来讲，机器都有一些列连续编号或者编址的存储单元，这些存储单元你可以单个进行操纵，也可以连续的成组操纵</p>
 <p>一个字节可以存储一个<code>char</code>类型，而两个相邻的字节类型可以存储一个<code>short</code>类型的数据，而如果是相邻的四个字节存储单元可以存储一个long类型的数据</p>
 <p>而指针是一个可以存放一个地址的一组存储单元</p>
-<h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h3><p>在介绍内存是怎么组织的之后，便要开始讲正题了，首先先介绍一下一元运算符<code>&amp;</code></p>
+<h3 id="正文">正文</h3>
+<p>在介绍内存是怎么组织的之后，便要开始讲正题了，首先先介绍一下一元运算符<code>&amp;</code></p>
 <p>具体用法如下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p = &amp;c</span><br></pre></td></tr></table></figure>
-
 <p>这里把c的地址赋值给p，所以我们称p为指向C的指针，需要注意的一点是地址运算符&amp;只能应用于内存中的对象，也就是变量和数组元素，并且不能作用于表达式、常量和寄存器变量</p>
 <p>一元运算符*是间接寻址或者是间接引用运算符，当他作用于指针的时候，将访问指针所指向的对象</p>
 <p>下面通过一个例子来说明这一点：</p>
@@ -256,17 +271,16 @@
 <p>但是有一点不同的是，<strong>void类型的指针可以存放任何类型的指针，但不能间接引用它本身</strong></p>
 <p>指针在使用的时候跟变量有些许一致的地方：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">*ip = *ip + <span class="number">1</span>;</span><br><span class="line">y = *ip + <span class="number">1</span>;</span><br><span class="line">*ip += <span class="number">1</span>;</span><br><span class="line">++*ip;</span><br><span class="line">(*ip)++</span><br></pre></td></tr></table></figure>
-
 <p>这里可能会出现疑惑了，诶，为什么下面的后缀要加括号呢？</p>
 <p>那是因为如果不加括号，则会先对<code>ip</code>加1运算，<strong>而不是对指针指向的东西进行运算</strong>，如果不加括号，那就是对地址进行运算了</p>
 <p>这也说明了*和++运算优先级是一致的，所以遵循从右到左的顺序</p>
 <p>指针之间是可以互相指向的，例如：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> *ip,*iq;</span><br><span class="line"></span><br><span class="line">ip = &amp;x;</span><br><span class="line"></span><br><span class="line">iq = ip;</span><br></pre></td></tr></table></figure>
 <p>最后的<code>iq = ip;</code>会将指针<code>ip</code>的东西赋值给<code>iq</code>，则两者指向的东西就是一致的了</p>
-<h2 id="指针与函数参数"><a href="#指针与函数参数" class="headerlink" title="指针与函数参数"></a>指针与函数参数</h2><p>接下来讲讲有关指针在函数参数里面的应用</p>
+<h2 id="指针与函数参数">指针与函数参数</h2>
+<p>接下来讲讲有关指针在函数参数里面的应用</p>
 <p>依旧从之前的一个函数讲起，在之前我们使用过这个函数<code>swap()</code>用于两个数之间的互相调换位置</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y)</span>&#123;</span><br><span class="line">    <span class="type">int</span> temp = y;</span><br><span class="line">    y = x;</span><br><span class="line">    x = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>但是，这个函数有一个比较大的缺陷，例如下面这种情况：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">1</span>,b = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">    swap(a,b);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\t%d&quot;</span>,a,b);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span> &#123;</span><br><span class="line">    <span class="type">int</span> temp;</span><br><span class="line">    temp = x;</span><br><span class="line">    x = y;</span><br><span class="line">    y = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>很显然，在<code>main()</code>里面，我们将两个变量传入了函数里面，企图交换位置</p>
@@ -277,7 +291,6 @@
 <p>我们只需要把指针的地址传给函数，即可让两个地址交换</p>
 <p>由于打印的时候打印的是指针指向的变量的内存地址，而交换地址后指向的位置也会随之交换，这就可以完成我们的目的</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span> *x,<span class="type">int</span> *y)</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">1</span>,b = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">    swap(&amp;a,&amp;b);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\t%d&quot;</span>,a,b);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span> *x,<span class="type">int</span> *y)</span> &#123;</span><br><span class="line">    <span class="type">int</span> temp;</span><br><span class="line">    temp = *x;</span><br><span class="line">    *x = *y;</span><br><span class="line">    *y = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>接下来通过一个实际的例子来说明</p>
 <p>我们的目的是实现一个这样的函数：<code>getint</code>，使得所有输入进去的字符全部转换为整数，并且在返回的时候返回这个整数</p>
 <p>那么我们要怎么去设计呢？</p>
@@ -287,34 +300,29 @@
 <p>接下来是函数内部的表达式</p>
 <p>首先，依旧选择跳过所有的空白符：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (<span class="built_in">isspace</span>(c = getch())) &#123;</span><br><span class="line">    ;<span class="comment">// 依旧跳过空白行</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>接下来检测输入的内容，如果输入的内容不等于数字，或者是不符合我们需要保留的字符（+和-），则把这个符号放入暂存区，并且返回0</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!<span class="built_in">isdigit</span>(c) &amp;&amp; c != EOF &amp;&amp; c != <span class="string">&#x27;+&#x27;</span> &amp;&amp; c != <span class="string">&#x27;-&#x27;</span>) &#123;</span><br><span class="line">    ungetch(c);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这里使用到的<code>ungetch(c)</code>是之前在逆波兰计算器中使用到的存入缓存的函数，简单来讲就是把一个字符存取缓存区，在下一次调用的时候不选择获取<code>getchar()</code>里面的数字，而是选择提取缓存区里面的数字</p>
 <p>这里就成功筛选出来剩下的我们需要的内容了，接下来就正式进入到我们的检测了</p>
 <p>首先，我们需要检测出是否为负数，这里的方法也简单，只需要检测当前字符是否为负号即可，如果为负号，那么判断符号的变量改为负数即可</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sign = (c == <span class="string">&#x27;-&#x27;</span>) ? <span class="number">-1</span> : <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-
 <p>这里的变量<code>sign</code>是检测是否为负数的变量</p>
 <p>接下来是检测是否为加号或减号，如果为加号或者为减号则跳过该符号继续获取输入：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (c == <span class="string">&#x27;+&#x27;</span>|| c == <span class="string">&#x27;-&#x27;</span>) &#123;</span><br><span class="line">    c = getch();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>那么至此，我们剩下的字符就全都是数字了，主要的逻辑依旧与之前一致，每读取一位数字则乘10后加数字</p>
 <p>由于我们传入的参数是一个地址，函数的参数是一个指针，这里等价于将内存地址赋值给指针</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> *ip = &amp;<span class="built_in">array</span>[n];</span><br></pre></td></tr></table></figure>
-
 <p>接下来的步骤与之前的是一致的：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (*pn = <span class="number">0</span> ; <span class="built_in">isdigit</span>(c) ; c = getch()) &#123;</span><br><span class="line">    *pn = <span class="number">10</span> * *pn + (c - <span class="string">&#x27;0&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这里也就是将数字逐一增加数字的过程</p>
 <p>在完成计算数字之后，我们便要判断是否为正负数了</p>
 <p>也就是使用到我们之前判断是否为正负数的这个变量<code>sign</code></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*pn *= sign;</span><br></pre></td></tr></table></figure>
-
 <p>最后返回对应的结果</p>
 <p>完整代码如下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> SIZE 1000</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">getch</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">ungetch</span><span class="params">(<span class="type">int</span> c)</span>;</span><br><span class="line"><span class="type">int</span> nums = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">getint</span><span class="params">(<span class="type">int</span> *pn)</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> n ,<span class="built_in">array</span>[SIZE];</span><br><span class="line">    <span class="keyword">for</span> (n = <span class="number">0</span> ;n &lt; SIZE &amp;&amp; getint(&amp;<span class="built_in">array</span>[n]) != EOF;n++) &#123;</span><br><span class="line">        ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>;i &lt; n;++i) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,<span class="built_in">array</span>[i]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">getint</span><span class="params">(<span class="type">int</span> *pn)</span> &#123;</span><br><span class="line">    <span class="type">int</span> c,sign;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">isspace</span>(c = getch())) &#123;</span><br><span class="line">        ;<span class="comment">// 依旧跳过空白行</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">isdigit</span>(c) &amp;&amp; c != EOF &amp;&amp; c != <span class="string">&#x27;+&#x27;</span> &amp;&amp; c != <span class="string">&#x27;-&#x27;</span>) &#123;</span><br><span class="line">        ungetch(c);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    sign = (c == <span class="string">&#x27;-&#x27;</span>) ? <span class="number">-1</span> : <span class="number">1</span>;<span class="comment">// 依旧检查符号</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (c == <span class="string">&#x27;+&#x27;</span>|| c == <span class="string">&#x27;-&#x27;</span>) &#123;</span><br><span class="line">        c = getch();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (*pn = <span class="number">0</span> ; <span class="built_in">isdigit</span>(c) ; c = getch()) &#123;</span><br><span class="line">        *pn = <span class="number">10</span> * *pn + (c - <span class="string">&#x27;0&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    *pn *= sign;</span><br><span class="line">    <span class="keyword">if</span> (c != EOF) &#123;</span><br><span class="line">        ungetch(c);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> c;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> bufp = <span class="number">0</span>;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> BUFMAX 100</span></span><br><span class="line"><span class="type">char</span> buf[BUFMAX];</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">getch</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> (bufp &gt; <span class="number">0</span>) ? buf[--bufp] : getchar();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">ungetch</span><span class="params">(<span class="type">int</span> c)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (bufp &gt;= BUFMAX) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;ERROR:TO MANY CHAR&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        buf[bufp++] = c;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="指针与数组-1"><a href="#指针与数组-1" class="headerlink" title="指针与数组"></a>指针与数组</h2><p>接下来讲讲指针与数组，首先我们需要明白，指针与数组关系是十分密切的，我们可以用指针来等价替换数组下标</p>
+<h2 id="指针与数组">指针与数组</h2>
+<p>接下来讲讲指针与数组，首先我们需要明白，指针与数组关系是十分密切的，我们可以用指针来等价替换数组下标</p>
 <p>那么为什么要这样做呢，因为一般来讲，用指针编写的程序要比用数组下标编写的程序要更快，但代价是使用指针的程序要更难理解</p>
 <p>首先我们先理解一下一个数组在内存中是什么储存的</p>
 <p>数组在内存中是连续存储的，比如说：</p>
@@ -325,23 +333,21 @@
 <p>这也就是为什么是加4而不是加一的原因</p>
 <p>类似的，我们可以写出这个数列的所有地址：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">a[<span class="number">0</span>]: <span class="number">0x7ffffcbd0</span></span><br><span class="line">a[<span class="number">1</span>]: <span class="number">0x7ffffcbd4</span></span><br><span class="line">a[<span class="number">2</span>]: <span class="number">0x7ffffcbd8</span></span><br><span class="line">a[<span class="number">3</span>]: <span class="number">0x7ffffcbdc</span></span><br><span class="line">a[<span class="number">4</span>]: <span class="number">0x7ffffcbe0</span></span><br><span class="line">a[<span class="number">5</span>]: <span class="number">0x7ffffcbe4</span></span><br><span class="line">a[<span class="number">6</span>]: <span class="number">0x7ffffcbe8</span></span><br></pre></td></tr></table></figure>
-
 <hr>
 <p>我们不妨假设一下，我们的指针pa的赋值语句为：<code>pa = &amp;a[0];</code></p>
 <p>此时指针将指向这个<code>a[0]</code>所在的位置，换句话讲就是<code>pa</code>的值为这个地址，而加上*变成指针后就变成对应地址的值了</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a[] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>&#125;,*pa = a;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;a[0]: %p\n此时的值：%d&quot;</span>,pa,*pa);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 输出：</span></span><br><span class="line"><span class="comment">// a[0]: 0x7ffffcbd0</span></span><br><span class="line"><span class="comment">// 此时的值：1</span></span><br></pre></td></tr></table></figure>
-
 <p>接下来，你还可以将这个值赋值给一个新的变量：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x = *pa;</span><br></pre></td></tr></table></figure>
-
-<h3 id="指针运算"><a href="#指针运算" class="headerlink" title="指针运算"></a>指针运算</h3><p>这里先简单接触一下指针运算</p>
+<h3 id="指针运算">指针运算</h3>
+<p>这里先简单接触一下指针运算</p>
 <p>这里的例子依旧为之前的数列</p>
 <p>假设我们的<code>指针pa</code>指向的是数列的第一项，那么我们可以通过指针运算来让其指向后面的项：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pa += <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
 <p>此时<code>指针pa</code>指向的地址便是下一项，也就是<code>a[1]</code>。那么同理<code>pa + i</code>就是后面第i个元素</p>
-<h3 id="下标与指针运算"><a href="#下标与指针运算" class="headerlink" title="下标与指针运算"></a>下标与指针运算</h3><p>在上文的例子中，我们有这么一个赋值：</p>
+<h3 id="下标与指针运算">下标与指针运算</h3>
+<p>在上文的例子中，我们有这么一个赋值：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pa = &amp;a[<span class="number">0</span>];</span><br></pre></td></tr></table></figure>
-
 <p>但事实上，我们可以这样写：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pa = a;</span><br></pre></td></tr></table></figure>
 <p>如果将一个数组名称赋值给指针，那么此时对应的就是这个数组的第一个值，因为数组名所代表的就是该数组最开始的一个元素的地址</p>
@@ -360,13 +366,12 @@
 <p>需要注意的一个点是，在这里的函数参数中，<code>int strlen(char lst[])</code>的<code>lst[]</code>可以换成<code>*lst</code></p>
 <p>也可以将指向子数列起始位置的指针传递给函数，这样，就可以实现将函数的一部分传递给函数的效果：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func(&amp;a[<span class="number">2</span>])</span><br></pre></td></tr></table></figure>
-
 <p>当然，同理于下面的表达：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func(a + <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
-
 <p>如果起始位置不为第一项，那么便可以在参数中使用负数</p>
 <p>假设我们传入的数组的起始位置为第三项，那么<code>a[-1]</code>则为第二项，<code>a[-2]</code>则为第一项，<code>a[-3]</code>由于超过数组的边界，会导致报错</p>
-<h2 id="地址算术运算"><a href="#地址算术运算" class="headerlink" title="地址算术运算"></a>地址算术运算</h2><p>接下来讲讲这部分的内容</p>
+<h2 id="地址算术运算">地址算术运算</h2>
+<p>接下来讲讲这部分的内容</p>
 <p>在这里我们将实现两个新的函数功能，分别是<code>alloc()</code>和<code>afree()</code>，第一个函数的功能是返回一个指向n个连续字符存储单元的指针，而下一个函数的功能是释放已经分配好的内存空间</p>
 <p>这里的两个函数十分重要，在标准库中有相对应的函数，分别是<code>malloc()</code>和<code>free()</code></p>
 <p>让我们来简单介绍一下这两个函数</p>
@@ -374,7 +379,6 @@
 <p>而因此，我们在声明这两个函数的时候可以使用<code>static</code>关键字使得这两个函数变为静态变量，这样的原因是防止外部函数对这两个函数进行一些操作</p>
 <p>首先，我们命名空白储存区为：<code>allocbuf</code>，并且命名另一个变量<code>allocp</code>作为一个标志，用于判断已经使用的空间</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> ALLOCSIZE 10000</span></span><br><span class="line"><span class="type">static</span> <span class="type">char</span> allocbuf[ALLOCSIZE];</span><br><span class="line"><span class="type">static</span> <span class="type">char</span> *allocp = allocbuf; <span class="comment">// 这里的作用是将标志设定为数组的第一项，也就是初始化标志</span></span><br></pre></td></tr></table></figure>
-
 <p>接下来看看函数<code>alloc</code>的本体</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> *<span class="title function_">alloc</span><span class="params">(<span class="type">int</span> n)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(allocbuf + ALLOCSIZE - allocp &gt;= n)&#123;</span><br><span class="line">        allocp += n;</span><br><span class="line">        <span class="keyword">return</span> allocp - n;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这里的步骤为先获取所需要的空间大小<code>int n</code>，接下来是一个喜闻乐见的判断</p>
@@ -398,7 +402,8 @@
 <p>而这个语句为什么返回的是原来的<code>allocp</code>呢？</p>
 <p>这里我们思考一下要返回什么东西，如果说还有空余位置，那么就返回空闲位置的起始点<code>allocp</code>，如果没有，则返回0</p>
 <p>所以这里得返回一开始的起始点</p>
-<h3 id="一个有意思的点"><a href="#一个有意思的点" class="headerlink" title="一个有意思的点"></a>一个有意思的点</h3><p>前文说过，<code>allocp</code>是一个内存地址，那么当超出范围后返回的是0呢？</p>
+<h3 id="一个有意思的点">一个有意思的点</h3>
+<p>前文说过，<code>allocp</code>是一个内存地址，那么当超出范围后返回的是0呢？</p>
 <p>这里需要补充一个小知识，在C语言中，0永远不是有效的数据地址，因此，我们可以将返回值0表示发生了异常情况（也就是满了）</p>
 <p>在程序中，通常用常量NULL来代替常量0</p>
 <hr>
@@ -422,7 +427,8 @@
 <p>此时如果赋值，那么便会使<code>allocp</code>的位置变为0x005</p>
 <p>也就是空出了一部分位置，传进函数的指针p的位置被空出来了！</p>
 <p>这也就对应了这个函数的功能——<strong>释放已分配好的存储空间</strong></p>
-<h2 id="字符指针与函数"><a href="#字符指针与函数" class="headerlink" title="字符指针与函数"></a>字符指针与函数</h2><p>接下来讲讲字符指针与函数</p>
+<h2 id="字符指针与函数">字符指针与函数</h2>
+<p>接下来讲讲字符指针与函数</p>
 <p>首先讲一下关于字符串常量的内容</p>
 <p>首先我们需要知道的一点是字符串常量是一个字符数组</p>
 <p>这一点在之前的很多方面都有使用到</p>
@@ -471,7 +477,8 @@
 <p>首先还是照例：指针为数组名则代表为第一项的内存地址，所以这里初始化为：<code>*s == *t</code></p>
 <p>每次for语句结束自动便为下一项，继续比较：<code>s++,t++</code></p>
 <p>如果不相等则返回差值，这里的思路是一致的</p>
-<h3 id="补充点：压入栈与弹出栈"><a href="#补充点：压入栈与弹出栈" class="headerlink" title="补充点：压入栈与弹出栈"></a>补充点：压入栈与弹出栈</h3><p>接下来来稍微补充这一点：</p>
+<h3 id="补充点：压入栈与弹出栈">补充点：压入栈与弹出栈</h3>
+<p>接下来来稍微补充这一点：</p>
 <p>在第四章实现逆波兰计算器的时候稍微提到一嘴</p>
 <p>在学完指针后可以使用更方便的方法来实现这一操作</p>
 <p>首先是压入栈：</p>
@@ -479,8 +486,8 @@
 <p>前文也说过，这里指的是先对内存地址p进行自增</p>
 <p>弹出栈是这个：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">val = *--p;</span><br></pre></td></tr></table></figure>
-
-<h2 id="指针数组以及指向指针的指针"><a href="#指针数组以及指向指针的指针" class="headerlink" title="指针数组以及指向指针的指针"></a>指针数组以及指向指针的指针</h2><p>接下来讲讲这方面的内容，首先我们需要明确一个点，那就是<strong>指针也是一种变量</strong></p>
+<h2 id="指针数组以及指向指针的指针">指针数组以及指向指针的指针</h2>
+<p>接下来讲讲这方面的内容，首先我们需要明确一个点，那就是<strong>指针也是一种变量</strong></p>
 <p>而正因如此，我们便可以将指针放入数组当中，</p>
 <p>在之前的章节中，我们有提到一个排序的例子，在那个例子里面我们实现了排序的效果</p>
 <p>但是如果我们将排序的东西稍微调整一下，比如说把排序的东西换成长度不一的文本行，那么就没办法很好的处理了</p>
@@ -491,7 +498,8 @@
 <p>如此一来，我们便可以实现排序的操作：当需要交换顺序的时候，直接交换数组里面的指针位置即可</p>
 <p>一般而言，我们会将一个程序按照功能分割成几部分（利用函数），在需要使用的时候利用main函数来分别执行即可</p>
 <p>接下来让我们实际写一个这样的程序</p>
-<h3 id="思路部分"><a href="#思路部分" class="headerlink" title="思路部分"></a>思路部分</h3><p>首先，让我们捋一捋思路</p>
+<h3 id="思路部分">思路部分</h3>
+<p>首先，让我们捋一捋思路</p>
 <p>这个程序大概长这样：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">输入 -&gt; 排序 -&gt; 输出</span><br></pre></td></tr></table></figure>
 <p>排序部分我们可以直接使用之前讲过的快速排序，那么其他的呢？</p>
@@ -511,7 +519,7 @@
 <p>在循环语句里面便是一个判断语句</p>
 <p><code>nlines</code>之前讲过了，<code>maxlines</code>指的是最大的分割数量，<code>p</code>代表的每次分割的内存地址，此处<code>(p = alloc(len)) = NULL</code>的目的是防止内存地址错误</p>
 <p>如果都不满足（也就是正常运行），则会进入到下面的部分</p>
-<p>此处首先执行了这个操作<code>line[len - 1] = &#39;\0&#39;;</code>，也就是将长度的倒数一项设置为终止符，那么倒数第一项是什么呢？</p>
+<p>此处首先执行了这个操作<code>line[len - 1] = '\0';</code>，也就是将长度的倒数一项设置为终止符，那么倒数第一项是什么呢？</p>
 <p>诶，我们可以思考一下我们是以什么作为分割标准的，对，就是换行符<code>\n</code>，所以，这里就是将换行符换成了终止符</p>
 <p>换完后有什么作用呢？之前反复强调了这一点，一个字符数组必须以终止符<code>\n</code>作为结尾</p>
 <p>所以，这里的目的其实是让每个分割的字符数组合法化</p>
@@ -523,7 +531,6 @@
 <p>这里需要注意的一点就是lineptr这个数组存储的是我们所有的内存地址</p>
 <p>当然，与之前的例子是一致的，这里的函数也可以写为指针的形式</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">writelines</span><span class="params">(<span class="type">char</span> *lineptr[], <span class="type">int</span> nlines)</span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (nlines-- &gt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>,*lineptr++);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>这里的检测标准为代表文本数量的<code>nlines</code>，每次执行的时候进行自减来进行输出，这样可以使得所有内容被正确输出</p>
 <p>在这里需要知道一个点，由于这里输入的内容大部分为指针，也就是说在这之中使用过的一些之前出现过的函数，需要进行一些调整：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">qsort</span><span class="params">(<span class="type">char</span> *v[],<span class="type">int</span> left,<span class="type">int</span> right)</span>&#123;</span><br><span class="line">    <span class="type">int</span> i, last;</span><br><span class="line">    <span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">char</span> *v[],<span class="type">int</span> i ,<span class="type">int</span> j)</span>;</span><br><span class="line">    <span class="keyword">if</span> (left &gt;= right)&#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    swap(v,left ,(left + right)/<span class="number">2</span>);</span><br><span class="line">    last = left;</span><br><span class="line">    <span class="keyword">for</span> (i left + <span class="number">1</span>;i &lt;= right ;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">strcmp</span>(v[i],v[left])&lt;<span class="number">0</span>)&#123;</span><br><span class="line">            swap(v ,++last,i);</span><br><span class="line">        &#125;</span><br><span class="line">    swap(v,last,last);</span><br><span class="line">    qsort(v,left,last<span class="number">-1</span>);</span><br><span class="line">    qsort(v,last+<span class="number">1</span>,right);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -534,12 +541,14 @@
 <p>同样，负责交换的<code>swap()</code>函数也需要进行改动</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">char</span> *v[],<span class="type">int</span> i,<span class="type">int</span> j)</span>&#123;</span><br><span class="line">    cahr *temp;</span><br><span class="line"></span><br><span class="line">    temp = v[i];</span><br><span class="line">    v[i] = v[j];</span><br><span class="line">    v[j] = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这里的改动主要在传入参数这里，同样是使用了指针的格式</p>
-<h2 id="多维数组"><a href="#多维数组" class="headerlink" title="多维数组"></a>多维数组</h2><p>接下来讲讲多维数组的相关内容</p>
+<h2 id="多维数组">多维数组</h2>
+<p>接下来讲讲多维数组的相关内容</p>
 <p>在C语言中是存在类似矩阵的多维数组的，虽然使用频率不如指针数组，但是在一些特定场合里面可以发挥出大作用</p>
 <p>我们将通过一个实际的例子来说明这个内容</p>
 <p>我们将实现一个功能：通过输入指定的日期来输出该日期是那一年的第几天</p>
 <p>那么要怎么实现这个功能呢？</p>
-<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>想要知道是第几天，那么就得把这个日期之前的月份的天数加上，而后加上当前月份的天数</p>
+<h3 id="思路">思路</h3>
+<p>想要知道是第几天，那么就得把这个日期之前的月份的天数加上，而后加上当前月份的天数</p>
 <p>那么首先实现第一个功能，也就是每个月份的天数</p>
 <p>我们可以创建一个数组：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">char</span> daytab[<span class="number">13</span>] = &#123;<span class="number">0</span>,<span class="number">31</span>,<span class="number">28</span>,<span class="number">31</span>,<span class="number">30</span>,<span class="number">31</span>,<span class="number">30</span>,<span class="number">31</span>,<span class="number">31</span>,<span class="number">30</span>,<span class="number">31</span>,<span class="number">30</span>,<span class="number">31</span>&#125;</span><br></pre></td></tr></table></figure>
@@ -558,23 +567,23 @@
 <p>而里面的<code>a,b,c</code>和<code>d,e,f</code>是第二个数组的各个元素</p>
 <p>利用多维数组，我们便可以轻松解决这个问题</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">month_day_lst[<span class="number">2</span>][<span class="number">13</span>] = &#123;&#123;<span class="number">0</span>,<span class="number">31</span>,<span class="number">28</span>,<span class="number">31</span>,<span class="number">30</span>,<span class="number">31</span>,<span class="number">30</span>,<span class="number">31</span>,<span class="number">31</span>,<span class="number">30</span>,<span class="number">31</span>,<span class="number">30</span>,<span class="number">31</span>&#125;,&#123;<span class="number">0</span>,<span class="number">31</span>,<span class="number">29</span>,<span class="number">31</span>,<span class="number">30</span>,<span class="number">31</span>,<span class="number">30</span>,<span class="number">31</span>,<span class="number">31</span>,<span class="number">30</span>,<span class="number">31</span>,<span class="number">30</span>,<span class="number">31</span>&#125;&#125;;</span><br></pre></td></tr></table></figure>
-
 <p>在这个例子中，我们可以看到第一个数组中第一个元素代表一般年份的每月日期表，而第二个元素代表的数组则是代表闰年的日期表</p>
-<h3 id="主程序"><a href="#主程序" class="headerlink" title="主程序"></a>主程序</h3><p>在完成这个数组之后，我们便要思考如何计算日期了</p>
+<h3 id="主程序">主程序</h3>
+<p>在完成这个数组之后，我们便要思考如何计算日期了</p>
 <p>首先，最核心的部分我们可以这样操作</p>
 <p>假设我输入的日期为3.12</p>
 <p>那么只需要用for循环将3月之前的所有日期全部加起来即可</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (i = <span class="number">1</span>;i &lt; mouth;++i)&#123;</span><br><span class="line">    nums_day += month_day[leap][i]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在这里可以发现第一个用于判断是否为闰年的参数<code>leap</code>，所以在此之前我们需要判断输入的年份是否为闰年</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">leap = year % <span class="number">4</span> == <span class="number">0</span> &amp;&amp; year % <span class="number">100</span> != <span class="number">0</span> || year % <span class="number">400</span> == <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
-
 <p>这里的原理是，如果两者里面有一个是可以实现的（也就是闰年），为真，也就是1</p>
 <p>代码如下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">day_of_year</span><span class="params">(<span class="type">int</span> year,<span class="type">int</span> month ,<span class="type">int</span> day)</span>&#123;</span><br><span class="line">    <span class="type">int</span> i ,leap;</span><br><span class="line"></span><br><span class="line">    leap = year % <span class="number">4</span> == <span class="number">0</span> &amp;&amp; year % <span class="number">100</span> != <span class="number">0</span> || year % <span class="number">400</span> == <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">1</span>;i &lt; month;++i)&#123;</span><br><span class="line">        day += month_day[leap][i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> day;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这里一个比较巧妙的点是<code>day += month_day[leap][i]</code></p>
 <p>通过在原输入日期上进行递增，可以减少一步用于加本月日期的步骤</p>
 <p>接下来来介绍下一个方面的内容，也就是如何将输入的指定日期转化为对应的月和日</p>
-<h3 id="基本思路"><a href="#基本思路" class="headerlink" title="基本思路"></a>基本思路</h3><p>接下来介绍一下基本思路：</p>
+<h3 id="基本思路">基本思路</h3>
+<p>接下来介绍一下基本思路：</p>
 <p>这里的思路如下，由于我们需要返回对应的日期，所以我们可以先判断当前天数是否小于当前的数组项的天数</p>
 <p>例如，如果我们的日期为29天，此时数组对应的天数为1月，这个月有31天，29 &lt; 31，所以为当前这个月，返回1月29号</p>
 <p>如果大于这个月，则减去这个月的日期后将项数增加，重新进行比较</p>
@@ -594,18 +603,18 @@
 <p>在这里，如果我们将这个日期的数组传入里面，那么我们需要保留后面的第二个数组的元素个数</p>
 <p>第一个数组的元素个数可以省略，但是第二个数组的元素个数不能省略</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func(<span class="type">int</span> daytab[][<span class="number">13</span>])</span><br></pre></td></tr></table></figure>
-
 <p>这里需要复习一下之前的一个点，函数在调用的时候传递的是一个指针，指向的是一个一维数组，所以这里可以不用写第一个数组的元素个数</p>
 <p>除此之外，还可以写成这样子：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func(<span class="type">int</span> (*daytab)[<span class="number">13</span>])</span><br></pre></td></tr></table></figure>
-
 <p>这种声明是指针的声明，指向一个具有13个元素的一维数组，由于方括号的优先级大于*，所以这里需要先加上圆括号</p>
-<h2 id="指针数组的初始化"><a href="#指针数组的初始化" class="headerlink" title="指针数组的初始化"></a>指针数组的初始化</h2><p>接下来来讲这部分的内容</p>
+<h2 id="指针数组的初始化">指针数组的初始化</h2>
+<p>接下来来讲这部分的内容</p>
 <p>首先我们不妨来编写一个函数，这个函数会返回一个指向第n个月名字的字符串的指针</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> *<span class="title function_">month_name</span><span class="params">(<span class="type">int</span> n)</span>&#123;</span><br><span class="line">    <span class="type">static</span> <span class="type">char</span> *name[] = &#123;</span><br><span class="line">        <span class="string">&quot;Illegal month&quot;</span>, <span class="string">&quot;January&quot;</span>,<span class="string">&quot;February&quot;</span>,<span class="string">&quot;March&quot;</span>,<span class="string">&quot;April&quot;</span>,<span class="string">&quot;May&quot;</span>,<span class="string">&quot;June&quot;</span>,<span class="string">&quot;Jule&quot;</span>,<span class="string">&quot;August&quot;</span>,<span class="string">&quot;September&quot;</span>,<span class="string">&quot;October&quot;</span>,<span class="string">&quot;November&quot;</span>,<span class="string">&quot;December&quot;</span></span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> (n &lt; <span class="number">1</span> || n &gt; <span class="number">12</span>) ? name[<span class="number">0</span>] : name[n];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这个数组<code>name</code>是一个私有的字符串数组，当他被调用的时候会返回一个指向正确元素的指针</p>
 <p>需要注意的一点是这个声明并没有指明数组name的长度，所以，编译器在编译的时候对初值个数进行统计，然后填入数组的长度</p>
-<h2 id="指针与多维数组"><a href="#指针与多维数组" class="headerlink" title="指针与多维数组"></a>指针与多维数组</h2><p>这一章来讲讲指针数组与多维数组的相关内容</p>
+<h2 id="指针与多维数组">指针与多维数组</h2>
+<p>这一章来讲讲指针数组与多维数组的相关内容</p>
 <p>首先我们不妨分别定义一个指针数组和一个多维数组</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">10</span>][<span class="number">20</span>];</span><br><span class="line"><span class="type">int</span> *b[<span class="number">10</span>];</span><br></pre></td></tr></table></figure>
 <p>那么，假设我们要引用这两个数组，分别使用<code>a[3][4]</code>和<code>b[3][4]</code>都是正确的引用</p>
@@ -627,7 +636,8 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> name[<span class="number">3</span>][<span class="number">15</span>] = &#123;</span><br><span class="line">        <span class="string">&quot;Illegal month&quot;</span>, <span class="string">&quot;January&quot;</span>,<span class="string">&quot;February&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>由于在一开始初始化的时候就已经指明了数组的长度，也就是说无论怎么样数组长度都是不变的<code>3 * 15 = 45</code></p>
 <p>可以明显的看到，使用指针数组所分配的存储空间数量大大少于多维数组分配的存储空间数量</p>
-<h2 id="命令行参数"><a href="#命令行参数" class="headerlink" title="命令行参数"></a>命令行参数</h2><p>接下来来介绍这一方面的内容，首先我们需要先补充一件事情，在支持C语言的环境中，我们可以在程序开始的时候将命令行参数传递给程序</p>
+<h2 id="命令行参数">命令行参数</h2>
+<p>接下来来介绍这一方面的内容，首先我们需要先补充一件事情，在支持C语言的环境中，我们可以在程序开始的时候将命令行参数传递给程序</p>
 <p>在调用主函数main的时候，有两个参数：第一个参数被称为argc，这个参数的作用是用于参数的计数，它的值用于表示运行程序时命令行中参数的数目</p>
 <p>而第二个参数被称为argv，用于参数向量，它是一个指向字符串数组的指针，而每一个字符串就对应一个参数，如果我们需要处理这些参数，一般会使用到多级数组</p>
 <p>我们将通过一个简单的例子来说明这一点</p>
@@ -636,12 +646,11 @@
 <figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> hello, world</span><br></pre></td></tr></table></figure>
 <p>输入这串命令后输出效果为：</p>
 <figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hello, world</span><br></pre></td></tr></table></figure>
-
 <p>接下来我们要实现这个命令</p>
-<h3 id="基本思路-1"><a href="#基本思路-1" class="headerlink" title="基本思路"></a>基本思路</h3><p>在上面我们也提到过了，我们可以在程序开始的时候将命令行参数传递给程序</p>
+<h3 id="基本思路-2">基本思路</h3>
+<p>在上面我们也提到过了，我们可以在程序开始的时候将命令行参数传递给程序</p>
 <p>这时候我们的main可以写成这样子：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span>&#123;</span><br><span class="line">    ...;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>这里的两个参数都在之前提及过，所以这里不细讲</p>
 <p>那么按照参数<code>argv</code>的定义，我们要怎么处理呢？</p>
 <p>这里一般是以空格来分割，所以我们不妨回看我们输入了什么：</p>
@@ -652,15 +661,20 @@
 <p>也就是说，如果我们要判断我们输入的命令后面是否有参数（这里也就是防止输入错误了），只需要判断计数<code>argc</code>的值是否大于1即可</p>
 <p>这里需要补充的一点是，在数组<code>argv</code>中，可选的最后一个参数为：<code>argv[argc - 1]</code>按照ANSIbiu熬准规定，<code>argv[argc]</code>必须为空指针</p>
 <blockquote>
-<p>这里列出上面的argv的各个项的值：<br>argv[0] &#x3D; “echo”<br>argv[1] &#x3D; “hello,”<br>argv[2] &#x3D; “world”<br>argv[3] &#x3D; 0</p>
-<p>这里argv[3]为空指针，因为argc &#x3D; 3，按照ANSI标准，这一项必须为空指针，也就是0</p>
+<p>这里列出上面的argv的各个项的值：<br>
+argv[0] = “echo”<br>
+argv[1] = “hello,”<br>
+argv[2] = “world”<br>
+argv[3] = 0</p>
+<p>这里argv[3]为空指针，因为argc = 3，按照ANSI标准，这一项必须为空指针，也就是0</p>
 </blockquote>
 <p>接下来我们继续说明思路</p>
 <p>由上面的例子可以得到，这里我们真正要输出的内容为<code>argv[1]</code>到<code>argv[argc - 1]</code>的内容，所以这部分的内容我们只需要通过for语句循环输出即可</p>
 <p>而这里我们不能忘记处理用于分割的空格，也就是说，我们需要在正确的时机将原本用于分割的空格也输出出来：</p>
 <p>那么什么是正确的时机呢？如果当前项不为<code>argc - 1</code>则说明并不是最后一项，也就是说这一项跟后一项被空格分割了，在这种情况下我们需要把原先的空格补回去</p>
 <p>接下来开始正式写程序，这里提供两个思路</p>
-<h3 id="第一个思路"><a href="#第一个思路" class="headerlink" title="第一个思路"></a>第一个思路</h3><p>第一个思路将数组<code>argv</code>视为一个字符数组</p>
+<h3 id="第一个思路">第一个思路</h3>
+<p>第一个思路将数组<code>argv</code>视为一个字符数组</p>
 <p>首先我们先写输出部分：</p>
 <p>既然涉及到循环和自增，那就只能用到for语句</p>
 <p>既然使用了for语句，就有必要知道循环条件</p>
@@ -669,8 +683,8 @@
 <p>在上文也提到过，我们需要补充空格，这里的思路与上面的循环条件是一样的：<code>i &lt; argc - 1</code>就说明需要补充空格</p>
 <p>完整程序如下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc,<span class="type">char</span> *argv[])</span>&#123;</span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>;i &lt; argc;++i)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%s%s&quot;</span>,argv[i],(i &lt; argc - <span class="number">1</span>) ? <span class="string">&quot; &quot;</span> : <span class="string">&quot;&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="第二个思路"><a href="#第二个思路" class="headerlink" title="第二个思路"></a>第二个思路</h3><p>接下来讲讲第二个思路</p>
+<h3 id="第二个思路">第二个思路</h3>
+<p>接下来讲讲第二个思路</p>
 <p>第二个思路使用了指针的形式</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc ,<span class="type">char</span> *argv[])</span> &#123;</span><br><span class="line">    <span class="keyword">while</span> (--argc &gt;<span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%s%s&quot;</span>,*++argv,(argc &gt; <span class="number">1</span>) ? <span class="string">&quot; &quot;</span>:<span class="string">&quot;&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这里使用的是指针的形式，核心的逻辑相同，但是表现形式上存在些许不同：</p>
@@ -679,11 +693,11 @@
 <p>当然，这里的<code>printf</code>语句还可以写成这样</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>((argc &gt; <span class="number">1</span>) ? <span class="string">&quot;%s &quot;</span>: <span class="string">&quot;%s&quot;</span>,*++argv);</span><br></pre></td></tr></table></figure>
 <p>具体的思路依旧一致，只不过表现形式不同罢了</p>
-<h3 id="find"><a href="#find" class="headerlink" title="find"></a>find</h3><p>接下来我们来讲一个例子：</p>
+<h3 id="find">find</h3>
+<p>接下来我们来讲一个例子：</p>
 <p>这个例子我们将实现一个功能：打印与指定的模式匹配的行</p>
 <p>那么要怎么实现这个例子呢？</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span> &#123;</span><br><span class="line">    <span class="type">char</span> line[MAXLINE];</span><br><span class="line">    <span class="type">int</span> found = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (argc != <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Usage：find pattern\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">while</span> (getline_1(line, MAXLINE) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> ((<span class="built_in">strstr</span>(line,argv[<span class="number">1</span>])) != <span class="literal">NULL</span>) &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>,line);</span><br><span class="line">                found++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> found;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>接下来我们来分别解析一下这个例子</p>
 <p>首先这里使用到了一个标准库里面的函数：<code>strstr(t,s)</code>，这个函数的作用是指向字符串t在字符串s中第一次出现的位置</p>
 <p>如果找不到这个字符串的话，则返回NULL</p>
@@ -692,7 +706,7 @@
 </blockquote>
 <p>这个函数位于<code>string.h</code>中</p>
 <p>首先，这个程序表示找到的次数的变量为：<code>found</code>，一开始被初始化为0，接下来是判断的部分</p>
-<p>有人可能有疑问了，诶，为什么是!&#x3D;2呢？</p>
+<p>有人可能有疑问了，诶，为什么是!=2呢？</p>
 <p>首先我们不妨思考一下我们会输入什么</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find [参数<span class="number">1</span>] [参数<span class="number">2</span>]</span><br></pre></td></tr></table></figure>
 <p>那么这里其实是这样的</p>
@@ -705,7 +719,6 @@
 <p>我们这里将在给这个函数新增两个参数，第一个是-x，代表打印所有与模式不匹配的文本行，而第二个是-n，代表在打印的时候顺带打印行号</p>
 <p>那么这个程序要怎么写呢？</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAXLINE 1000</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">getline_1</span><span class="params">(<span class="type">char</span> *line, <span class="type">int</span> max)</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span>&#123;</span><br><span class="line">    <span class="type">char</span> line[MAXLINE];</span><br><span class="line">    <span class="type">long</span> lineno = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> c,except = <span class="number">0</span>, number = <span class="number">0</span>,found = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(--argc &gt; <span class="number">0</span>&amp;&amp; (*++argv)[<span class="number">0</span>] == <span class="string">&#x27;-&#x27;</span>)&#123;</span><br><span class="line">        <span class="keyword">while</span> (c = *++argv[<span class="number">0</span>])&#123;</span><br><span class="line">            <span class="keyword">switch</span>(c)&#123;</span><br><span class="line">                <span class="keyword">case</span> <span class="string">&#x27;x&#x27;</span>:</span><br><span class="line">                    except = <span class="number">1</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> <span class="string">&#x27;n&#x27;</span>:</span><br><span class="line">                    number = <span class="number">1</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">default</span>:</span><br><span class="line">                    <span class="built_in">printf</span>(<span class="string">&quot;find: illegal option %c\n&quot;</span>, c);</span><br><span class="line">                    argc = <span class="number">0</span>;</span><br><span class="line">                    found = <span class="number">-1</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (argc != <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Usage: find -x -n pattern\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (getline_1(line, MAXLINE) &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            lineno++;</span><br><span class="line">            <span class="keyword">if</span> ((<span class="built_in">strstr</span>(line, *argv) != <span class="literal">NULL</span>) != except)&#123;</span><br><span class="line">                <span class="keyword">if</span>(number)&#123;</span><br><span class="line">                    <span class="built_in">printf</span>(<span class="string">&quot;&amp;ld:&quot;</span>, lineno);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>, line);</span><br><span class="line">                found++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> found;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>我们可以看到这里面一个核心的地方为中间的循环部分，这里的意思是，先自减argc检测是否大于0，并且(*++argv)[0]是否等于代表参数的<code>-</code></p>
 <p>那么这个<code>(*++argv)[0]</code>是什么意思呢？</p>
 <p>我们不妨一点一点来分析</p>
@@ -727,7 +740,8 @@
 <p>接下来-n同理</p>
 <p>当每次运行一次的时候，会自动让计数器found自增</p>
 <p>在最后会返回所打印的次数</p>
-<h2 id="指向函数的指针"><a href="#指向函数的指针" class="headerlink" title="指向函数的指针"></a>指向函数的指针</h2><p>接下来来讲讲这一方面的内容</p>
+<h2 id="指向函数的指针">指向函数的指针</h2>
+<p>接下来来讲讲这一方面的内容</p>
 <p>首先我们需要对一些基本的内容进行科普</p>
 <p>在C语言中，函数本身不是变量，但可以定义为指向函数的指针</p>
 <p>这种指针可以放到数组之中，可以被赋值，或者作为函数的返回值</p>
@@ -739,19 +753,18 @@
 <p>可以看到，这里如果条件满足的话，则会返回状态机，这样，就可以把处理结果的步骤放到外面，减少不必要的功能，使得程序更加灵活</p>
 <p>接下来看看改进后的代码：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAXLINE 1000</span></span><br><span class="line"><span class="type">char</span> *lineptr[MAXLINE];</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">readlines</span><span class="params">(<span class="type">char</span> *lineptr[], <span class="type">int</span> nlines)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">writelines</span><span class="params">(<span class="type">char</span> *lineptr[], <span class="type">int</span> nlines)</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">qsort</span><span class="params">(<span class="type">void</span> *lineptr[],</span></span><br><span class="line"><span class="params">            <span class="type">int</span> left,</span></span><br><span class="line"><span class="params">            <span class="type">int</span> right,</span></span><br><span class="line"><span class="params">            <span class="type">int</span> (*comp)(<span class="type">void</span> *, <span class="type">void</span> *))</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">numcmp</span><span class="params">(<span class="type">char</span> *, <span class="type">char</span> *)</span>;</span><br><span class="line"></span><br><span class="line">main(<span class="type">int</span> argc, <span class="type">char</span> *argv[])&#123;</span><br><span class="line">    <span class="type">int</span> nlines;</span><br><span class="line">    <span class="type">int</span> numeric = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (argc &gt; <span class="number">1</span> &amp;&amp; <span class="built_in">strcmp</span>(argv[<span class="number">1</span>], <span class="string">&quot;-n&quot;</span>) == <span class="number">0</span>)&#123;</span><br><span class="line">        numeric = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> ((nlines = readlines(lineptr,MAXLINES) &gt;= <span class="number">0</span>))&#123;</span><br><span class="line">        qsort((<span class="type">void</span> **) lineptr,<span class="number">0</span>,nlines - <span class="number">1</span>,</span><br><span class="line">        (<span class="type">int</span> (*)(<span class="type">void</span>*, <span class="type">void</span>*))(numeric ? numcmp : <span class="built_in">strcmp</span>));</span><br><span class="line">        writelines(lineptr, nlines);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;input too big sort\n&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>接下来依次介绍这里的代码：</p>
 <p>首先，我们在要求中有提到一点，假设我们需要对不同的参数使用不同的排列模式（如用数组大小排序）</p>
 <p>那么便可以使用参数<code>-n</code></p>
 <p>这里要实现这样的效果可以在加一个判断语句，如果判断结果为真，那么则令一个参数转变为1，而后在后面的语句中使用这个参数即可</p>
 <p>这里实现判断的语句为：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (argc &gt; <span class="number">1</span> &amp;&amp; <span class="built_in">strcmp</span>(argv[<span class="number">1</span>], <span class="string">&quot;-n&quot;</span>) == <span class="number">0</span>)&#123;</span><br><span class="line">    numeric = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>依旧，在检测到带有参数（argc &gt; 1），并且参数的第一个不为<code>-n</code>（argv[1] !&#x3D; “-n’）时，参数numeric转变为1</p>
+<p>依旧，在检测到带有参数（argc &gt; 1），并且参数的第一个不为<code>-n</code>（argv[1] != &quot;-n’）时，参数numeric转变为1</p>
 <p>这里将会影响到后面传入qsort的参数：<code>numeric ? numcmp : strcmp</code></p>
 <p>如果为真（也就是没有参数-n），那么则使用numcmp，反之，如果无参数，此时numeric为0，则使用strcmp</p>
 <p>接下来的writelines则是将排序好的数组输出</p>
-<h3 id="qsort"><a href="#qsort" class="headerlink" title="qsort"></a>qsort</h3><p>接下来让我们看看修改后的快速排序代码</p>
+<h3 id="qsort">qsort</h3>
+<p>接下来让我们看看修改后的快速排序代码</p>
 <p>首先先看到括号内的参数：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">qsort</span><span class="params">(<span class="type">void</span> *lineptr[],</span></span><br><span class="line"><span class="params">            <span class="type">int</span> left,</span></span><br><span class="line"><span class="params">            <span class="type">int</span> right,</span></span><br><span class="line"><span class="params">            <span class="type">int</span> (*comp)(<span class="type">void</span> *, <span class="type">void</span> *))</span>;</span><br></pre></td></tr></table></figure>
 <p>可以看到，相较于之前用数组下标表示的快排，这里的快速排序使用了四个参数</p>
@@ -761,11 +774,12 @@
 <hr>
 <p>接下来看看四个参数分别是什么</p>
 <p>首先，第一个参数是一个数组，这里指的是要进行排序的数组，特别注意到的一点是这里类型为<code>void</code></p>
-<p><code>void *</code>为通用指针类型，任何类型的指针都可以转换为void <em>类，并且在转换回原来类型的时候不会*<em>丢失信息</em></em>，所以，这里也就是为什么要选择这个类型的原因</p>
+<p><code>void *</code>为通用指针类型，任何类型的指针都可以转换为void *类，并且在转换回原来类型的时候不会<strong>丢失信息</strong>，所以，这里也就是为什么要选择这个类型的原因</p>
 <p>快排的核心代码没有多大改变，唯一有改动的是比较的部分：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ((*comp)(v[i], v[left]) &lt; <span class="number">0</span>)&#123;</span><br><span class="line">    swap(v, ++last, i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>原先的代码为前一项与后一项比较，而这里由于使用了比较的函数strcmp和numcmp，所以相应的也要进行改变</p>
-<h3 id="补充内容"><a href="#补充内容" class="headerlink" title="补充内容"></a>补充内容</h3><p>这里补充一些有关这段代码的一些东西：</p>
+<h3 id="补充内容">补充内容</h3>
+<p>这里补充一些有关这段代码的一些东西：</p>
 <p>主要的补充地方依旧在快排这里：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">qsort((<span class="type">void</span> **) lineptr,</span><br><span class="line">        <span class="number">0</span>,</span><br><span class="line">        nlines - <span class="number">1</span>,</span><br><span class="line">        (<span class="type">int</span> (*)(<span class="type">void</span>*, <span class="type">void</span>*))(numeric ? numcmp : <span class="built_in">strcmp</span>));</span><br></pre></td></tr></table></figure>
 <p>首先是第一个部分，第一个参数的写法</p>
@@ -774,20 +788,17 @@
 <p>lineptr是一个char数组，里面的每一个元素都对应一个字符串</p>
 <p>而在前文初始化的时候是这样的：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> *lineptr[MAXLINE];</span><br></pre></td></tr></table></figure>
-
 <p>这意味了什么，意味着lineptr的实际类型为<code>char **</code></p>
 <p>也就是说，这里的每一个元素其实都是一个指针</p>
 <p>而此处快排的操作其实也只是交换指针而已，并没有对字符串进行操作</p>
 <p>这样做的原因是假设字符串长度较长，那么此时交换指针的效率要比直接交换字符串的效率要快得多</p>
 <p>这也就是为什么这里要选择交换指针的原因</p>
-<h2 id="复杂声明"><a href="#复杂声明" class="headerlink" title="复杂声明"></a>复杂声明</h2><p>由于C语言中时常会出现一些常令人诟病的声明问题：</p>
+<h2 id="复杂声明">复杂声明</h2>
+<p>由于C语言中时常会出现一些常令人诟病的声明问题：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> (*(*x[<span class="number">3</span>])())[<span class="number">5</span>]</span><br></pre></td></tr></table></figure>
-
 <p>所以明白这些声明是什么意思是很重要的，例如下面提供了两个相似的声明：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> *<span class="title function_">f</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
-
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> (*pf)();</span><br></pre></td></tr></table></figure>
-
 <p>第一个声明代表返回一个int类型的指针，<code>f()</code>是一个函数</p>
 <p>而第二个声明代表一个指向函数的指针（*pf），这个函数返回的类型为整数类型</p>
 <p>很明显，这两者的区别在于有没有加圆括号</p>
@@ -821,12 +832,12 @@
                 <span>Tag(s):</span>
                 <span class="tag">
                     
-                    
-                        <a href="/tags/%E5%BD%92%E6%A1%A3/"># 归档</a>
-                    
-                        <a href="/tags/C/"># C</a>
-                    
                         
+                            <a href="/tags/C/"># C</a>
+                        
+                            <a href="/tags/%E5%BD%92%E6%A1%A3/"># 归档</a>
+                        
+                    
                 </span>
             </div>
             <div>
@@ -840,7 +851,7 @@
                 <a class="prev" rel="prev" href="/archives/2025-10-23/k&r_ch6/">C程序设计语言（K&R）第六章</a>
             
             
-            <a class="next" rel="next" href="/archives/2025-09-08/k&r_ch4/">C程序设计语言（K&R）第四章</a>
+                <a class="next" rel="next" href="/archives/2025-09-08/k&r_ch4_1/">C程序设计语言（K&R）第四章导言</a>
             
         </section>
 

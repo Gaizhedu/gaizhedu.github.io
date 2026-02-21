@@ -214,18 +214,31 @@
 
                     
                         <span class="post-time">
-                        日期: <a href="#">2025-08-22&nbsp;&nbsp;0:00:00</a>
+                        日期: <a
+                                    href="#">2025-08-22&nbsp;&nbsp;0:00:00</a>
                         </span>
                     
                     
+                </div>
+                <div class="post-meta">
+                    <!-- 单篇文章字数 -->
+                    <span class="post-wordcount">
+                    字数：11.2k
+                    </span>
+                    <!-- 阅读时长 -->
+                    <span class="post-min2read">
+                    阅读时长：41 分钟
+                    </span>
                 </div>
             
         </header>
 
         <div class="post-content">
-            <h1 id="第二章"><a href="#第二章" class="headerlink" title="第二章"></a>第二章</h1><p>类型、运算符与表达式</p>
+            <h1>第二章</h1>
+<p>类型、运算符与表达式</p>
 <p>本章主要围绕这一部分展开，主要为变量与常量，数据类型之间的转换，运算符等内容</p>
-<h2 id="变量名"><a href="#变量名" class="headerlink" title="变量名"></a>变量名</h2><p>接下来讲讲变量名的格式</p>
+<h2 id="变量名">变量名</h2>
+<p>接下来讲讲变量名的格式</p>
 <p>相较于Python的宽松，C语言对于变量名的要求变得比较严格</p>
 <p>首先变量名只能有字母和数字组成（C11标准后支持Unicode字符，但说实话正常不会用到），并且第一位必须为字母，而不能为数字，一般来讲下划线<code>_</code>是被看作字母的，一般用于比较长的变量名中，增强其可读性</p>
 <p>由于库例程（由编程语言的标准库、第三方库或自定义库预先实现的、具备特定功能的函数（或子程序），例如printf()）一般以下划线开头，所以变量名一般不以下划线开头</p>
@@ -233,7 +246,8 @@
 <p>接下来需要说明一点的事变量名不能与程序内部已有的关键字重复（例如<code>else</code>、<code>if</code>、<code>for</code>等），这些是保留给语言本身用的，这些关键字的字符必须都是小写</p>
 <p>一般来讲，选择的变量名要尽可能的表达出这个变量的作用（比如说<code>line</code>等），<strong>尽量不要使用抽象的变量名</strong>(如<code>a</code>,<code>b</code>,<code>c</code>)</p>
 <p>局部变量一般使用较短的变量名，循环变量（如<code>for语句</code>中）要使用较短的变量名，而外部变量使用较长的名字</p>
-<h2 id="数据类型及长度"><a href="#数据类型及长度" class="headerlink" title="数据类型及长度"></a>数据类型及长度</h2><p>C语言里面有一些数据类型：</p>
+<h2 id="数据类型及长度">数据类型及长度</h2>
+<p>C语言里面有一些数据类型：</p>
 <table>
     <thead>
         <tr>
@@ -260,13 +274,11 @@
     </tbody>
 </table>
 本地字符集：指当前操作系统、编译器或运行环境默认使用的字符与二进制数据的映射规则，规定了一个字母对应的二进制数据
-
-<h3 id="限定符"><a href="#限定符" class="headerlink" title="限定符"></a>限定符</h3><p>在声明的时候，还可以在前面加上一些限定符<code>short</code>和<code>long</code>来限定整型</p>
+<h3 id="限定符">限定符</h3>
+<p>在声明的时候，还可以在前面加上一些限定符<code>short</code>和<code>long</code>来限定整型</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">short</span> <span class="type">int</span> nums;</span><br><span class="line"><span class="type">long</span> <span class="type">int</span> nums;</span><br></pre></td></tr></table></figure>
-
 <p>需要说明的一点是，如果选择上面这种类型的声明，则可以把<code>int</code>省略</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">short</span> nums;</span><br><span class="line"><span class="type">long</span> nums;</span><br></pre></td></tr></table></figure>
-
 <p>接下来来说明这两种有什么不同</p>
 <p><code>short类型</code>的长度为16位（大概6.5万个数），而<code>long类型</code>长度有32位（大概有43亿个数）</p>
 <p>可以看到，<code>long类型</code>要远远大于<code>short类型</code></p>
@@ -275,17 +287,26 @@
 <p>接下来将另一个限定符：<code>signed</code>和<code>unsigned</code></p>
 <p>这两个限定符可以限定<code>char类型</code>或者是任何整型：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="type">int</span> nums;</span><br></pre></td></tr></table></figure>
-
 <p><code>signed</code>限定符范围包括了负数，比如说<code>signed short</code>的范围就是 <strong>-32768~32767</strong> 而<code>unsigned</code>就是只有正数部分以及0，也就是<code>0~65535</code></p>
 <p>这里补充的一点是一般来讲不填就是默认为<code>signed</code>（也就是支持正负数），所以一般<code>signed</code>可以省略</p>
 <p><code>unsigned</code>类型遵循了算数模2$^n$定律，n为该类型占用的位数</p>
 <blockquote>
-<p>什么是算数模2的n次方定律？<br>指的是整数在模 2ⁿ（即对 2 的 n 次方取余数）运算下的一系列特殊规律<br>对于任意整数 x，x mod 2ⁿ的结果等价于 x 的二进制表示中最后 n 位所对应的数值。</p>
-<p>举个例子：70 mod 32的计算过程如下<br>70 转换为二进制：1000110<br>32 为2的5次方，所以n为5，取最后五位（00110）</p>
-<p>接下来从右往左看：<br>0 x 1 &#x3D; 0<br>1 x 2 &#x3D; 2<br>1 x 4 &#x3D; 4<br>0 x 8 &#x3D; 0<br>0 x 16 &#x3D; 0</p>
+<p>什么是算数模2的n次方定律？<br>
+指的是整数在模 2ⁿ（即对 2 的 n 次方取余数）运算下的一系列特殊规律<br>
+对于任意整数 x，x mod 2ⁿ的结果等价于 x 的二进制表示中最后 n 位所对应的数值。</p>
+<p>举个例子：70 mod 32的计算过程如下<br>
+70 转换为二进制：1000110<br>
+32 为2的5次方，所以n为5，取最后五位（00110）</p>
+<p>接下来从右往左看：<br>
+0 x 1 = 0<br>
+1 x 2 = 2<br>
+1 x 4 = 4<br>
+0 x 8 = 0<br>
+0 x 16 = 0</p>
 <p>结果为6，所以 70 mod 32 结果为 6</p>
 </blockquote>
-<h2 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h2><p>接下来讲讲2.3 常量</p>
+<h2 id="常量">常量</h2>
+<p>接下来讲讲2.3 常量</p>
 <p>首先让我们先明白各个常量的表示方法</p>
 <p>类似于1 2 3 4 5 6的整数常量属于<code>int类型</code></p>
 <p>而<code>long类型</code>不同于<code>int类型</code>，会在数字的最末尾加一个<code>l</code>或者<code>L</code>，例如<code>123123123l</code></p>
@@ -294,7 +315,8 @@
 <p>接下来是浮点数常量，浮点数常量包含一个小数点或者一个指数（1e-2），当然两者都有也可以</p>
 <p>有些浮点数常量没有后缀，被称为<code>double</code>类型，如果有<code>f</code>或者<code>F</code>后缀，则为<code>float类型</code></p>
 <p>如果一个浮点数出现了<code>l</code>或者<code>L</code>后缀，则为<code>long double</code>类型</p>
-<h3 id="进制表示"><a href="#进制表示" class="headerlink" title="进制表示"></a>进制表示</h3><p>接下来讲讲进制的表示方法</p>
+<h3 id="进制表示">进制表示</h3>
+<p>接下来讲讲进制的表示方法</p>
 <p>整形数除了使用十进制外，还可以使用到八进制或者十六进制</p>
 <p>其规则可以通过十进制类比：</p>
 <p>十进制是满十加一，以此类推八进制就是满八进一，十六进制就是满十六进一</p>
@@ -308,9 +330,10 @@
 <p>首先第一个，在C语言中，带前缀0的整型常量表示为八进制形式，例如上面的十进制的20就是八进制的024</p>
 <p>而十六进制的前缀通常为<code>0x</code>或者<code>0X</code>，上文的十进制20就是十六进制的0x14</p>
 <p>这些常量都可以加上上文提到的后缀<code>L</code>或者<code>U</code></p>
-<h3 id="字符常量"><a href="#字符常量" class="headerlink" title="字符常量"></a>字符常量</h3><p>接下来讲讲字符常量，需要说明一点的是，<strong>一个字符常量就是一个整数</strong>，书写的时候一般把一个字符扩在单引号里面</p>
-<p>例如<code>&#39;0&#39;</code>，这些字符在机器字符集中的数值就是字符常量的值，比如说在ASCII中，<code>&#39;0&#39;</code>对应的值为<code>48</code>（这个值跟数值的0没关系）</p>
-<p>一般来讲，字符常量是与其他字符来比较，当然也可以参加运算（比如说上一章的<code>c - &#39;0&#39;</code>）</p>
+<h3 id="字符常量">字符常量</h3>
+<p>接下来讲讲字符常量，需要说明一点的是，<strong>一个字符常量就是一个整数</strong>，书写的时候一般把一个字符扩在单引号里面</p>
+<p>例如<code>'0'</code>，这些字符在机器字符集中的数值就是字符常量的值，比如说在ASCII中，<code>'0'</code>对应的值为<code>48</code>（这个值跟数值的0没关系）</p>
+<p>一般来讲，字符常量是与其他字符来比较，当然也可以参加运算（比如说上一章的<code>c - '0'</code>）</p>
 <p>在一些字符中，可以通过转义来表示字符和字符串常量，比如说换行符<code>\n</code></p>
 <p>这些看起来好像是多个字符，但由于<strong>一个字符常量就是一个数</strong>，所以其实是一个字符</p>
 <p>另外，反斜杠还有很多用法，比如说可以这样表示一个八进制的数字：<code>\000</code>，这里需要注意的是</p>
@@ -371,56 +394,59 @@
         </tr>
     </tbody>
 </table>
-
-<p>字符常量<code>&#39;0&#39;</code>表示属性为0的字符，也就是空字符<code>null</code>，通常用<code>&#39;\0&#39;</code>来代替0</p>
-<h3 id="常量表达式"><a href="#常量表达式" class="headerlink" title="常量表达式"></a>常量表达式</h3><p>常量表达式是仅仅包含常量的表达式，这种表达式在编译的时候就会求值（比如说20 + 30、123）</p>
+<p>字符常量<code>'0'</code>表示属性为0的字符，也就是空字符<code>null</code>，通常用<code>'\0'</code>来代替0</p>
+<h3 id="常量表达式">常量表达式</h3>
+<p>常量表达式是仅仅包含常量的表达式，这种表达式在编译的时候就会求值（比如说20 + 30、123）</p>
 <p>这种表达式可以出现在任何常量可以出现的地方</p>
-<h3 id="字符串常量"><a href="#字符串常量" class="headerlink" title="字符串常量"></a>字符串常量</h3><p>字符串常量指的是用双引号围起来的字符序列，比如说<code>&quot;hello world&quot;</code></p>
+<h3 id="字符串常量">字符串常量</h3>
+<p>字符串常量指的是用双引号围起来的字符序列，比如说<code>&quot;hello world&quot;</code></p>
 <p>双引号内部允许没有字符：<code>&quot;&quot;</code></p>
 <p>需要注意的一点是，双引号并不作为字符串的内容，只是告诉编译器这个被围起来的地方是字符串而已</p>
 <p>那些在字符常量中使用的转义类型也可以使用在字符串中，比如说可以在字符串中使用<code>\&quot;</code>来表示双引号</p>
 <p>这有什么作用呢</p>
 <p>举个例子：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">&quot;He is a &quot;</span>dreamer<span class="string">&quot;.But I don&#x27;t believe him&quot;</span></span><br></pre></td></tr></table></figure>
-<p>上面的句子中，由于句子内部<code>dreamer</code>加了双引号导致了句子被错误切割为<code>He is a </code>和<code>.But I don&#39;t believe him</code>两部分</p>
+<p>上面的句子中，由于句子内部<code>dreamer</code>加了双引号导致了句子被错误切割为<code>He is a </code>和<code>.But I don't believe him</code>两部分</p>
 <p>这时候便可以使用到字符常量来表示句子中的双引号：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">&quot;He is a \&quot;dreamer\&quot;.But I don&#x27;t believe him&quot;</span></span><br></pre></td></tr></table></figure>
 <p>现在就是一个完整的句子了</p>
 <p>在上一章中有提及到字符串的结束以<code>\0</code>为标志，这里便不多概述</p>
 <p>需要补充的一点是，由于这个原因，C语言对字符串的大小并没有限制（因为无论如何都得在最后面加上<code>\0</code>作为结尾）</p>
-<h3 id="枚举常量"><a href="#枚举常量" class="headerlink" title="枚举常量"></a>枚举常量</h3><p>接下来是枚举常量，枚举是一个常数整型值的列表，一般用<code>enum</code>表示</p>
+<h3 id="枚举常量">枚举常量</h3>
+<p>接下来是枚举常量，枚举是一个常数整型值的列表，一般用<code>enum</code>表示</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">boolean</span> &#123;</span>NO, YES&#125;;</span><br></pre></td></tr></table></figure>
 <p>如果你没有进行显式声明那么<code>enum</code>的第一个值为0，之后第二个为1，第三个为3，以此类推</p>
 <p>如果你只是制定了部分枚举名的值，那么那些为指定的会根据最后一个指定的值往后递增</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">WEEK</span> &#123;</span>SUNDAY = <span class="number">1</span>, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY&#125;</span><br></pre></td></tr></table></figure>
-<p>这样，往后的结果就会是：MONDAY &#x3D; 2，TUESDAY &#x3D; 3，以此类推</p>
+<p>这样，往后的结果就会是：MONDAY = 2，TUESDAY = 3，以此类推</p>
 <p>需要注意的是不同枚举中的名字必须互不相同，比如说不能出现多个<code>MONDAY</code>，但是同个枚举不同的名字可以指定同一个值</p>
 <p>比如上面我可以指定全部的星期全为一，这样在用户输入星期的时候可以根据枚举的值的不同转换到不同的模块上</p>
-<h4 id="补充点：-define-和-enum的不同"><a href="#补充点：-define-和-enum的不同" class="headerlink" title="补充点：#define 和 enum的不同"></a>补充点：#define 和 enum的不同</h4><p>虽然说两者都可以让常量值和名字之间相关联，但是两者有一些不同</p>
+<h4 id="补充点：-define-和-enum的不同">补充点：#define 和 enum的不同</h4>
+<p>虽然说两者都可以让常量值和名字之间相关联，但是两者有一些不同</p>
 <p>像是#define就没办法自动迭代，需要自己一个一个输入，并且你输入的常量值编译器是不检查是否存在问题的</p>
 <p>但是enum会检查这种变量中储存得知是否为该枚举的有效值</p>
 <p>另外，如果你尝试使用调试程序打印#define的值，就会发现会直接打印出对应的值，而不是值对应的名字</p>
 <p>但是enum在调试中则会显示出这个值的名字，这也是为什么枚举会比较有优势</p>
-<h2 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h2><p>接下来讲讲声明，这里强调一个点：<strong>所有变量都要先声明之后使用</strong>，虽然有时可以通过上下文隐式声明</p>
+<h2 id="声明">声明</h2>
+<p>接下来讲讲声明，这里强调一个点：<strong>所有变量都要先声明之后使用</strong>，虽然有时可以通过上下文隐式声明</p>
 <p>接下来讲讲一些声明的方法：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> num1, upper, lower;</span><br><span class="line"><span class="type">float</span> step, way, maxline;</span><br></pre></td></tr></table></figure>
-
 <p>上面这种声明的方法可以一次性声明多个变量</p>
 <p>如果想要一个一个声明也是可以的</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> num1;</span><br><span class="line"><span class="type">int</span> upper;</span><br><span class="line"><span class="type">int</span> lower;</span><br><span class="line"><span class="type">float</span> step;</span><br><span class="line"><span class="type">float</span> way;</span><br><span class="line"><span class="type">float</span> maxline;</span><br></pre></td></tr></table></figure>
-
 <p>这种声明方式虽然说占用比较大的空间，但是好处是添加注释的时候比较方便</p>
 <p>此外，在声明的时候你还可以对这些变量初始化：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> step = <span class="number">20</span>;</span><br><span class="line"><span class="type">int</span> upper = <span class="number">30</span>;</span><br></pre></td></tr></table></figure>
-
 <p>如果这个变量不是自动变量（局部变量）的话，那么只能进行一次初始化操作，并且初始化还必须是常量表达式</p>
 <p>如果是自动变量的话，那么每次进入函数或者是程序块的时候，显示表达式的自动变量就会被初始化一次</p>
 <p>没有经过显式初始化的自动变量的值为未定义值（也就是无效的值）</p>
-<h3 id="const"><a href="#const" class="headerlink" title="const"></a>const</h3><p><code>const</code>是一个限定符，如果被这个限定符限定，那么这个变量将无法被修改</p>
+<h3 id="const">const</h3>
+<p><code>const</code>是一个限定符，如果被这个限定符限定，那么这个变量将无法被修改</p>
 <p>如果用const限定一个数组，那么这个数组的所有元素的值都无法被修改</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">double</span> e = <span class="number">2.71828182845905</span>;</span><br></pre></td></tr></table></figure>
 <p>当然，这个限定符还可以搭配数组参数使用，表明函数不能修改数组元素的值</p>
-<h2 id="算数运算符"><a href="#算数运算符" class="headerlink" title="算数运算符"></a>算数运算符</h2><p>接下来讲讲算数运算符：<code>+、-、*、/、%</code></p>
+<h2 id="算数运算符">算数运算符</h2>
+<p>接下来讲讲算数运算符：<code>+、-、*、/、%</code></p>
 <p>加减乘除这里不做介绍，这里主要介绍<code>%</code>，意思是<strong>取模</strong>，也就是求余数</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x % y</span><br></pre></td></tr></table></figure>
 <p>代表<code>x</code>除于<code>y</code>后得到的余数，如果为整除的话那么计算的结果为0</p>
@@ -434,9 +460,9 @@
 <p>而取模结果的符号必须与被除数一致</p>
 <p>说白了就是在C99标准下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">-5</span> % <span class="number">3</span> = <span class="number">-2</span></span><br><span class="line"><span class="number">5</span> % <span class="number">-3</span> = <span class="number">2</span></span><br></pre></td></tr></table></figure>
-
 <p>具体公式如下：<code>被除数 = 除数 × (被除数/除数) + (被除数%除数)</code></p>
-<h2 id="关系运算符与逻辑运算符"><a href="#关系运算符与逻辑运算符" class="headerlink" title="关系运算符与逻辑运算符"></a>关系运算符与逻辑运算符</h2><p>接下来讲讲关系运算符和逻辑运算符</p>
+<h2 id="关系运算符与逻辑运算符">关系运算符与逻辑运算符</h2>
+<p>接下来讲讲关系运算符和逻辑运算符</p>
 <p>关系运算符包括下面几种：<code>&gt; &gt;= , &lt;=</code></p>
 <p>这几种的优先级是相同的，不会遇到说哪一个的优先级更高的情况</p>
 <p>仅次于这些运算符的是相等性运算符：<code>== !=</code></p>
@@ -455,11 +481,10 @@
 <p>在关系表达式或逻辑表达式中，如果关系为真的话，那么表达式的结果值为1，反之为0</p>
 <p>通过逻辑非运算符可以将翻转这个结果：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bl = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">if</span>(!bl) <span class="comment">//bl为0的时候执行</span></span><br></pre></td></tr></table></figure>
-
 <p>一般来讲不写成这样子：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bl = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span>(bl == <span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-
-<h2 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h2><p><strong>本节问题</strong></p>
+<h2 id="类型转换">类型转换</h2>
+<p><strong>本节问题</strong></p>
 <ol>
 <li>如何实现类型的转换</li>
 <li>实现类型的转换需要注意什么</li>
@@ -479,10 +504,9 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">list_step = [x <span class="keyword">for</span> x <span class="keyword">in</span> <span class="string">&quot;hello&quot;</span>]</span><br><span class="line"><span class="built_in">print</span>(list_step)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(list_step)):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;第<span class="subst">&#123;i + <span class="number">1</span>&#125;</span>项是<span class="subst">&#123;list_step[i]&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line"><span class="comment"># [&#x27;h&#x27;, &#x27;e&#x27;, &#x27;l&#x27;, &#x27;l&#x27;, &#x27;o&#x27;]</span></span><br><span class="line"><span class="comment"># 第1项是h</span></span><br><span class="line"><span class="comment"># 第2项是e</span></span><br><span class="line"><span class="comment"># 第3项是l</span></span><br><span class="line"><span class="comment"># 第4项是l</span></span><br><span class="line"><span class="comment"># 第5项是o</span></span><br></pre></td></tr></table></figure>
 <p>可以看到，这里输入的内容就被逐一拆分到列表里面了，需要的时候直接读取对应的项数皆可</p>
 <p>那么按照这个道理，我们也可以把字符串中的每一项都加到一个新的数组中，之后依次转换，最后把结果拼合</p>
-<p>需要明白一个点：<strong>字符串的本质是一个以”\0”结尾的char数组</strong>这也就是为什么参数为char的原因</p>
+<p>需要明白一个点：<strong>字符串的本质是一个以&quot;\0&quot;结尾的char数组</strong>这也就是为什么参数为char的原因</p>
 <p>这时候就有人要问了，诶，前面不是有提到说<code>char</code>只能存储一个字符吗，确实，<code>char</code>类型只能存储一个字符，但这里是一个<code>char</code>数组，可以存储多个字符，举个例子</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> s = <span class="string">&quot;123&quot;</span> <span class="comment">// 错误，必须为一个字符，这是一个char变量</span></span><br><span class="line"><span class="type">char</span> s[] = <span class="string">&quot;123&quot;</span> <span class="comment">// 正确，这是一个数组，是一个char数组</span></span><br></pre></td></tr></table></figure>
-
 <p>理解完这个后，我们便可以利用这个道理来存储字符串了</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 函数的定义是什么样的，那么显式声明得是怎么样的，这里定义是数组，那么声明就得是数组</span></span><br><span class="line"><span class="comment">// 但是前文也说过了，名字可以不同</span></span><br><span class="line"><span class="comment">// 这里用了const限定，那么之后也得用const限定</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">atoi</span><span class="params">(<span class="type">const</span> <span class="type">char</span> s[])</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, atoi(<span class="string">&quot;123&quot;</span>));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">atoi</span><span class="params">(<span class="type">const</span> <span class="type">char</span> s[])</span> &#123;</span><br><span class="line">    <span class="type">int</span> n = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// char s[i]是一个ASCII值，要减去字符0的ASCII值（&#x27;0&#x27;）才可以得出结果</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>;s[i] &gt;= <span class="string">&#x27;0&#x27;</span>&amp;&amp; s[i]&lt;=<span class="string">&#x27;9&#x27;</span>;++i) &#123;</span><br><span class="line">        n = <span class="number">10</span> * n + (s[i] - <span class="string">&#x27;0&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>其他杂项的内容已经讲过了，这里讲一下核心，如何实现更新数字</p>
@@ -491,13 +515,14 @@
 <p>那么要怎么实现数字的更新呢，由于每次转换得到的数字是位于<code>0 ~ 9</code>之间的，也就是说不可能实现跨位数</p>
 <p>既然无法实现跨位数，所以只能在个位数做功夫。这时候不妨想想看，怎么样就可以让这个新数字无损地加上去</p>
 <p>没错，就是把新的数字的那一位令为0，之后把新的数字加上去就可以实现不破坏数字了</p>
-<p>这也就是这个的来历：<code>n = 10 * n + (s[i] - &#39;0&#39;)</code></p>
-<p><code>s[i] - &#39;0&#39;</code>代表新的数字</p>
+<p>这也就是这个的来历：<code>n = 10 * n + (s[i] - '0')</code></p>
+<p><code>s[i] - '0'</code>代表新的数字</p>
 <p><code>10 * n</code>代表新的数字的那一位初始化为0</p>
 <p>之后相加，由于新的数字不可能造成进位，所以不会修改原有的数字（例如不会使得350变成360，如果会的话就进位了）</p>
 <p>这就合理的把新的数字加了上去</p>
 <hr>
-<h3 id="隐式算数类型转换"><a href="#隐式算数类型转换" class="headerlink" title="隐式算数类型转换"></a>隐式算数类型转换</h3><p>首先先科普一个概念，<strong>什么是二元运算符</strong></p>
+<h3 id="隐式算数类型转换">隐式算数类型转换</h3>
+<p>首先先科普一个概念，<strong>什么是二元运算符</strong></p>
 <p>二元运算符指的是具有两个操作数的运算符，比如说加减乘除，这些运算符如果想要正常运行则必须要有两个操作数</p>
 <p>说明完成后进入正题</p>
 <hr>
@@ -507,7 +532,8 @@
 <p>举个例子：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> i = <span class="number">1000</span>;</span><br><span class="line"><span class="type">float</span> f = <span class="number">1234.1234</span>;</span><br><span class="line"></span><br><span class="line">i = f;</span><br><span class="line">f = i;</span><br></pre></td></tr></table></figure>
 <p>这样的话，由于<code>i</code>是更小的范围，使得小数点后面的数被舍弃了，而在这之后<code>f</code>重新赋值为<code>i</code>，结果可以1看到小数点后的数字都没有了</p>
-<h3 id="强制类型转换"><a href="#强制类型转换" class="headerlink" title="强制类型转换"></a>强制类型转换</h3><p>所有的表达式都可以使用强制类型转换，也就是说可以把一个类型强制转为其他的类型</p>
+<h3 id="强制类型转换">强制类型转换</h3>
+<p>所有的表达式都可以使用强制类型转换，也就是说可以把一个类型强制转为其他的类型</p>
 <p>具体的表达式如下：<code>(类型名) 表达式</code></p>
 <p>举个例子：</p>
 <p>函数<code>sqrt()</code>的参数为<code>double</code>，如果如果传进去的类型是整数的话会导致出现问题（假设这里为n）</p>
@@ -519,7 +545,8 @@
 <p>需要注意的一点是，强制类型转换只是<strong>生成一个新的n，原来的n并没有发生改变</strong></p>
 <p>在一般的情况下，函数的参数是通过函数原型声明的，通过函数声明，可以自动将参数进行强制类型转换</p>
 <p>在 K&amp;R 涉及的早期C标准中，如果没有显式声明函数原型（如 <code>double sqrt(double);</code>），编译器可能无法自动转换参数类型，此时强制转换就成了必须</p>
-<h2 id="自增运算符与自减运算符"><a href="#自增运算符与自减运算符" class="headerlink" title="自增运算符与自减运算符"></a>自增运算符与自减运算符</h2><p><strong>本节问题</strong></p>
+<h2 id="自增运算符与自减运算符">自增运算符与自减运算符</h2>
+<p><strong>本节问题</strong></p>
 <ol>
 <li>自增运算符的前后缀有什么区别，又有什么共同点</li>
 <li>在使用的时候要注意什么问题</li>
@@ -531,10 +558,10 @@
 <p>自增运算符可以用于变量的递增，每次使用自增运算符会使得变量的值<strong>增加1</strong>，在前面的许多例子中已经有使用过</p>
 <p>C语言同样支持以下格式来实现递增：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">n += <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-
 <p>使用自增运算符的格式如下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">++i <span class="comment">// 前缀用法</span></span><br><span class="line">i++ <span class="comment">// 后缀用法</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="前缀与后缀"><a href="#前缀与后缀" class="headerlink" title="前缀与后缀"></a>前缀与后缀</h3><p>接下来讲讲前缀和后缀的共同点：前缀和后缀都可以使得变量增加1</p>
+<h3 id="前缀与后缀">前缀与后缀</h3>
+<p>接下来讲讲前缀和后缀的共同点：前缀和后缀都可以使得变量增加1</p>
 <p>这两者的不同点是中间步骤的不同</p>
 <p>前缀的用法是先让变量的值加一，之后再使用变量的值</p>
 <p>而后缀的用法是先使用变量的值，之后再使得变量的值加一</p>
@@ -545,19 +572,20 @@
 <p>而使用后缀的变量<code>o++</code>返回的结果是数组中的第一项<code>1</code></p>
 <p>这也证实了之前的说法</p>
 <blockquote>
-<p>有个形象化的记忆是，前缀的++可以代表为先加，之后在使用变量<br>而后缀由于变量在前++在后，可以看成先使用变量再加</p>
+<p>有个形象化的记忆是，前缀的++可以代表为先加，之后在使用变量<br>
+而后缀由于变量在前++在后，可以看成先使用变量再加</p>
 </blockquote>
 <p>需要注意的一个点是，自增运算符只能用于变量，<strong>不可以用于表达式</strong></p>
 <p>例如<code>(i + o)++</code>是<strong>不被允许的</strong></p>
 <p>如果在使用自增运算符的时候进需要递增变量，那么前后缀没有任何差别</p>
 <p>但是如果需要用到具体的值的时候，这两者便有了差异（比如之前的例子）</p>
 <hr>
-<h3 id="启发"><a href="#启发" class="headerlink" title="启发"></a>启发</h3><p>通过上面的例子中我们可以想到一些做法</p>
+<h3 id="启发">启发</h3>
+<p>通过上面的例子中我们可以想到一些做法</p>
 <p>比如我想把一个输入的字符串拷贝到一个新的数组中，可以怎么办</p>
 <p>首先大体思路为将原数组的值一个一个拷贝进去新数组</p>
 <p>有了大体思路后便可以开始着手了</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">copylist</span><span class="params">(<span class="type">const</span> <span class="type">char</span> s[])</span>;</span><br><span class="line"><span class="type">char</span> to[<span class="number">1000</span>];</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    copylist(<span class="string">&quot;1233321&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>,to);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">copylist</span><span class="params">(<span class="type">const</span> <span class="type">char</span> s[])</span>&#123;</span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> ((to[i] = s[i]) != <span class="string">&#x27;\0&#x27;</span>)</span><br><span class="line">        ++i;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>如果使用后缀则如下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">copylist</span><span class="params">(<span class="type">const</span> <span class="type">char</span> s[])</span>;</span><br><span class="line"><span class="type">char</span> to[<span class="number">1000</span>];</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    copylist(<span class="string">&quot;1233321&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>,to);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">copylist</span><span class="params">(<span class="type">const</span> <span class="type">char</span> s[])</span>&#123;</span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> o = i;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (s[i] != <span class="string">&#x27;\0&#x27;</span>)</span><br><span class="line">        to[i++] = s[o++];</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>虽然最后变量的值是相等的，但是从上面的例子可以看出其中间的过程是不同的</p>
@@ -565,25 +593,28 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s[i] = c;</span><br><span class="line">++i;</span><br></pre></td></tr></table></figure>
 <p>等同于</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s[i++] = c;</span><br></pre></td></tr></table></figure>
-
-<h3 id="特殊拓展：未定义行为"><a href="#特殊拓展：未定义行为" class="headerlink" title="特殊拓展：未定义行为"></a>特殊拓展：未定义行为</h3><p>这里可能会犯一个错误，也就是这个地方：<code>to[i++] = s[o++];</code>，看起来好像没什么，但是你可能在脑海中有过一点思考：这里用两个变量不是在浪费空间吗，直接<code>to[i++] = s[i++];</code>不可以吗？</p>
+<h3 id="特殊拓展：未定义行为">特殊拓展：未定义行为</h3>
+<p>这里可能会犯一个错误，也就是这个地方：<code>to[i++] = s[o++];</code>，看起来好像没什么，但是你可能在脑海中有过一点思考：这里用两个变量不是在浪费空间吗，直接<code>to[i++] = s[i++];</code>不可以吗？</p>
 <p>诶，还真不可以</p>
 <p>这里就要提到一个新的概念：<strong>未定义行为（Undefined Behavior）</strong></p>
 <p>什么是未定义行为呢？在C语言中，如果你在同个语句对单个变量进行多次修改，那么这个行为就是未定义的</p>
 <p>也就是说C语言没有规定编译器要怎么做，不同的编译器对同一个未定义的语句可能有不同的结果</p>
 <p>比如说上面这个例子：编译器可能先计算<code>to[i++]</code>，之后再计算<code>s[i++]</code>；也有可能反过来，先计算<code>s[i++]</code>，之后再计算<code>to[i++]</code></p>
 <p>所以这里也就是为什么要用两个变量的原因</p>
-<h3 id="高效与低效"><a href="#高效与低效" class="headerlink" title="高效与低效"></a>高效与低效</h3><p>前缀和后缀虽然看起来差不多，但实际上两者的效率是有差别的，一般而言：<strong>前缀要比后缀效率更高</strong></p>
+<h3 id="高效与低效">高效与低效</h3>
+<p>前缀和后缀虽然看起来差不多，但实际上两者的效率是有差别的，一般而言：<strong>前缀要比后缀效率更高</strong></p>
 <p>这是为什么呢？从底层讲的话，前缀是直接修改后引用，而后缀是先<strong>创建一个变量的副本</strong>，而后去修改原有的值，最后返回创建的副本</p>
 <p>则后缀要比前缀多一个副本的开销</p>
-<h2 id="位运算符"><a href="#位运算符" class="headerlink" title="位运算符"></a>位运算符</h2><p><strong>本节问题</strong></p>
+<h2 id="位运算符">位运算符</h2>
+<p><strong>本节问题</strong></p>
 <ol>
 <li>位操作符有哪些？要怎么用</li>
 <li>如何利用位操作符得到想要的位数</li>
 </ol>
 <p>在C语言中提供了六个运算符，分别是：<code>&amp; | ^ &lt;&lt; &gt;&gt; ~</code></p>
 <p>接下来逐一介绍其用途</p>
-<h3 id="（按位与）"><a href="#（按位与）" class="headerlink" title="&amp;（按位与）"></a>&amp;（按位与）</h3><p>按位与&amp;是一个运算符，等价于逻辑门中的<strong>AND（与门）</strong>，其基本格式如下：</p>
+<h3 id="（按位与）">&amp;（按位与）</h3>
+<p>按位与&amp;是一个运算符，等价于逻辑门中的<strong>AND（与门）</strong>，其基本格式如下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x &amp; y;</span><br></pre></td></tr></table></figure>
 <p>其中我们把<code>x</code>称为<strong>左操作数</strong>，<code>y</code>称为<strong>右操作数</strong>，具体的使用方法是，将左操作数和右操作数分别转化为二进制数</p>
 <p>之后将两者比较，如果两者位数不相同，那么短的数将用<code>0</code>补全缺的位数</p>
@@ -593,7 +624,6 @@
 <p>首先将两者分别转成二进制，分别为<code>11111101001</code>和<code>11111</code>，由于右操作数的位数小于左操作数，则左操作数将缺的位数用<code>0</code>补全：</p>
 <p>最后两者对比前的结果如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2025:11111101001</span><br><span class="line">  31:00000011111</span><br></pre></td></tr></table></figure>
-
 <p>之后找到符合规则的则为一，不符合规则的则为0</p>
 <p>结果如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">00000001001</span><br></pre></td></tr></table></figure>
@@ -607,9 +637,9 @@
 <p>诶，如果给的右操作数的二进制均为1，那么是不是就可以起到保留指定位数的作用</p>
 <p>事实确实如此，以上面的例子为例，这里如果转换一下，保留左操作数的前5位，那么也可以使用这样的格式</p>
 <p>具体的思路便是要保留几位就输入多少个1，因为没有提及的位均会被<code>0</code>所补充，而在按位与中，只要两个操作数中的任意一个数在某个位上的数字为0，那么这个数字的这个位便为0，而又由于省略会一直省略到第一个为1的位，这就导致了只有在输入多少个1的这里面才会出现1，其他情况全不会出现</p>
-<h3 id="（按位或）"><a href="#（按位或）" class="headerlink" title="|（按位或）"></a>|（按位或）</h3><p>按位或同样是一种运算符，对应逻辑门中的<code>或门（OR）</code>，其运算规则为：<strong>如果出现一个值为1，那么这个值为1，否则为0</strong></p>
+<h3 id="（按位或）">|（按位或）</h3>
+<p>按位或同样是一种运算符，对应逻辑门中的<code>或门（OR）</code>，其运算规则为：<strong>如果出现一个值为1，那么这个值为1，否则为0</strong></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2025</span> | <span class="number">46</span>;</span><br></pre></td></tr></table></figure>
-
 <p>接下来开始逐一介绍其流程：</p>
 <p>首先照例，先转换成二进制：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2025</span>:<span class="number">11111101001</span></span><br><span class="line">  <span class="number">46</span>:<span class="number">101110</span></span><br></pre></td></tr></table></figure>
@@ -619,13 +649,12 @@
 <p>接下来按照规则开始比较，也就<strong>两者中如果两个数均为0，那么这个值为0，否则为1</strong></p>
 <p>最后得到结果为：<code>11111101111</code></p>
 <p>当然，这个数字是二进制，我们要转成十进制，也就是<code>2031</code></p>
-<h3 id="（按位异或）"><a href="#（按位异或）" class="headerlink" title="^（按位异或）"></a>^（按位异或）</h3><p>接下来讲讲按位异或，对应逻辑门中的<code>异或门（XOR）</code>，其核心逻辑为：<strong>如果两个值相同，则为这个值为0，否则为1</strong></p>
+<h3 id="（按位异或）">^（按位异或）</h3>
+<p>接下来讲讲按位异或，对应逻辑门中的<code>异或门（XOR）</code>，其核心逻辑为：<strong>如果两个值相同，则为这个值为0，否则为1</strong></p>
 <p>具体的表示方法为：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2025</span> ^ <span class="number">46</span>;</span><br></pre></td></tr></table></figure>
-
 <p>首先先转换为二进制的格式：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2025</span>:<span class="number">11111101001</span></span><br><span class="line">  <span class="number">46</span>:<span class="number">101110</span></span><br></pre></td></tr></table></figure>
-
 <p>之后进行补位后比较，得到结果数为：<code>11111000111</code>，对应十进制的<code>1991</code></p>
 <hr>
 <p>接下来讲讲这个运算符有什么实际的用法</p>
@@ -640,19 +669,19 @@
 <p>那么如果均为0呢？</p>
 <p>再次思考可以发现，如果为左操作数的那一位是0的话，由于与右操作数的全部都为零相同，导致那个位置的值为0；而如果为1话，由于不相同，所以结果的值为1，这就导致了最后的结果是相同的，<strong>依旧为左操作数</strong></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">左操作数：<span class="number">1001011</span></span><br><span class="line">右操作数：<span class="number">0000000</span></span><br><span class="line">输出结果：<span class="number">1001011</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="无临时变量交换数据"><a href="#无临时变量交换数据" class="headerlink" title="无临时变量交换数据"></a>无临时变量交换数据</h4><p>接下来的内容需要知道两个知识点：</p>
+<h4 id="无临时变量交换数据">无临时变量交换数据</h4>
+<p>接下来的内容需要知道两个知识点：</p>
 <ul>
-<li>一个数按位异或它本身的结果为0（a ^ a &#x3D; 0;）</li>
-<li>一个数按位异或0的结果是它本身（a ^ 0 &#x3D; a;）</li>
+<li>一个数按位异或它本身的结果为0（a ^ a = 0;）</li>
+<li>一个数按位异或0的结果是它本身（a ^ 0 = a;）</li>
 </ul>
 <p>利用这个技巧，让我们思考一下如何在不借助临时变量的前提下交换两个变量的数据</p>
 <p>不妨令这两个变量为<code>a(1001011)</code> 和 <code>b(1101001)</code></p>
 <p>接下来让我们思考一下，如果一个数被按位异或了，那么再按位异或会怎么样</p>
-<p>我们让结果的变量为左操作数（即a &#x3D; a ^ b）</p>
+<p>我们让结果的变量为左操作数（即a = a ^ b）</p>
 <p>我们先思考一个点，0和1是怎么来的</p>
 <p>0是由于两个值相同得来的，而1是由于两个值1不同得来的</p>
-<p>那么，如果先进行a &#x3D; a ^ b，此时a被按位异或，原本相同的值为0，不相同的值为1，这时用右操作数作为左操作数</p>
+<p>那么，如果先进行a = a ^ b，此时a被按位异或，原本相同的值为0，不相同的值为1，这时用右操作数作为左操作数</p>
 <p>被按位异或的数（以下称为-a）作为右操作数，如果原先的a值为1，b值为1，那么-a的值就是0</p>
 <p>如果原先的a值为0，b值为0，那么-a的值就是0</p>
 <p>如果原先的a值为1，b值为0，那么-a的值就是1</p>
@@ -662,10 +691,10 @@
 <p>由于这里两个数分别是a(b)和-a，这里的a是由两数交换而成的，那么反过来，以-a作为左操作数，便可以转换出之前的左操作数b</p>
 <p>具体的代码为：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = a ^ b;</span><br><span class="line">b = a ^ b;</span><br><span class="line">a = a ^ b;</span><br></pre></td></tr></table></figure>
-
 <p>从中可以总结出一条规律<code>a ^ b ^ b = b</code></p>
 <p>那么这个有什么用呢，可以用于原地的快速排序，这是一个很关键的点</p>
-<h3 id="和-（移位运算符）"><a href="#和-（移位运算符）" class="headerlink" title="&lt;&lt; 和 &gt;&gt;（移位运算符）"></a>&lt;&lt; 和 &gt;&gt;（移位运算符）</h3><p>接下来讲一下移位运算符</p>
+<h3 id="和-（移位运算符）">&lt;&lt; 和 &gt;&gt;（移位运算符）</h3>
+<p>接下来讲一下移位运算符</p>
 <p>首先是左移运算符&lt;&lt;，具体结构如下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x &lt;&lt; y;</span><br></pre></td></tr></table></figure>
 <p>功能是将x的二进制向左移动y位，具体例子如下：</p>
@@ -689,10 +718,10 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">103</span> &gt;&gt; <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
 <p>103的二进制为：<code>1100111</code>，而消去后两位的结果为：<code>11001</code></p>
 <p><strong>结果还是25！</strong>，这也就说明了并不满足之前说的除的规则</p>
-<h3 id="（按位取反）"><a href="#（按位取反）" class="headerlink" title="~（按位取反）"></a>~（按位取反）</h3><p>接下来是按位取反，对应逻辑门中的非门（NOT），其基本的功能如名字所示，<strong>把1变成0，把0变成1</strong></p>
+<h3 id="（按位取反）">~（按位取反）</h3>
+<p>接下来是按位取反，对应逻辑门中的非门（NOT），其基本的功能如名字所示，<strong>把1变成0，把0变成1</strong></p>
 <p>由于运算符是个一元运算符，所以没有左右操作数的概念，基本用法如下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~x;</span><br></pre></td></tr></table></figure>
-
 <p>举个例子来说明：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~<span class="number">100</span>;</span><br></pre></td></tr></table></figure>
 <p>首先先转成二进制：<code>1100100</code>，这里需要新增一个新的概念：<code>补码</code></p>
@@ -703,32 +732,30 @@
 <p>之后看他的最大一位，也就是10011011中的第一个1，由于这里是1，所以这个数为负数</p>
 <p>接下来取反需要减掉1，也变成了：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">11111111</span> <span class="number">11111111</span> <span class="number">11111111</span> <span class="number">10011010</span></span><br></pre></td></tr></table></figure>
-
 <p>之后再按位取反，得到原码：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00000000</span> <span class="number">00000000</span> <span class="number">00000000</span> <span class="number">01100101</span></span><br></pre></td></tr></table></figure>
 <p>也就是<code>101</code>，最后加上一开始检测的负号，最后结果为<code>-101</code></p>
 <p>这里其实就可以发现了，按位取反的结果始终为 <strong>-(原数 + 1)</strong></p>
-<h3 id="拓展内容"><a href="#拓展内容" class="headerlink" title="拓展内容"></a>拓展内容</h3><p>这里在按位与的右操作数的内容补充一点</p>
+<h3 id="拓展内容">拓展内容</h3>
+<p>这里在按位与的右操作数的内容补充一点</p>
 <p>首先在上面的笔记中使用的有操作数类型为十进制，实际上可以用其他进制表示</p>
 <p>比如以0开头就是八进制：<code>0177</code>、<code>0377</code></p>
 <p>以0b开头就是二级制：<code>0b11111</code></p>
 <p>以0x开头就是十六进制：<code>0xFF</code></p>
-<h2 id="赋值运算符与表达式"><a href="#赋值运算符与表达式" class="headerlink" title="赋值运算符与表达式"></a>赋值运算符与表达式</h2><p>接下来讲讲赋值运算符</p>
+<h2 id="赋值运算符与表达式">赋值运算符与表达式</h2>
+<p>接下来讲讲赋值运算符</p>
 <p>一般来讲，如果一个表达式如果左边的变量出现在右边的表达式，那么可以进行一定的缩写，例如：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">i = i + <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
-
 <p>可以缩写成以下格式</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">i += <span class="number">10</span></span><br></pre></td></tr></table></figure>
-
 <p>此时<code>+=</code>被称为运算运算符</p>
 <p>一般来讲，大部分的二元运算符都有一个相对应的运算符，比如说：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ - * / % &lt;&lt; &gt;&gt; &amp; ^ |</span><br></pre></td></tr></table></figure>
-
 <p>赋值运算符有什么优点呢？首先，由于阅读习惯，使用赋值运算符会更容易阅读，其次，赋值表达式还可以有利于编译器产生更加高效的代码</p>
-<h3 id="K-R例子"><a href="#K-R例子" class="headerlink" title="K&amp;R例子"></a>K&amp;R例子</h3><p>这里来解释一下K&amp;R给出的例子：统计x中出现1的二进制位数</p>
+<h3 id="K-R例子">K&amp;R例子</h3>
+<p>这里来解释一下K&amp;R给出的例子：统计x中出现1的二进制位数</p>
 <p>首先开始讲思路，既然要找出二进制的所有1，一个简单的思路就是直接遍历，将原本十进制的数转成二进制，之后依次检测是不是1，其代码如下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">bitcount2</span><span class="params">(<span class="type">unsigned</span> x)</span> &#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>;x != <span class="number">0</span>;++i) &#123;</span><br><span class="line">        <span class="keyword">if</span> (x % <span class="number">2</span>) &#123;</span><br><span class="line">            ++a;</span><br><span class="line">        &#125;</span><br><span class="line">        x /= <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>这里是如果余数为1（恰好对应<code>True</code>）那就执行循环</p>
 <p>当然，我们也可以用到前文的位运算符</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">bitcount</span><span class="params">(<span class="type">unsigned</span> x)</span> &#123;</span><br><span class="line">    <span class="type">int</span> b;</span><br><span class="line">    <span class="keyword">for</span> (b = <span class="number">0</span>; x != <span class="number">0</span>; x &gt;&gt;= <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (x &amp; <span class="number">01</span>)</span><br><span class="line">            b++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -744,10 +771,12 @@
 <p>这样如法炮制，每次运算都消去一位，最后直到x为0结束循环</p>
 <p>接下来补充一点，可能这里看到参数为：<code>unsigned</code>感觉有点奇怪，为什么要使用这个</p>
 <p>这是因为如果选择带符号的signed，并且此时x为负的情况下，由前文可知，负数最大位始终为1，这就导致了永远也没办法跳出循环！</p>
-<h3 id="拓展内容：算术右移和逻辑右移"><a href="#拓展内容：算术右移和逻辑右移" class="headerlink" title="拓展内容：算术右移和逻辑右移"></a>拓展内容：算术右移和逻辑右移</h3><p>接下来简单讲一下什么是算数右移什么是逻辑右移</p>
+<h3 id="拓展内容：算术右移和逻辑右移">拓展内容：算术右移和逻辑右移</h3>
+<p>接下来简单讲一下什么是算数右移什么是逻辑右移</p>
 <p>举个例子，上文的<code>unsigned</code>执行的便是逻辑右移，因为在没有位数的时候不会在最左边添加代表符号的位数</p>
 <p>而上文提到的<code>signed</code>是算数右移，因为当没有位数的时候，会在最左边添加上代表符号的位数，这也就是为什么负数无法跳出循环的原因</p>
-<h2 id="条件表达式"><a href="#条件表达式" class="headerlink" title="条件表达式"></a>条件表达式</h2><p>接下来讲讲条件表达式，首先从一个简单的if语句引入</p>
+<h2 id="条件表达式">条件表达式</h2>
+<p>接下来讲讲条件表达式，首先从一个简单的if语句引入</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a, b, z;</span><br><span class="line"><span class="keyword">if</span> (a &gt; b)&#123;</span><br><span class="line">    z = a;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    z = b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>如果使用条件表达式，可以简化为以下的结构：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">z = (a &gt; b) ? a : b;</span><br></pre></td></tr></table></figure>
@@ -758,16 +787,15 @@
 <p>仔细观察，原先哪里出现了<code>a</code>和<code>b</code>，是的，就在if语句的内部出现，所以可以推导，这两边分别对应两种情况</p>
 <p>所以综上所述，让我们总结一些条件表达式的语法：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">判断条件 ? 如果为真则为 : 否则则为;</span><br></pre></td></tr></table></figure>
-
 <p>诶，这时候就有人灵机一动了，那我能不能多套几层问号</p>
 <p>答案是可以的，但是结构会非常抽象</p>
 <p>我们具体举个例子：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">z = (a &gt; b) ? (a == <span class="number">1</span>||b == <span class="number">1</span>) ? a : b : b; </span><br></pre></td></tr></table></figure>
 <p>看起来是不是晕晕的？转换为if语句则如下</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (a &gt; b)&#123;</span><br><span class="line">    <span class="keyword">if</span> (a == <span class="number">1</span>||b == <span class="number">1</span>)&#123;</span><br><span class="line">        z = a;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        z = b;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    z = b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>这样看，只有语句为单个<code>if-else</code>的时候，使用条件表达式才比较合适</p>
-<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><p>这时候可能有人要问了，啊这个有什么用呢</p>
+<h3 id="用法">用法</h3>
+<p>这时候可能有人要问了，啊这个有什么用呢</p>
 <p>除了使代码变得更加简洁外，还有一个用途：<code>宏定义</code></p>
 <p>那么什么是宏定义呢，这里不多拓展，简单来讲就是这个语句：<code>#define 语句 要代替的文本</code></p>
 <p>例如上一章经常用到的<code>#define MAXLINE 1000</code>，就是将所有的<code>MAXLINE</code>替换为<code>1000</code></p>
@@ -775,8 +803,9 @@
 <p>举个例子：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAX(a,b) (((a) &gt; (b)) ? (a):(b))</span></span><br></pre></td></tr></table></figure>
 <p>这里带上括号的原因是a和b不一定表示一个数，还有可能是个表达式，所以要加上括号</p>
-<h2 id="运算符优先级与求值次序"><a href="#运算符优先级与求值次序" class="headerlink" title="运算符优先级与求值次序"></a>运算符优先级与求值次序</h2><p>这一节的内容主要是优化为主</p>
-<p>首先需要声明一点，在C语言中并没有指定同一个运算符中的多个操作数的计算顺序（除了&amp;&amp; || ?:和”,”）</p>
+<h2 id="运算符优先级与求值次序">运算符优先级与求值次序</h2>
+<p>这一节的内容主要是优化为主</p>
+<p>首先需要声明一点，在C语言中并没有指定同一个运算符中的多个操作数的计算顺序（除了&amp;&amp; || ?:和&quot;,&quot;）</p>
 <blockquote>
 <p>注：这里的<code>&quot;,&quot;</code>指的是逗号运算符，不是<code>printf(&quot;%s;%s&quot;,to,from);</code>中的参数分隔符</p>
 </blockquote>
@@ -791,8 +820,8 @@
 <p>这里会先计算自增呢还是会先计算<code>power()</code>呢，在不同编译器有不同的表现</p>
 <p>所以这里可以改成以下格式</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">++n;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d %d\n&quot;</span>,n,power(<span class="number">2</span>,n));</span><br></pre></td></tr></table></figure>
-
-<h3 id="副作用"><a href="#副作用" class="headerlink" title="副作用"></a>副作用</h3><p>什么是副作用呢，简单来说就是在对表达式求值的时候，顺带把变量的值修改了</p>
+<h3 id="副作用">副作用</h3>
+<p>什么是副作用呢，简单来说就是在对表达式求值的时候，顺带把变量的值修改了</p>
 <p>那会导致什么呢，以下面的例子为例</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a[i] = i++;</span><br></pre></td></tr></table></figure>
 <p>问题是，这里的下标是哪一个？原先的还是新的一个</p>
@@ -825,12 +854,12 @@
                 <span>Tag(s):</span>
                 <span class="tag">
                     
-                    
-                        <a href="/tags/%E5%BD%92%E6%A1%A3/"># 归档</a>
-                    
-                        <a href="/tags/C/"># C</a>
-                    
                         
+                            <a href="/tags/C/"># C</a>
+                        
+                            <a href="/tags/%E5%BD%92%E6%A1%A3/"># 归档</a>
+                        
+                    
                 </span>
             </div>
             <div>
@@ -844,7 +873,7 @@
                 <a class="prev" rel="prev" href="/archives/2025-09-02/k&r_ch3/">C程序设计语言（K&R）第三章</a>
             
             
-            <a class="next" rel="next" href="/archives/2025-08-12/k&r_ch1/">C程序设计语言（K&R）第一章</a>
+                <a class="next" rel="next" href="/archives/2025-08-12/k&r_ch1/">C程序设计语言（K&R）第一章</a>
             
         </section>
 

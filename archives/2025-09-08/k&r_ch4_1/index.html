@@ -214,25 +214,38 @@
 
                     
                         <span class="post-time">
-                        日期: <a href="#">2025-09-08&nbsp;&nbsp;0:00:00</a>
+                        日期: <a
+                                    href="#">2025-09-08&nbsp;&nbsp;0:00:00</a>
                         </span>
                     
                     
+                </div>
+                <div class="post-meta">
+                    <!-- 单篇文章字数 -->
+                    <span class="post-wordcount">
+                    字数：800
+                    </span>
+                    <!-- 阅读时长 -->
+                    <span class="post-min2read">
+                    阅读时长：3 分钟
+                    </span>
                 </div>
             
         </header>
 
         <div class="post-content">
-            <h1 id="第四章导言处补充内容"><a href="#第四章导言处补充内容" class="headerlink" title="第四章导言处补充内容"></a>第四章导言处补充内容</h1><p>这里来讲一下由于篇幅问题没办法讲到的内容</p>
-<h2 id="ANSI标准新增的条件编译指令"><a href="#ANSI标准新增的条件编译指令" class="headerlink" title="ANSI标准新增的条件编译指令"></a>ANSI标准新增的条件编译指令</h2><p>在旧版本的C中，可能只有以下指令：<code>#ifdef</code>、<code>#ifndef</code>、<code>#endif</code></p>
+            <h1>第四章导言处补充内容</h1>
+<p>这里来讲一下由于篇幅问题没办法讲到的内容</p>
+<h2 id="ANSI标准新增的条件编译指令">ANSI标准新增的条件编译指令</h2>
+<p>在旧版本的C中，可能只有以下指令：<code>#ifdef</code>、<code>#ifndef</code>、<code>#endif</code></p>
 <p>但是新的预处理器新增了一些新东西，例如用于判断条件的<code>#if</code>，还有类似<code>else if</code>的<code>#elif</code>，以及<code>#else</code></p>
 <p>这样有什么实际的作用呢，比如说我想根据版本来推送对应的内容，那么我可以这样写：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> OS_VERSION 10</span></span><br><span class="line"><span class="meta">#<span class="keyword">if</span> OS_VERSION &gt;= 10</span></span><br><span class="line">    <span class="meta">#<span class="keyword">include</span> <span class="string">&quot;new_api.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">elif</span> OS_VERSION &gt;= 8</span></span><br><span class="line">    <span class="meta">#<span class="keyword">include</span> <span class="string">&quot;old_api.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">    <span class="meta">#<span class="keyword">error</span> <span class="string">&quot;不支持的系统&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
-
 <p>类推一下，可以把上面的系统版本修改为各类系统的名称（例如Window、Linux、MacOS之类的）从而适配不同的设备</p>
-<h2 id="通过宏参数创建带引号的字符串的方法"><a href="#通过宏参数创建带引号的字符串的方法" class="headerlink" title="通过宏参数创建带引号的字符串的方法"></a>通过宏参数创建带引号的字符串的方法</h2><p>这里指的是在宏定义中，当#紧跟在参数后面时，那么预处理器会自动将这个参数转换为带双引号的字符串</p>
+<h2 id="通过宏参数创建带引号的字符串的方法">通过宏参数创建带引号的字符串的方法</h2>
+<p>这里指的是在宏定义中，当#紧跟在参数后面时，那么预处理器会自动将这个参数转换为带双引号的字符串</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> STR(x) #x</span></span><br><span class="line"></span><br><span class="line">STR(hello)</span><br></pre></td></tr></table></figure>
-<p>上面<code>STR</code>输出的结果为”hello”，可以发现带上了双引号</p>
+<p>上面<code>STR</code>输出的结果为&quot;hello&quot;，可以发现带上了双引号</p>
 <p>利用这个功能我们可以想到什么？对，就是<strong>任何可以用到双引号的地方</strong></p>
 <p>举个例子</p>
 <p>如果我们想要在输出的时候同时打印变量名和对应的值</p>
@@ -241,10 +254,10 @@
 <p>由于<code>#x</code>输出的结果是一个带双引号的数值，那么对应的，这里也会带上双引号</p>
 <p>具体的情况如下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> PRINT_VAR(x) printf(#x <span class="string">&quot;= %d\n&quot;</span>,x)</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">    PRINT_VAR(a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>上面例子运行的结果为：<code>a = 10</code></p>
 <p>这里可以看作是这样子的：<code>printf(&quot;a&quot; &quot;= %d\n&quot;,a)</code></p>
-<h2 id="对宏扩展更加严格"><a href="#对宏扩展更加严格" class="headerlink" title="对宏扩展更加严格"></a>对宏扩展更加严格</h2><p>什么叫做对宏扩展更加严格，说白了其实是<strong>减少了歧义的发生</strong></p>
+<h2 id="对宏扩展更加严格">对宏扩展更加严格</h2>
+<p>什么叫做对宏扩展更加严格，说白了其实是<strong>减少了歧义的发生</strong></p>
 <p>其实这个点在之前已经有提到过了，这里再提及一次</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> ADD(x,y) x * y</span></span><br></pre></td></tr></table></figure>
 <p>这里如果传入的值为一个数，那当然没问题，可如果x或者y是一个<strong>表达式</strong>呢？</p>
@@ -286,12 +299,12 @@
                 <span>Tag(s):</span>
                 <span class="tag">
                     
-                    
-                        <a href="/tags/%E5%BD%92%E6%A1%A3/"># 归档</a>
-                    
-                        <a href="/tags/C/"># C</a>
-                    
                         
+                            <a href="/tags/C/"># C</a>
+                        
+                            <a href="/tags/%E5%BD%92%E6%A1%A3/"># 归档</a>
+                        
+                    
                 </span>
             </div>
             <div>
@@ -302,10 +315,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/archives/2025-09-08/k&r_ch4/">C程序设计语言（K&R）第四章</a>
+                <a class="prev" rel="prev" href="/archives/2025-09-22/k&r_ch5/">C程序设计语言（K&R）第五章</a>
             
             
-            <a class="next" rel="next" href="/archives/2025-09-02/k&r_ch3/">C程序设计语言（K&R）第三章</a>
+                <a class="next" rel="next" href="/archives/2025-09-08/k&r_ch4/">C程序设计语言（K&R）第四章</a>
             
         </section>
 

@@ -214,65 +214,79 @@
 
                     
                         <span class="post-time">
-                        日期: <a href="#">2025-12-31&nbsp;&nbsp;0:00:00</a>
+                        日期: <a
+                                    href="#">2025-12-31&nbsp;&nbsp;0:00:00</a>
                         </span>
                     
                     
+                </div>
+                <div class="post-meta">
+                    <!-- 单篇文章字数 -->
+                    <span class="post-wordcount">
+                    字数：2.4k
+                    </span>
+                    <!-- 阅读时长 -->
+                    <span class="post-min2read">
+                    阅读时长：9 分钟
+                    </span>
                 </div>
             
         </header>
 
         <div class="post-content">
-            <h1 id="CSS3"><a href="#CSS3" class="headerlink" title="CSS3"></a>CSS3</h1><p>这篇文档将介绍CSS3的各个属性</p>
-<h2 id="color"><a href="#color" class="headerlink" title="color"></a>color</h2><p><code>color</code>的作用是设置文字颜色</p>
+            <h1>CSS3</h1>
+<p>这篇文档将介绍CSS3的各个属性</p>
+<h2 id="color">color</h2>
+<p><code>color</code>的作用是设置文字颜色</p>
 <p>基本语法如下：</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h1</span> <span class="attr">style</span>=<span class="string">&quot;color: #333333&quot;</span>&gt;</span>Hello World!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
 <p>这个属性带有可以被继承，例如：</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;wrapper&quot;</span> <span class="attr">style</span>=<span class="string">&quot;color: #AACAFE&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello World!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>This is my first website<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>上面的例子中，由于继承，使得下面的两段文字颜色都变成指定的颜色</p>
 <p>如果想要指定更改颜色，可以在指定的标签内重写：</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;wrapper&quot;</span> <span class="attr">style</span>=<span class="string">&quot;color: #99CAFE&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span> <span class="attr">style</span>=<span class="string">&quot;color: #55CAFE;&quot;</span>&gt;</span>Hello World!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>This is my first website<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
 <p>这个标签不仅支持十六进制，还支持通过单词等多种形式来表示颜色</p>
 <p>所有的可用颜色可以在这里找到：<a target="_blank" rel="noopener" href="https://www.w3schools.com/colors/colors_names.asp">W3School</a></p>
 <p>使用的方法很简单，只需要把原来的<code>color=&quot;十六进制&quot;</code>改为<code>colotr=&quot;代表颜色的单词&quot;</code>即可</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;wrapper&quot;</span> <span class="attr">style</span>=<span class="string">&quot;color: paleturquoise&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span> <span class="attr">style</span>=<span class="string">&quot;color: #55CAFE;&quot;</span>&gt;</span>Hello World!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>This is my first website<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
 <p>除了使用单词，还可以使用不同的格式，如RGB</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;wrapper&quot;</span> <span class="attr">style</span>=<span class="string">&quot;color: paleturquoise&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span> <span class="attr">style</span>=<span class="string">&quot;color: RGB(111,111,111);&quot;</span>&gt;</span>Hello World!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>This is my first website<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="font-family"><a href="#font-family" class="headerlink" title="font-family"></a>font-family</h2><p><code>font-family</code>的作用是设定显示的字体组，如果某文字无法以A字体显示，那么会自动尝试之后的字体</p>
+<h2 id="font-family">font-family</h2>
+<p><code>font-family</code>的作用是设定显示的字体组，如果某文字无法以A字体显示，那么会自动尝试之后的字体</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">body</span>&#123;</span><br><span class="line">  <span class="attribute">font-family</span>: Arial, Helvetica, sans-serif;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>上面的三个字体是最为常用的字体，也是比较推荐的默认设置</p>
-<h2 id="font-size"><a href="#font-size" class="headerlink" title="font-size"></a>font-size</h2><p><code>font-size</code>的作用是设置字体的大小</p>
+<h2 id="font-size">font-size</h2>
+<p><code>font-size</code>的作用是设置字体的大小</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#wrapper</span> <span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">1.5rem</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>此处的作用是将该段落的字体大小设置为<code>1.5rem</code></p>
 <p><code>rem</code>的意思是全局的<code>fort-size</code>（默认为16px），此处为1.5为的默认大小</p>
-<h3 id="预设关键字"><a href="#预设关键字" class="headerlink" title="预设关键字"></a>预设关键字</h3><p>除了使用一些单位，还可以通过一些预设的关键字来精准调控字体大小</p>
+<h3 id="预设关键字">预设关键字</h3>
+<p>除了使用一些单位，还可以通过一些预设的关键字来精准调控字体大小</p>
 <p>例如<code>x-large</code>、<code>xx-large</code>、<code>x-small</code></p>
 <p>如果想要使用默认值，则可以使用<code>medium</code></p>
-<h2 id="font-weight"><a href="#font-weight" class="headerlink" title="font-weight"></a>font-weight</h2><p><code>font-weight</code>的作用是设置字体的粗细</p>
+<h2 id="font-weight">font-weight</h2>
+<p><code>font-weight</code>的作用是设置字体的粗细</p>
 <p>这个属性有以下关键字可选<code>normal</code>、<code>bold</code>、<code>bolder</code>、<code>lighter</code></p>
 <p>或者更加建议的是直接使用数值</p>
 <p>常见的数值为：400（默认），700（粗体），300（细体）</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#wrapper</span> <span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="attribute">font-weight</span>: <span class="number">200</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在上面这个例子便将字体的粗细设置成200</p>
-<h2 id="font-style"><a href="#font-style" class="headerlink" title="font-style"></a>font-style</h2><p>这个属性的作用是设置字体为斜体</p>
+<h2 id="font-style">font-style</h2>
+<p>这个属性的作用是设置字体为斜体</p>
 <p>仅能通过设置关键字来调整是否为斜体，一般默认为<code>normal</code>（无斜体）</p>
 <p>斜体有两种方式，一种是直接使用字体文件自带的斜体格式：<code>italic</code>，还有一种是直接将字体倾斜的斜体：<code>oblique</code></p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#wrapper</span> <span class="selector-tag">h1</span> &#123;</span><br><span class="line">  <span class="attribute">font-style</span>: italic;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="text-align"><a href="#text-align" class="headerlink" title="text-align"></a>text-align</h2><p><code>text-align</code>的作用是设置文本的对齐方法，使用的模式为关键字</p>
+<h2 id="text-align">text-align</h2>
+<p><code>text-align</code>的作用是设置文本的对齐方法，使用的模式为关键字</p>
 <p>比较常用的关键字有<code>left</code>、<code>right</code>、<code>center</code>、<code>justify</code></p>
 <p>默认为<code>left</code>，代表向左对齐，适用于一些常规的文字</p>
 <p><code>right</code>可以用于导航栏等样式，<code>center</code>则为水平居中对齐，<code>justify</code>为两端对齐</p>
 <p>如果想要设定默认的话可以使用<code>start</code>，这个的作用是设定对齐方向是当前书写方向的起始边</p>
 <p>同理<code>end</code>则设定为当前书写方向的结束边</p>
-<h2 id="text-decoration"><a href="#text-decoration" class="headerlink" title="text-decoration"></a>text-decoration</h2><p><code>text-decoration</code>的作用是设置文本的各种线，例如删除线，下划线，上划线等</p>
+<h2 id="text-decoration">text-decoration</h2>
+<p><code>text-decoration</code>的作用是设置文本的各种线，例如删除线，下划线，上划线等</p>
 <p>使用的格式如下：</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">text-decoration</span>: 线的类型 线的样式 线的颜色;</span><br></pre></td></tr></table></figure>
-
 <p>一些常见的关键字如下：</p>
 <p>线的类型：<code>none</code>默认，无线条，<code>underline</code>下划线，<code>overline</code>上划线，<code>line-through</code>上划线</p>
 <p>线的样式：<code>solid</code>实线，<code>double</code>双线，<code>dotted</code>点线，<code>dashed</code>虚线，<code>wavy</code>波浪线</p>
@@ -283,26 +297,30 @@
 <p>此外，如果不想这样直接设置，也可以分别设置其子属性：</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#wrapper</span> <span class="selector-class">.sentence</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#99CAFE</span>;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">  <span class="attribute">font-weight</span>: <span class="number">600</span>;</span><br><span class="line">  <span class="attribute">text-decoration-line</span>: underline overline;</span><br><span class="line">  <span class="attribute">text-decoration-style</span>: solid;</span><br><span class="line">  <span class="attribute">text-decoration-color</span>: <span class="number">#90CCCC</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>分别设置子属性可以使得操作更加精细</p>
-<h2 id="text-transform"><a href="#text-transform" class="headerlink" title="text-transform"></a>text-transform</h2><p><code>text-transform</code>属性的作用是设置文本的大小写，可以通过不同的关键字来设定不同的类型</p>
+<h2 id="text-transform">text-transform</h2>
+<p><code>text-transform</code>属性的作用是设置文本的大小写，可以通过不同的关键字来设定不同的类型</p>
 <p>常见的关键字有<code>capitalize</code>（首字母大写），<code>uppercase</code>（全部大写），<code>lowercase</code>（全部小写）</p>
 <p>默认为<code>none</code></p>
 <p>需要注意的点是，设置这个属性后并不会影响原文本，只是渲染上发生了改变，原文本并不会发生改变</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#wrapper</span> <span class="selector-tag">h1</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#767676</span>;</span><br><span class="line">  <span class="attribute">text-align</span>: center;</span><br><span class="line">  <span class="attribute">font-style</span>: italic;</span><br><span class="line">  <span class="attribute">text-transform</span>: uppercase;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="line-height"><a href="#line-height" class="headerlink" title="line-height"></a>line-height</h2><p><code>line-height</code>的作用是调整行与行之间的间隔，调整时可以通过多种方式调整</p>
+<h2 id="line-height">line-height</h2>
+<p><code>line-height</code>的作用是调整行与行之间的间隔，调整时可以通过多种方式调整</p>
 <p>需要特别注意的一点是，调整行高不仅影响文字上下间距，还影响了行框的高度</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#wrapper</span> <span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">1.25rem</span>;</span><br><span class="line">  <span class="attribute">text-align</span>: left;</span><br><span class="line">  <span class="attribute">line-height</span>: <span class="number">1.2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在上面的例子中，我们将行高设置为1.2，也就是<code>font-size</code>的1.2倍</p>
-<h2 id="letter-spacing"><a href="#letter-spacing" class="headerlink" title="letter-spacing"></a>letter-spacing</h2><p><code>letter-spacing</code>的作用是调整这段文字中各个字符之间的间隔</p>
+<h2 id="letter-spacing">letter-spacing</h2>
+<p><code>letter-spacing</code>的作用是调整这段文字中各个字符之间的间隔</p>
 <p>这个参数可以设置为整数，也可以为负数，如果为负数则可以实现文本重叠的效果</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#wrapper</span> <span class="selector-class">.sentence2</span>&#123;</span><br><span class="line">  <span class="attribute">letter-spacing</span>: <span class="number">20px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>上面的例子设置文本间隔为20像素（实际上很宽了）</p>
-<h2 id="word-spacing"><a href="#word-spacing" class="headerlink" title="word-spacing"></a>word-spacing</h2><p><code>word-spacing</code>的作用是调整单词与单词之间的间隔，分割的标准为空格</p>
+<h2 id="word-spacing">word-spacing</h2>
+<p><code>word-spacing</code>的作用是调整单词与单词之间的间隔，分割的标准为空格</p>
 <p>也就是说，该属性影响的是句子中有空格的部分</p>
 <p>可以理解为这个属性会调整空格的长度</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#wrapper</span> <span class="selector-class">.sentence2</span>&#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#99CAFE</span>;</span><br><span class="line">  <span class="attribute">word-spacing</span>: <span class="number">16px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>上面的例子中我们将两个由空格分割的单词之间的间隔的大小设定为16px</p>
-<h2 id="white-space"><a href="#white-space" class="headerlink" title="white-space"></a>white-space</h2><p><code>white-space</code>属性的作用是设定HTML对于空格的默认处理</p>
+<h2 id="white-space">white-space</h2>
+<p><code>white-space</code>属性的作用是设定HTML对于空格的默认处理</p>
 <p>这里需要先介绍一下HTML对与空格的处理</p>
 <p>在默认情况下，HTML对于空格的处理如下：</p>
 <blockquote>
@@ -314,13 +332,13 @@
 <p><code>nowrap</code>的作用是与默认(normal)类似，不过取消了自动换行的功能，这一特性可以用于显示一些一行表达的文字</p>
 <p><code>break-spaces</code>是一个较为新的关键字，可以保留所有的空白字符，并且必要的时候可以换行（行尾连续空格），与<code>pre-wrap</code>的区别在此</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#wrapper</span> <span class="selector-class">.sentence2</span>&#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#99CAFE</span>;</span><br><span class="line">  <span class="attribute">white-space</span>: pre-wrap;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="text-indent"><a href="#text-indent" class="headerlink" title="text-indent"></a>text-indent</h2><p><code>text-indent</code>的作用为控制首行缩进，让第一行文本向右偏移一段距离</p>
+<h2 id="text-indent">text-indent</h2>
+<p><code>text-indent</code>的作用为控制首行缩进，让第一行文本向右偏移一段距离</p>
 <p>允许使用负值，如果为负值则向左偏移</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#wrapper</span> <span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="attribute">text-indent</span>: <span class="number">2em</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>需要注意的一点是，<code>text-indent</code>只作用于块级元素的<strong>第一行文本</strong>，对于内嵌元素是无效的</p>
-<h2 id="text-shadow"><a href="#text-shadow" class="headerlink" title="text-shadow"></a>text-shadow</h2><p><code>text-shadow</code>的作用是给文本添加文字阴影</p>
+<h2 id="text-shadow">text-shadow</h2>
+<p><code>text-shadow</code>的作用是给文本添加文字阴影</p>
 <p>格式如下</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">text-shadow</span>: h-offset v-offset blur-radius color;</span><br></pre></td></tr></table></figure>
 <p><code>h-offset</code>代表该阴影的水平偏移量，如果为0意味着在水平方向上与原来的文本是重叠的</p>
@@ -330,24 +348,24 @@
 <p>其中<code>h-offset</code>和<code>v-offset</code>为必填项</p>
 <p>这个参数支持多重阴影：</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">h1</span> &#123;</span><br><span class="line">  <span class="attribute">text-shadow</span>:</span><br><span class="line">    <span class="number">0</span> <span class="number">0</span> <span class="number">5px</span> white,</span><br><span class="line">    <span class="number">0</span> <span class="number">0</span> <span class="number">10px</span> yellow,</span><br><span class="line">    <span class="number">0</span> <span class="number">0</span> <span class="number">15px</span> orange;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="width-height"><a href="#width-height" class="headerlink" title="width &#x2F; height"></a>width &#x2F; height</h2><p><code>width</code>和<code>height</code>代表盒模型的宽和高</p>
+<h2 id="width-height">width / height</h2>
+<p><code>width</code>和<code>height</code>代表盒模型的宽和高</p>
 <p>通过设置这两个属性可以控制盒元素的大小</p>
 <p>其基本语法如下：</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">width</span>: length | percentage | auto | min-content | max-content | fit-content |</span><br></pre></td></tr></table></figure>
-
 <p>其中，<code>length</code>代表当前元素的长度，可以使用绝对长度或者是相对长度</p>
 <p><code>percentage</code>代表相对于包含块的宽度或高度</p>
 <p><code>min-content</code>和<code>max-content</code>代表元素可能最大尺寸</p>
 <p><code>fit-content</code>代表根据可用空间自适应，不超过指定的值，也不小于所需最小值</p>
 <p><code>height</code>同理</p>
-<h2 id="background-color"><a href="#background-color" class="headerlink" title="background-color"></a>background-color</h2><p><code>background-color</code>的作用是设定背景的颜色</p>
+<h2 id="background-color">background-color</h2>
+<p><code>background-color</code>的作用是设定背景的颜色</p>
 <p>可以通过关键词或者十六进制来设定颜色</p>
 <p>具体内容可以参照<code>color</code>属性</p>
-<h2 id="background-image"><a href="#background-image" class="headerlink" title="background-image"></a>background-image</h2><p><code>background-image</code>的作用是设置背景图</p>
+<h2 id="background-image">background-image</h2>
+<p><code>background-image</code>的作用是设置背景图</p>
 <p>基本的语法为</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">background-image</span>: <span class="built_in">url</span>();</span><br></pre></td></tr></table></figure>
-
 <p>其中圆括号内的内容可以为绝对路径，也可以为相对路径</p>
 <p>CSS3支持一个元素设置多个背景图像，两个链接之间使用逗号分割即可</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">background-image</span>: <span class="built_in">url</span>(),<span class="built_in">url</span>();</span><br></pre></td></tr></table></figure>
@@ -390,7 +408,7 @@
                 <a class="prev" rel="prev" href="/archives/2026-01-20/note/">LLM 笔记</a>
             
             
-            <a class="next" rel="next" href="/archives/2025-10-24/collection/">集合（Collection）</a>
+                <a class="next" rel="next" href="/archives/2025-10-24/collection/">集合（Collection）</a>
             
         </section>
 

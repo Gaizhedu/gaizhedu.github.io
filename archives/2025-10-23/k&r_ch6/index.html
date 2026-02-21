@@ -214,16 +214,28 @@
 
                     
                         <span class="post-time">
-                        日期: <a href="#">2025-10-23&nbsp;&nbsp;0:00:00</a>
+                        日期: <a
+                                    href="#">2025-10-23&nbsp;&nbsp;0:00:00</a>
                         </span>
                     
                     
+                </div>
+                <div class="post-meta">
+                    <!-- 单篇文章字数 -->
+                    <span class="post-wordcount">
+                    字数：1.9k
+                    </span>
+                    <!-- 阅读时长 -->
+                    <span class="post-min2read">
+                    阅读时长：7 分钟
+                    </span>
                 </div>
             
         </header>
 
         <div class="post-content">
-            <h1 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h1><p>这一章将讲讲C中有关结构的内容</p>
+            <h1>结构</h1>
+<p>这一章将讲讲C中有关结构的内容</p>
 <p>首先我们需要理解结构是什么</p>
 <p>结构，说白了便是一个以一个或多个变量组成的集合，而这些集合中的变量是可以为不同类型的</p>
 <p>为什么要使用结构呢？这是因为结构可以将一组相关的变量看做一个单元而不是各自独立的实体，因此，使用结构可以更加灵活地处理复杂的元素，特别是用于一些大型的程序里面</p>
@@ -233,10 +245,11 @@
 <p>一个比较经典的例子是图形绘制，点可以由一对坐标定义，而矩形可以由两个点定义</p>
 <p>而在ANSI标准（C89）之后，结构便多了一些操作，比如说拷贝、赋值、传递给函数等，函数也可以返回一个结构类型的值</p>
 <blockquote>
-<p><del>怎么感觉有点像OOP</del></p>
+<p><s>怎么感觉有点像OOP</s></p>
 </blockquote>
 <p>这便是结构的一些基础内容</p>
-<h2 id="结构的基本知识"><a href="#结构的基本知识" class="headerlink" title="结构的基本知识"></a>结构的基本知识</h2><p>接下来来讲讲结构的相关知识</p>
+<h2 id="结构的基本知识">结构的基本知识</h2>
+<p>接下来来讲讲结构的相关知识</p>
 <p>首先第一个点，我们将创建一个结构用于表示坐标轴里面的坐标：</p>
 <p>在明白需求后，我们便要知道如何创建一个结构</p>
 <p>其最基本的框架如下：</p>
@@ -246,10 +259,8 @@
 <p>但一般来讲，除非两个东西之间关系十分密切，否则不会使用相同的名称</p>
 <p><code>struct</code>声明定义了一种数据类型，在标志结构成员表结束的右花括号之后可以跟着一个变量表</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    ...</span><br><span class="line">&#125; x , y , z;</span><br></pre></td></tr></table></figure>
-
 <p>从语法的角度上讲，这种声明是类似于下面这种的</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x, y, z;</span><br></pre></td></tr></table></figure>
-
 <p>这两种声明都将变量声明为指定类型的变量，并且为他们分配存储空间</p>
 <p>假设结构声明的后面不带参数表，那么不需要尾鳍分配存储空间</p>
 <p>但是，如果结构声明中带有标记，那么在定义结构实例的时候便可以该标记定义</p>
@@ -267,10 +278,9 @@
 <p>举个例子，我们的结构名为<code>maxpt</code>，而另外的成员分别为<code>px</code>和<code>py</code></p>
 <p>需要使用的时候只需要这样便可以了</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">maxpt.px</span><br><span class="line">maxpt.py</span><br></pre></td></tr></table></figure>
-
-<h3 id="嵌套结构"><a href="#嵌套结构" class="headerlink" title="嵌套结构"></a>嵌套结构</h3><p>结构是可以嵌套的，比如说：</p>
+<h3 id="嵌套结构">嵌套结构</h3>
+<p>结构是可以嵌套的，比如说：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">jiegou1</span>&#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">jiegou2</span>&#123;</span></span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>举个实际的例子。我们稍微修改之前的那个程序：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rect</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">point</span> &#123;</span></span><br><span class="line">        <span class="type">int</span> px;</span><br><span class="line">        <span class="type">int</span> py;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">point</span> <span class="title">ppx</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">point</span> <span class="title">ppy</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rect</span> <span class="title">screen</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;x:%d y:%d&quot;</span>, screen.ppx.px, screen.ppy.py);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在这里例子中，我们可以发现，在结构<code>rect</code>里面我们声明了另一个结构<code>point</code></p>
@@ -278,7 +288,8 @@
 <p>这里也就是说，结构<code>rect</code>里面包含了结构<code>point</code>的两个成员</p>
 <p>而在后面我们声明了一个<code>struct rect</code>类型的变量<code>screen</code></p>
 <p>在声明之后，便可以使用<code>screen.ppx.px</code>来调用<code>point</code>的成员了</p>
-<h3 id="需要提到的一些点"><a href="#需要提到的一些点" class="headerlink" title="需要提到的一些点"></a>需要提到的一些点</h3><p>这里需要注意的一点是</p>
+<h3 id="需要提到的一些点">需要提到的一些点</h3>
+<p>这里需要注意的一点是</p>
 <blockquote>
 <p>此处struct rect有少许调整，里面声明的两个point的成员变为pt1和pt2</p>
 </blockquote>
@@ -288,12 +299,12 @@
 <p>假设我们新建一个方法<code>makepoint</code></p>
 <p>这个方法的具体代码如下</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> point <span class="title function_">makepoint</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y)</span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">point</span> <span class="title">temp</span>;</span></span><br><span class="line">    temp.x = x;</span><br><span class="line">    temp.y = y;</span><br><span class="line">    <span class="keyword">return</span> temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>而此时如果我们使用</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">test1.pt1 = makepoint(<span class="number">0</span>,<span class="number">1</span>);</span><br><span class="line">test2.pt1 = makepoint(<span class="number">2</span>,<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
 <p>那么这两个成员的pt1是不同的</p>
 <p>第一个test1的pt1为<code>0,1</code>，而第二个test2的pt1为<code>2,1</code></p>
-<h2 id="结构与函数"><a href="#结构与函数" class="headerlink" title="结构与函数"></a>结构与函数</h2><p>接下来将讲讲结构与函数这一节的内容</p>
+<h2 id="结构与函数">结构与函数</h2>
+<p>接下来将讲讲结构与函数这一节的内容</p>
 <p>首先我们需要明白对结构而言，什么操作是合法的</p>
 <p>对于结构的合法操作只有这几种：</p>
 <ol>
@@ -307,17 +318,14 @@
 <p>首先第一个函数为<code>makepoint</code></p>
 <p>这个函数的作用是传入两个坐标的x和y，之后返回一个point类型的结构</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> point <span class="title function_">makepoint</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">point</span> <span class="title">temp</span>;</span></span><br><span class="line"></span><br><span class="line">    temp.x = x;</span><br><span class="line">    temp.y = y;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>这里我们可以举一个例子来说明这个函数是怎么用的</p>
 <p>我们的基本框架如下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment">创建结构point，其中有两个普通变量，分别为x，y，和一个成员middle</span></span><br><span class="line"><span class="comment">其中，middle代表两个点的中点</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">point</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> x;</span><br><span class="line">    <span class="type">int</span> y;</span><br><span class="line">&#125;middle;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment">创建结构rect，并在其中定义了两个point类型的成员：pt1和pt2</span></span><br><span class="line"><span class="comment">同时还有一个成员screen</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rect</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">point</span> <span class="title">pt1</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">point</span> <span class="title">pt2</span>;</span></span><br><span class="line">&#125;screen;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> point <span class="title function_">makepoint</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y)</span> &#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">point</span> <span class="title">temp</span>;</span></span><br><span class="line">    temp.x = x;</span><br><span class="line">    temp.y = y;</span><br><span class="line">    <span class="keyword">return</span> temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>接下来我们要创建两个点：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">screen.pt1 = makepoint(<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">screen.pt2 = makepoint(<span class="number">100</span>,<span class="number">100</span>);</span><br></pre></td></tr></table></figure>
 <p>可以看到，我们使用了<code>makepoint()</code>函数成功创建了两个点，一个为<code>0,0</code>另一个为<code>100,100</code></p>
 <p>接下来我们想要获取这两个点的中点，我们便可以这样做：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">middle = makepoint((screen.pt1.x + screen.pt2.x)/<span class="number">2</span> + (screen.pt1.y+screen.pt2.y)/<span class="number">2</span>);</span><br></pre></td></tr></table></figure>
-
 <p>接下来来说明一下：</p>
 <p>首先，结构point里面声明了两个普通变量，分别为x和y</p>
 <p>而结构的成员是可以使用这个结构的普通变量的</p>
@@ -350,12 +358,12 @@
                 <span>Tag(s):</span>
                 <span class="tag">
                     
-                    
-                        <a href="/tags/WIP/"># WIP</a>
-                    
-                        <a href="/tags/C/"># C</a>
-                    
                         
+                            <a href="/tags/C/"># C</a>
+                        
+                            <a href="/tags/WIP/"># WIP</a>
+                        
+                    
                 </span>
             </div>
             <div>
@@ -369,7 +377,7 @@
                 <a class="prev" rel="prev" href="/archives/2025-10-24/collection/">集合（Collection）</a>
             
             
-            <a class="next" rel="next" href="/archives/2025-09-22/k&r_ch5/">C程序设计语言（K&R）第五章</a>
+                <a class="next" rel="next" href="/archives/2025-09-22/k&r_ch5/">C程序设计语言（K&R）第五章</a>
             
         </section>
 

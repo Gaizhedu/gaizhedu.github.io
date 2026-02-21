@@ -214,43 +214,63 @@
 
                     
                         <span class="post-time">
-                        日期: <a href="#">2026-01-20&nbsp;&nbsp;0:00:00</a>
+                        日期: <a
+                                    href="#">2026-01-20&nbsp;&nbsp;0:00:00</a>
                         </span>
                     
                     
+                </div>
+                <div class="post-meta">
+                    <!-- 单篇文章字数 -->
+                    <span class="post-wordcount">
+                    字数：4.2k
+                    </span>
+                    <!-- 阅读时长 -->
+                    <span class="post-min2read">
+                    阅读时长：14 分钟
+                    </span>
                 </div>
             
         </header>
 
         <div class="post-content">
-            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这份笔记将记录有关该<a target="_blank" rel="noopener" href="https://datawhalechina.github.io/llm-universe">项目</a>的学习历程</p>
-<h2 id="1-1-大型语言模型（LLM）简介"><a href="#1-1-大型语言模型（LLM）简介" class="headerlink" title="1.1 大型语言模型（LLM）简介"></a>1.1 大型语言模型（LLM）简介</h2><p>首先什么是LLM，LLM指的是<strong>大型语言模型</strong>的简称</p>
+            <h1>前言</h1>
+<p>这份笔记将记录有关该<a target="_blank" rel="noopener" href="https://datawhalechina.github.io/llm-universe">项目</a>的学习历程</p>
+<h2 id="1-1-大型语言模型（LLM）简介">1.1 大型语言模型（LLM）简介</h2>
+<p>首先什么是LLM，LLM指的是<strong>大型语言模型</strong>的简称</p>
 <p><strong>Transformer</strong>架构与2018年开始出现，其特点为通过大量文本数据来训练这些模型，使它们可以通过阅读大量文本来深入理解语言规则和模式</p>
 <p>语言模型规模的扩大（增加模型大小或者使用更多的数据），模型可以展现出一些惊人的能力，使其在各种任务中都显著提升</p>
 <p>获得大模型所经历的三个时期：预训练、后训练和在线推理</p>
-<h3 id="1-1-2-1-涌现能力"><a href="#1-1-2-1-涌现能力" class="headerlink" title="1.1.2.1 涌现能力"></a>1.1.2.1 涌现能力</h3><p>涌现能力是区分LLM和PLM最为显著的特征，常见的涌现能力有上下文学习，指令遵循以及逐步推理</p>
-<h2 id="1-2-什么是RAG"><a href="#1-2-什么是RAG" class="headerlink" title="1.2 什么是RAG"></a>1.2 什么是RAG</h2><p>由于LLM在某些情况下人会出现无法提供准确的答案的情况，为了解决这一问题，便提出了一种新的模型架构：<strong>检索增强生成</strong></p>
+<h3 id="1-1-2-1-涌现能力">1.1.2.1 涌现能力</h3>
+<p>涌现能力是区分LLM和PLM最为显著的特征，常见的涌现能力有上下文学习，指令遵循以及逐步推理</p>
+<h2 id="1-2-什么是RAG">1.2 什么是RAG</h2>
+<p>由于LLM在某些情况下人会出现无法提供准确的答案的情况，为了解决这一问题，便提出了一种新的模型架构：<strong>检索增强生成</strong></p>
 <p>这一功能整合了从庞大知识库中检索到的相关信息，并且由此为基础来指导大型语言模型生成更为精准的答案，从而显著提升回答的准确度与深度</p>
-<h3 id="1-2-1-RAG的工作流程"><a href="#1-2-1-RAG的工作流程" class="headerlink" title="1.2.1 RAG的工作流程"></a>1.2.1 RAG的工作流程</h3><p>RAG的工作流程可以分为4个阶段，分别是数据处理，检索，增强和生成四个阶段</p>
+<h3 id="1-2-1-RAG的工作流程">1.2.1 RAG的工作流程</h3>
+<p>RAG的工作流程可以分为4个阶段，分别是数据处理，检索，增强和生成四个阶段</p>
 <p>在数据处理阶段，先对原始数据进行清洗和处理，而后将处理后的数据转化为检索模型可以使用的格式，再讲处理后的数据存储到对应的数据库中。</p>
 <p>检索阶段，将用户的问题输入到检索系统中，在数据库中检索相关信息</p>
 <p>增强阶段，对检索的信息进行处理和增强，这是为了让生成模型可以更好地理解和使用</p>
 <p>生成阶段，将增强后的信息输入到生成模型中，生成模型根据这些信息来生成答案</p>
-<h3 id="1-2-2-RAG和微调"><a href="#1-2-2-RAG和微调" class="headerlink" title="1.2.2 RAG和微调"></a>1.2.2 RAG和微调</h3><p>在提升大语言模型效果中，RAG和微调是两个比较主流的方法</p>
+<h3 id="1-2-2-RAG和微调">1.2.2 RAG和微调</h3>
+<p>在提升大语言模型效果中，RAG和微调是两个比较主流的方法</p>
 <p>微调指是在特定的数据集上进一步训练语言模型，由此来提升模型在特定任务上的表现</p>
-<h2 id="1-3-LangChain"><a href="#1-3-LangChain" class="headerlink" title="1.3 LangChain"></a>1.3 LangChain</h2><p>什么是LangChain呢？</p>
+<h2 id="1-3-LangChain">1.3 LangChain</h2>
+<p>什么是LangChain呢？</p>
 <p>简单来说，在ChatGPT成功的背景下，有大量的开发者急需利用OpenAI提供的API或者私有化模型来开发基于LLM的应用程序</p>
 <p>虽然说LLM的调用比较简单，但是想要创建完整的应用程序，还是需要很复杂的工作，在此期间，有很多机构和开发者推出了大量的开源项目，旨在帮助开发者快速构建基于LLM的端到端应用程序</p>
 <p>LangChain便是其中的一个项目</p>
 <p>LangChain的目的是为各种LLM提供通用接口，从而简化应用程序的开发流程</p>
-<h3 id="1-3-1-LangChain的核心组件"><a href="#1-3-1-LangChain的核心组件" class="headerlink" title="1.3.1 LangChain的核心组件"></a>1.3.1 LangChain的核心组件</h3><p>LangChain主要由以下6个核心组件组成</p>
+<h3 id="1-3-1-LangChain的核心组件">1.3.1 LangChain的核心组件</h3>
+<p>LangChain主要由以下6个核心组件组成</p>
 <p>模型输入、输出：与模型交互的接口</p>
 <p>数据连接：与特定应用程序的数据进行交互的接口</p>
 <p>链：将组件组合实现端到端应用</p>
 <p>记忆：用于链的多次运行之间持久化应用程序状态</p>
 <p>代理、回调：扩展模型的推理能力，用于复杂的应用的调用序列</p>
 <p>在实际开发中，会根据自身需求灵活地进行组合</p>
-<h2 id="1-4-大模型开发"><a href="#1-4-大模型开发" class="headerlink" title="1.4 大模型开发"></a>1.4 大模型开发</h2><p>我们将开发<strong>以大语言模型为功能核心、通过大语言模型的强大理解能力和生成能力、结合特殊的数据或业务逻辑来提供独特功能的应用</strong>称为<strong>大模型开发</strong>。</p>
+<h2 id="1-4-大模型开发">1.4 大模型开发</h2>
+<p>我们将开发<strong>以大语言模型为功能核心、通过大语言模型的强大理解能力和生成能力、结合特殊的数据或业务逻辑来提供独特功能的应用</strong>称为<strong>大模型开发</strong>。</p>
 <p>一般通过调用API或开源模型来实现核心的理解与生成，通过Prompt Enginnering 来实现大语言模型的控制</p>
 <p>传统的AI开发：</p>
 <ol>
@@ -280,7 +300,8 @@
 <li>不断从业务逻辑中收集Prompt的Bad Case</li>
 <li>将Bad Case加入到验证集中，针对性优化Prompt，由此来实现较好的泛化效果</li>
 </ol>
-<h3 id="1-4-1-大模型开发的一般流程"><a href="#1-4-1-大模型开发的一般流程" class="headerlink" title="1.4.1 大模型开发的一般流程"></a>1.4.1 大模型开发的一般流程</h3><p>常见的流程如下：</p>
+<h3 id="1-4-1-大模型开发的一般流程">1.4.1 大模型开发的一般流程</h3>
+<p>常见的流程如下：</p>
 <ol>
 <li>确定目标</li>
 <li>设计功能</li>
@@ -291,31 +312,36 @@
 <li>前后端搭建</li>
 <li>体验优化</li>
 </ol>
-<h1 id="使用LLM-API开发应用"><a href="#使用LLM-API开发应用" class="headerlink" title="使用LLM API开发应用"></a>使用LLM API开发应用</h1><h2 id="2-1-基本概念"><a href="#2-1-基本概念" class="headerlink" title="2.1 基本概念"></a>2.1 基本概念</h2><h3 id="2-1-1-Prompt"><a href="#2-1-1-Prompt" class="headerlink" title="2.1.1 Prompt"></a>2.1.1 Prompt</h3><blockquote>
+<h1>使用LLM API开发应用</h1>
+<h2 id="2-1-基本概念">2.1 基本概念</h2>
+<h3 id="2-1-1-Prompt">2.1.1 Prompt</h3>
+<blockquote>
 <p>Prompt 最初是 NLP（自然语言处理）研究者为下游任务设计出来的一种任务专属的输入模板，类似于一种任务（例如：分类，聚类等）会对应一种 Prompt。</p>
 </blockquote>
 <p>简单来讲，就是每个具体的任务对应了一个输入的模版，这个模版就被成为Prompt</p>
 <p>在后续会使用Prompt来代替给LLM的输入，使用Completion来代替LLM的输出</p>
-<h3 id="2-1-2-Temperature"><a href="#2-1-2-Temperature" class="headerlink" title="2.1.2 Temperature"></a>2.1.2 Temperature</h3><p>从原理上我们可以知道，LLM的生成是具有随机性的，通过在模型中的顶层选出不同预测概率的预测结果来决定最后的生成，而Temperature参数便可以来调整LLM生成就饿过对应的随机性和创造性</p>
+<h3 id="2-1-2-Temperature">2.1.2 Temperature</h3>
+<p>从原理上我们可以知道，LLM的生成是具有随机性的，通过在模型中的顶层选出不同预测概率的预测结果来决定最后的生成，而Temperature参数便可以来调整LLM生成就饿过对应的随机性和创造性</p>
 <p>一般来讲，Temperature的取值在0~1左右，越接近0，那么生成的随机性会越低，而越接近1，其随机性便会越高，文本的创意也会越高</p>
 <p>Temperature的选取不是固定的，需要根据具体的任务来选择具体的范围</p>
 <p>比如说想要搭建个人知识库助手，那么Temperature一般设置成0，这样可以规避一些模型的幻觉问题</p>
 <p>但如果说是为了生成一些创意的文本，那么Temperature可以设定较高的数值</p>
-<h2 id="2-1-3-System-Prompt"><a href="#2-1-3-System-Prompt" class="headerlink" title="2.1.3 System Prompt"></a>2.1.3 System Prompt</h2><p>System Prompt是随着ChatGPT API开放并逐步得到使用的一个新兴概念，但是它并不会在大模型训练中得到体现，而是大模型服务方为提升用户体验所设置的一种策略</p>
+<h2 id="2-1-3-System-Prompt">2.1.3 System Prompt</h2>
+<p>System Prompt是随着ChatGPT API开放并逐步得到使用的一个新兴概念，但是它并不会在大模型训练中得到体现，而是大模型服务方为提升用户体验所设置的一种策略</p>
 <p>具体来说，你在使用ChatGPT API的时候，你可以设置两种Prompt</p>
 <p>一种是System Prompt，该种Prompt内容会在整个对话过程中持久地影响模型的回复，相比于不同Prompt具有更高的重要性</p>
 <p>另一种是User Prompt，也就是我们平时所提到的Prompt，需要模型做出回复的输入</p>
-<h2 id="2-2-使用LLM-API"><a href="#2-2-使用LLM-API" class="headerlink" title="2.2 使用LLM API"></a>2.2 使用LLM API</h2><p>使用LLM API来调用大模型</p>
-<h3 id="2-2-4-使用智谱GLM"><a href="#2-2-4-使用智谱GLM" class="headerlink" title="2.2.4 使用智谱GLM"></a>2.2.4 使用智谱GLM</h3><p>接下来介绍如何使用智谱GLM的API</p>
+<h2 id="2-2-使用LLM-API">2.2 使用LLM API</h2>
+<p>使用LLM API来调用大模型</p>
+<h3 id="2-2-4-使用智谱GLM">2.2.4 使用智谱GLM</h3>
+<p>接下来介绍如何使用智谱GLM的API</p>
 <p>此处建议使用SDK进行调用以获得更好的编程体验</p>
 <p>首先是配置秘钥信息：</p>
 <p>需要将<code>API key</code>设置到<code>.env</code>文件中的<code>ZHIPUAI_API_KEY</code>参数</p>
 <p>然后运行以下代码来加载配置信息</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> dotenv <span class="keyword">import</span> load_dotenv, find_dotenv</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取本地/项目的环境变量。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># find_dotenv() 寻找并定位 .env 文件的路径</span></span><br><span class="line"><span class="comment"># load_dotenv() 读取该 .env 文件，并将其中的环境变量加载到当前的运行环境中  </span></span><br><span class="line"><span class="comment"># 如果你设置的是全局的环境变量，这行代码则没有任何作用。</span></span><br><span class="line">_ = load_dotenv(find_dotenv())</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <p>智谱的调用传参与其他类似，需要传入一个<code>messages</code>列表，这个列表中包括了<code>role</code>和<code>prompt</code>此处封装如下的<code>get_completion</code>函数，方便后续使用</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> zhipuai <span class="keyword">import</span> ZhipuAI</span><br><span class="line"></span><br><span class="line">client = ZhipuAI(</span><br><span class="line">    api_key=os.environ[<span class="string">&quot;ZHIPUAI_API_KEY&quot;</span>]</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">gen_glm_params</span>(<span class="params">prompt</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    构造 GLM 模型请求参数 messages</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    请求参数：</span></span><br><span class="line"><span class="string">        prompt: 对应的用户提示词</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    messages = [&#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: prompt&#125;]</span><br><span class="line">    <span class="keyword">return</span> messages</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_completion</span>(<span class="params">prompt, model=<span class="string">&quot;glm-4-plus&quot;</span>, temperature=<span class="number">0.95</span></span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    获取 GLM 模型调用结果</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    请求参数：</span></span><br><span class="line"><span class="string">        prompt: 对应的提示词</span></span><br><span class="line"><span class="string">        model: 调用的模型，默认为 glm-4，也可以按需选择 glm-3-turbo 等其他模型</span></span><br><span class="line"><span class="string">        temperature: 模型输出的温度系数，控制输出的随机程度，取值范围是 0.0-1.0。温度系数越低，输出内容越一致。</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">    messages = gen_glm_params(prompt)</span><br><span class="line">    response = client.chat.completions.create(</span><br><span class="line">        model=model,</span><br><span class="line">        messages=messages,</span><br><span class="line">        temperature=temperature</span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(response.choices) &gt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> response.choices[<span class="number">0</span>].message.content</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;generate answer error&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <p>之后调用<code>get_completion(&quot;你好&quot;)</code></p>
 <p>接下来介绍传入的参数：</p>
 <p><code>messages(list)</code>：调用对话模型的时候，将该信息列表作为提示输入给模型，格式如下：<code>{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;你好&quot;}</code></p>
@@ -325,15 +351,18 @@
 <p>模型考虑具有top_p概率质量tokens的结果（？），如0.1则意味着模型解码器只考虑从前10%概率的候选集中取tokens</p>
 <p><code>request_id(string)</code>：用于区分每次请求的唯一标识，如果用户端不传时平台会默认生成</p>
 <p>一般根据实际的应用场景来调整<code>top_p</code>和<code>temperature</code>，但不要同时调整两个参数</p>
-<h2 id="2-3-Prompt-Engineering"><a href="#2-3-Prompt-Engineering" class="headerlink" title="2.3 Prompt Engineering"></a>2.3 Prompt Engineering</h2><p>什么是Prompt呢？简单来说就是用户与大模型交互输入的代称</p>
+<h2 id="2-3-Prompt-Engineering">2.3 Prompt Engineering</h2>
+<p>什么是Prompt呢？简单来说就是用户与大模型交互输入的代称</p>
 <p>我们给大模型的输入称为Prompt</p>
 <p>而大模型返回的输出一般称为Completion</p>
 <p>一般来讲，一个好的Prompt设计会极大地决定了LLM的能力上限和下限</p>
-<h4 id="如何设计一个好的Prompt"><a href="#如何设计一个好的Prompt" class="headerlink" title="如何设计一个好的Prompt"></a>如何设计一个好的Prompt</h4><p>如何设计出一个好的Prompt来充分发挥LLM的性能？在了解这个之前需要知道设计Prompt的两个关键原则：<strong>编写清晰、具体的指令和基于模型充分思考的时间</strong></p>
+<h4 id="如何设计一个好的Prompt">如何设计一个好的Prompt</h4>
+<p>如何设计出一个好的Prompt来充分发挥LLM的性能？在了解这个之前需要知道设计Prompt的两个关键原则：<strong>编写清晰、具体的指令和基于模型充分思考的时间</strong></p>
 <p>首先第一点，Prompt需要清晰明确表达需求，需要提供充足的上下文，这里的目的是让语言模型能够理解我们的意图</p>
 <p>一般而言，更长更复杂的Prompt能够提供更丰富的上下文和细节，让模型可以更准确地把握所需的操作和响应方式</p>
 <p>接下来详细介绍如何设计Prompt的技巧</p>
-<h3 id="2-3-1-使用分隔符清晰地表示输入的不同部分"><a href="#2-3-1-使用分隔符清晰地表示输入的不同部分" class="headerlink" title="2.3.1 使用分隔符清晰地表示输入的不同部分"></a>2.3.1 使用分隔符清晰地表示输入的不同部分</h3><p>在编写Prompt时，我们可以使用各种标点符号作为“分割符”，将不同的文本区分开来，这样的好处是可以将不同的指令、上下文分割出来，避免出现意外的混淆</p>
+<h3 id="2-3-1-使用分隔符清晰地表示输入的不同部分">2.3.1 使用分隔符清晰地表示输入的不同部分</h3>
+<p>在编写Prompt时，我们可以使用各种标点符号作为“分割符”，将不同的文本区分开来，这样的好处是可以将不同的指令、上下文分割出来，避免出现意外的混淆</p>
 <p>使用的符号没有太多要求，只要能明确起到隔断作用即可</p>
 <blockquote>
 <p>[!WARNING]</p>
@@ -350,7 +379,6 @@
 <p>比如说我想要让LLM生成一些书的标题、作者和类别，并且要求以JSON的格式返回给我们</p>
 <p>为了方便，还可以制定JSON的键名：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">prompt = <span class="string">f&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">请生成包括书名、作者和类别的三本虚构的、非真实存在的中文书籍清单，\</span></span><br><span class="line"><span class="string">并以 JSON 格式提供，其中包含以下键:book_id、title、author、genre。</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">response = get_completion(prompt)</span><br><span class="line"><span class="built_in">print</span>(response)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <p>此处可以看到在Prompt中有一句<code>并以 JSON 格式提供，其中包含以下键:book_id、title、author、genre。</code></p>
 <p>这里便是让LLM结构化输出</p>
 <p><strong>要求模型检查是否满足条件</strong></p>
@@ -358,7 +386,8 @@
 <p><strong>提供少量示例</strong></p>
 <p>写Prompt中我们给模型提供一些参考的样例，让模型了解我们的要求和期望的输出样式</p>
 <p>利用少样本样例，可以比较轻松预热语言模型</p>
-<h3 id="2-3-2-给模型时间思考"><a href="#2-3-2-给模型时间思考" class="headerlink" title="2.3.2 给模型时间思考"></a>2.3.2 给模型时间思考</h3><p>在设计Prompt的时候，给语言模型充足的推理时间是非常重要的</p>
+<h3 id="2-3-2-给模型时间思考">2.3.2 给模型时间思考</h3>
+<p>在设计Prompt的时候，给语言模型充足的推理时间是非常重要的</p>
 <p>语言模型跟人一样，需要给时间思考来解决复杂问题，如果说让模型匆忙给出结论，那么其结果可能不准确</p>
 <p>而这里也告诉我们应该在Prompt中引导语言模型进行深入思考，可以要求其列出对问题的各种看法，说明推理依据，然后再得出最终结论</p>
 <p><strong>指导模型在下结论之前找出一个自己的解法</strong></p>
@@ -366,7 +395,10 @@
 <p>假设我们想要让语言模型判断一个数学问题的解答是否正确，只是提供问题和解答是明显不够的</p>
 <p>原因在于语言模型可能会做出不合理的判断</p>
 <p>为了解决这一问题，我们便需要再Prompt中要求语言模型尝试自己解决这一问题，思考出自己的解法，然后在与提供的解法相判断，以此来判断解答的正确性</p>
-<h2 id="搭建向量数据库"><a href="#搭建向量数据库" class="headerlink" title="搭建向量数据库"></a>搭建向量数据库</h2><h3 id="3-1-向量及向量知识库"><a href="#3-1-向量及向量知识库" class="headerlink" title="3.1 向量及向量知识库"></a>3.1 向量及向量知识库</h3><h4 id="3-1-1-词向量与向量"><a href="#3-1-1-词向量与向量" class="headerlink" title="3.1.1 词向量与向量"></a>3.1.1 词向量与向量</h4><p>在机器学习和自然语言处理中，词向量（word embedding）是一种以单词为单位将没个单词转化为实数向量的技术</p>
+<h2 id="搭建向量数据库">搭建向量数据库</h2>
+<h3 id="3-1-向量及向量知识库">3.1 向量及向量知识库</h3>
+<h4 id="3-1-1-词向量与向量">3.1.1 词向量与向量</h4>
+<p>在机器学习和自然语言处理中，词向量（word embedding）是一种以单词为单位将没个单词转化为实数向量的技术</p>
 <p>这些实数向量可以更好被计算机理解和处理</p>
 <p>词向量的背后是相似或相关的对象在向量空间中的距离应该很近</p>
 <p>如果两个词汇的语意比较接近，那么他的向量空间中的位置将会非常接近，例如：”apple“和”orange“，因为这两者都是水果</p>
@@ -414,7 +446,7 @@
                 <a class="prev" rel="prev" href="/archives/2026-02-12/hello-world/">Hello World</a>
             
             
-            <a class="next" rel="next" href="/archives/2025-12-31/css3/">CSS3 属性</a>
+                <a class="next" rel="next" href="/archives/2025-12-31/css3/">CSS3 属性</a>
             
         </section>
 
