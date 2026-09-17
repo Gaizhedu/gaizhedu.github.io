@@ -1,0 +1,7 @@
+{
+  "questionRatio": 0.3,
+  "background": "bookshelf",
+  "questionFiles": ["09_17.json"],
+  "player": { "src": "assets/player_3x.png", "row": 7, "leftRow": 3, "frames": 6, "cellSize": 384, "baseline": 372 },
+  "enemy": { "src": "assets/enemies/evil_3x.png", "row": 3, "frames": 6, "cellSize": 384, "baseline": 330 }
+}

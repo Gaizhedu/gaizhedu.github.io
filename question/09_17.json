@@ -1,0 +1,139 @@
+{
+  "schemaVersion": "1.0",
+  "questionBank": {
+    "title": "IT基础概念题库",
+    "description": "示例题库，支持后续扩展更多题型、分类、难度和解析",
+    "questions": [
+      {
+        "questionId": "Q0001",
+        "questionDetail": "IaaS 的意思是什么？",
+        "optionA": "基础设施即服务",
+        "optionB": "平台即服务",
+        "optionC": "软件即服务",
+        "optionD": "数据即服务",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "IaaS 是 Infrastructure as a Service 的缩写，意思是基础设施即服务。",
+        "tags": ["云计算", "IaaS"],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0002",
+        "questionDetail": "PaaS 的意思是什么？",
+        "optionA": "基础设施即服务",
+        "optionB": "平台即服务",
+        "optionC": "软件即服务",
+        "optionD": "网络即服务",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "PaaS 是 Platform as a Service 的缩写，意思是平台即服务。",
+        "tags": ["云计算", "PaaS"],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0003",
+        "questionDetail": "SaaS 的意思是什么？",
+        "optionA": "基础设施即服务",
+        "optionB": "平台即服务",
+        "optionC": "软件即服务",
+        "optionD": "存储即服务",
+        "correctOption": "C",
+        "type": "single_choice",
+        "explanation": "SaaS 是 Software as a Service 的缩写，意思是软件即服务。",
+        "tags": ["云计算", "SaaS"],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0004",
+        "questionDetail": "HTTP 默认使用的端口号是多少？",
+        "optionA": "21",
+        "optionB": "22",
+        "optionC": "80",
+        "optionD": "443",
+        "correctOption": "C",
+        "type": "single_choice",
+        "explanation": "HTTP 默认端口是 80，HTTPS 默认端口是 443。",
+        "tags": ["网络", "HTTP"],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0005",
+        "questionDetail": "HTTPS 默认使用的端口号是多少？",
+        "optionA": "80",
+        "optionB": "443",
+        "optionC": "8080",
+        "optionD": "3306",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "HTTPS 默认端口是 443。",
+        "tags": ["网络", "HTTPS"],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0006",
+        "questionDetail": "CPU 的中文全称是什么？",
+        "optionA": "中央处理器",
+        "optionB": "图形处理器",
+        "optionC": "内存",
+        "optionD": "硬盘",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "CPU 是 Central Processing Unit 的缩写，中文为中央处理器。",
+        "tags": ["计算机基础", "硬件"],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0007",
+        "questionDetail": "RAM 的主要特点是什么？",
+        "optionA": "断电后数据保留",
+        "optionB": "只能读取不能写入",
+        "optionC": "属于外部存储",
+        "optionD": "断电后数据丢失",
+        "correctOption": "D",
+        "type": "single_choice",
+        "explanation": "RAM 是随机存取存储器，属于易失性存储，断电后数据会丢失。",
+        "tags": ["计算机基础", "内存"],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0008",
+        "questionDetail": "SQL 主要用于什么场景？",
+        "optionA": "网页样式描述",
+        "optionB": "关系型数据库操作",
+        "optionC": "版本控制",
+        "optionD": "图像处理",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "SQL 是结构化查询语言，主要用于关系型数据库的查询和操作。",
+        "tags": ["数据库", "SQL"],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0009",
+        "questionDetail": "Git 的主要功能是什么？",
+        "optionA": "数据库管理",
+        "optionB": "网络抓包",
+        "optionC": "分布式版本控制",
+        "optionD": "图像处理",
+        "correctOption": "C",
+        "type": "single_choice",
+        "explanation": "Git 是一个分布式版本控制系统，用于跟踪代码变更和协作开发。",
+        "tags": ["开发工具", "Git"],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0010",
+        "questionDetail": "Docker 是什么？",
+        "optionA": "编程语言",
+        "optionB": "操作系统",
+        "optionC": "浏览器",
+        "optionD": "容器化平台",
+        "correctOption": "D",
+        "type": "single_choice",
+        "explanation": "Docker 是一个开源的容器化平台，用于构建、运行和分发应用容器。",
+        "tags": ["云计算", "容器", "Docker"],
+        "difficulty": "easy"
+      }
+    ]
+  }
+}

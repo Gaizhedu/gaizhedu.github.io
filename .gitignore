@@ -1,0 +1,49 @@
+# 依赖、缓存与日志
+node_modules/
+.pnpm-store/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# 系统与编辑器文件
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+
+# 非运行必需：文档、测试与本地启动脚本
+/*.md
+/tests/
+/start-game.cmd
+
+# 素材白名单：仅保留运行时实际加载的文件
+/assets/*
+!/assets/player_3x.png
+!/assets/Background/
+!/assets/ground/
+!/assets/ui/
+!/assets/items/
+!/assets/enemies/
+
+/assets/Background/*
+!/assets/Background/bookshelf.png
+
+/assets/ground/*
+!/assets/ground/single_block.png
+
+/assets/ui/*
+!/assets/ui/left.png
+!/assets/ui/upper.png
+!/assets/ui/right.png
+
+/assets/items/*
+!/assets/items/chest_1.png
+!/assets/items/chest_2.png
+!/assets/items/diamond.png
+
+/assets/enemies/*
+!/assets/enemies/evil_3x.png
