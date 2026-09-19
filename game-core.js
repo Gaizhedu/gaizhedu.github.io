@@ -17,7 +17,9 @@ export function normalizeQuestions(banks) {
       const key = JSON.stringify([question, options]);
       if (seen.has(key)) continue;
       seen.add(key);
-      result.push({ id: key, question, options, correct, explanation: String(item.explanation ?? ''), tags: Array.isArray(item.tags) ? item.tags.map(String) : [] });
+      const difficulty = item.difficulty ?? 'easy';
+      if (!['easy', 'normal', 'hard'].includes(difficulty)) throw new Error(`题目 ${item.questionId || question} 的 difficulty 必须为 easy、normal 或 hard。`);
+      result.push({ id: key, question, options, correct, difficulty, explanation: String(item.explanation ?? ''), tags: Array.isArray(item.tags) ? item.tags.map(String) : [] });
     }
   }
   if (!result.length) throw new Error('题库中没有可用的单选题。');
@@ -40,11 +42,21 @@ export class GameSession {
     this.questions = questions;
     this.encounters = encounters ?? questions.map((question, i) => ({ question, kind: 'monster', final: i === questions.length - 1, distance: (i + 1) * 380 }));
     this.answers = [];
+    this.eventIndex = 0;
+    this.skipped = [];
     this.phase = 'explore';
   }
-  get current() { return this.questions[this.answers.length]; }
-  get currentEvent() { return this.encounters[this.answers.length]; }
-  get score() { return Math.round(this.correct / this.questions.length * 100); }
+  get current() { return this.currentEvent?.question; }
+  get currentEvent() { return this.encounters[this.eventIndex]; }
+  get score() { return this.answers.length ? Math.round(this.correct / this.answers.length * 100) : 0; }
+  get roadCompleted() { return this.answers.filter(answer => !answer.head).length; }
+  get headOpened() { return this.answers.filter(answer => answer.head).length; }
+  skipHeadChest(position) {
+    if (!['explore', 'walking'].includes(this.phase) || !this.currentEvent?.head || position <= this.currentEvent.distance + 220) return false;
+    this.skipped.push(this.currentEvent);this.eventIndex++;
+    this.phase = this.currentEvent ? 'explore' : 'finished';
+    return true;
+  }
   get correct() { return this.answers.filter(answer => answer.isCorrect).length; }
   get wrong() { return this.answers.length - this.correct; }
   advance() {
@@ -60,29 +72,106 @@ export class GameSession {
   }
   answer(letter) {
     if (this.phase !== 'battle' || !LETTERS.includes(letter)) return null;
-    const record = { question: this.current, kind: this.currentEvent.kind, selected: letter, isCorrect: this.current.correct === letter };
+    const record = { question: this.current, kind: this.currentEvent.kind, head: Boolean(this.currentEvent.head), selected: letter, isCorrect: this.current.correct === letter };
     this.answers.push(record);
-    this.phase = this.answers.length === this.questions.length ? 'finished' : 'explore';
+    this.eventIndex++;
+    this.phase = this.eventIndex === this.encounters.length ? 'finished' : 'explore';
     return record;
   }
 }
 
-export function buildJourney(bank, ratio, random = Math.random) {
+export const DEFAULT_RATIOS = Object.freeze({ monster: .3, chest: .2, headChest: .1 });
+const ratioValue = value => typeof value === 'number' ? value : value?.ratio;
+export function validateRatios(ratios = DEFAULT_RATIOS, totalQuestionRatio) {
+  if (totalQuestionRatio !== undefined && (!Number.isFinite(totalQuestionRatio) || totalQuestionRatio <= 0 || totalQuestionRatio > 1))
+    throw new Error('totalQuestionRatio 必须大于 0 且不超过 1。');
+  const normalized = {};
+  for (const kind of ['monster', 'chest', 'headChest']) {
+    const value = ratios?.[kind];
+    if (value && typeof value === 'object') {
+      if (!Array.isArray(value.difficulties) || !value.difficulties.length || !value.difficulties.every(level => ['easy', 'normal', 'hard'].includes(level)))
+        throw new Error(`encounterRatios.${kind}.difficulties 需要包含 easy、normal 或 hard 的非空数组。`);
+      normalized[kind] = { ratio: value.ratio, difficulties: [...new Set(value.difficulties)] };
+    } else normalized[kind] = value;
+  }
+  const [monster, chest, headChest] = ['monster', 'chest', 'headChest'].map(kind => ratioValue(normalized[kind]));
+  if (![monster, chest, headChest].every(value => Number.isFinite(value) && value >= 0 && value <= 1) || monster <= 0 || chest <= 0)
+    throw new Error('encounterRatios 需要有效的 monster、chest、headChest 比例，怪物和路上宝箱比例须大于 0。');
+  if (totalQuestionRatio !== undefined) {
+    if (Math.abs(monster + chest + headChest - 1) > 1e-9) throw new Error('三类题目 ratio 相加必须等于 1。');
+  } else {
+    if (headChest >= monster || headChest >= chest) throw new Error('顶头宝箱比例必须小于怪物和路上宝箱比例。');
+    if (monster + chest + headChest > 1 + 1e-9) throw new Error('三类题目比例之和不能超过 100%。');
+  }
+  return normalized;
+}
+
+export function buildJourney(bank, ratios = DEFAULT_RATIOS, random = Math.random, totalQuestionRatio) {
   if (bank.length < 2) throw new Error('怪物和宝箱至少需要 2 道不同的题目。');
+  ratios = validateRatios(ratios, totalQuestionRatio);
   const shuffled = sampleQuestions(bank, 1, random);
-  let monsters = sampleQuestions(bank, ratio, random).length;
-  const chestCount = count => Math.min(bank.length - 1, Math.max(1, Math.ceil(count * .3)) + 1);
-  while (monsters + chestCount(monsters) > bank.length) monsters--;
-  const chests = chestCount(monsters);
-  const events = Array.from({ length: monsters - 1 }, () => ({ kind: 'monster', final: false }));
+  let monsters = Math.ceil(bank.length * ratioValue(ratios.monster));
+  let chests = Math.ceil(bank.length * ratioValue(ratios.chest));
+  let heads = Math.ceil(bank.length * ratioValue(ratios.headChest));
+  // Rounding may exceed a tiny bank: reserve mandatory encounters before bonuses.
+  while (monsters + chests + heads > bank.length) {
+    if (heads > 0) heads--;
+    else if (chests > 1 && chests >= monsters) chests--;
+    else if (monsters > 1) monsters--;
+    else chests--;
+  }
+  if (totalQuestionRatio !== undefined) {
+    const total = Math.max(2, Math.ceil(bank.length * totalQuestionRatio));
+    const shares = ['monster', 'chest', 'headChest'].map(kind => total * ratioValue(ratios[kind]));
+    const counts = shares.map(Math.floor);
+    const order = [0, 1, 2].sort((a, b) => (shares[b] - counts[b]) - (shares[a] - counts[a]) || a - b);
+    const remaining = total - counts.reduce((sum, count) => sum + count, 0);
+    for (let i = 0; i < remaining; i++) counts[order[i]]++;
+    // Keep the final monster and a road chest even in very small journeys.
+    for (const required of [0, 1]) if (counts[required] === 0) {
+      const donor = [0, 1, 2].filter(i => counts[i] > (i < 2 ? 1 : 0))
+        .sort((a, b) => (counts[b] - shares[b]) - (counts[a] - shares[a]) || a - b)[0];
+      counts[donor]--;counts[required]++;
+    }
+    [monsters, chests, heads] = counts;
+  }
+  // Reassign earlier matches when needed so broad filters cannot steal the only
+  // question available to a more restrictive category. Every question is unique.
+  const assigned = new Map();
+  const slots = [];
+  function match(slot, visited = new Set()) {
+    const allowed = ratios[slot.category]?.difficulties;
+    for (const question of shuffled) {
+      if (visited.has(question) || (allowed && !allowed.includes(question.difficulty ?? 'easy'))) continue;
+      visited.add(question);
+      const previous = assigned.get(question);
+      if (!previous || match(previous, visited)) {
+        assigned.set(question, slot);slot.question = question;return true;
+      }
+    }
+    return false;
+  }
+  function addSlot(category, required = false) {
+    const slot = { category };
+    if (match(slot)) slots.push(slot);
+    else if (required) throw new Error('所选难度下至少需要一道怪物题和一道不同的路上宝箱题，请检查 difficulties 配置。');
+  }
+  addSlot('monster', true);
+  addSlot('chest', true);
+  for (let i = 1; i < monsters; i++) addSlot('monster');
+  for (let i = 1; i < chests; i++) addSlot('chest');
+  for (let i = 0; i < heads; i++) addSlot('headChest');
+  const finalMonster = slots.shift();
+  const events = slots.map(slot => ({ kind: slot.category === 'monster' ? 'monster' : 'chest', head: slot.category === 'headChest', final: false, question: slot.question }));
   const firstSkin = random() < .5 ? 1 : 2;
-  for (let i = 0; i < chests; i++) events.push({ kind: 'chest', head: i === chests - 1, variant: (firstSkin + i - 1) % 2 + 1, final: false });
+  let chestIndex = 0;
+  for (const event of events) if (event.kind === 'chest') event.variant = (firstSkin + chestIndex++ - 1) % 2 + 1;
   for (let i = events.length - 1; i > 0; i--) {
     const j = Math.floor(random() * (i + 1));
     [events[i], events[j]] = [events[j], events[i]];
   }
-  events.push({ kind: 'monster', final: true });
-  return events.map((event, i) => ({ ...event, question: shuffled[i], distance: (i + 1) * 380 }));
+  events.push({ kind: 'monster', final: true, question: finalMonster.question });
+  return events.map((event, i) => ({ ...event, distance: (i + 1) * 380 }));
 }
 
 export class StepMovement {

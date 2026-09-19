@@ -1,0 +1,1220 @@
+{
+  "schemaVersion": "1.0",
+  "questionBank": {
+    "title": "专业英语题库（Easy）",
+    "description": "根据 word2.txt 生成，包含简单、普通和困难三种难度的单选题",
+    "totalQuestionRatio": 0.3,
+    "encounterRatios": {
+      "monster": { "ratio": 0.7, "difficulties": ["easy"] },
+      "chest": { "ratio": 0.2, "difficulties": ["easy"] },
+      "headChest": { "ratio": 0.1, "difficulties": ["easy"] }
+    },
+    "questions": [
+      {
+        "questionId": "Q0001",
+        "questionDetail": "Sprint Goal 的意思是什么？",
+        "optionA": "迭代目标",
+        "optionB": "迭代回顾会",
+        "optionC": "待办事项列表",
+        "optionD": "每日站会",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "Sprint Goal 的意思是迭代目标。",
+        "tags": [
+          "Sprint Goal"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0002",
+        "questionDetail": "Code Commit 的意思是什么？",
+        "optionA": "代码审查",
+        "optionB": "代码提交",
+        "optionC": "代码部署",
+        "optionD": "代码回滚",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Code Commit 的意思是代码提交。",
+        "tags": [
+          "Code Commit"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0003",
+        "questionDetail": "Blocker 的意思是什么？",
+        "optionA": "优先任务",
+        "optionB": "功能需求",
+        "optionC": "阻碍 / 障碍",
+        "optionD": "风险评估",
+        "correctOption": "C",
+        "type": "single_choice",
+        "explanation": "Blocker 的意思是阻碍或障碍。",
+        "tags": [
+          "Blocker"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0004",
+        "questionDetail": "User Story 的意思是什么？",
+        "optionA": "用户故事",
+        "optionB": "用户权限",
+        "optionC": "用户画像",
+        "optionD": "用户反馈",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "User Story 的意思是用户故事。",
+        "tags": [
+          "User Story"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0005",
+        "questionDetail": "Story Points 的意思是什么？",
+        "optionA": "故事点（工作量估算单位）",
+        "optionB": "项目时间表",
+        "optionC": "任务优先级",
+        "optionD": "用户满意度分数",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "Story Points 的意思是故事点，即工作量估算单位。",
+        "tags": [
+          "Story Points"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0006",
+        "questionDetail": "Retrospective 的意思是什么？",
+        "optionA": "需求评审会",
+        "optionB": "迭代回顾会",
+        "optionC": "项目启动会",
+        "optionD": "发布验收会",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Retrospective 的意思是迭代回顾会。",
+        "tags": [
+          "Retrospective"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0007",
+        "questionDetail": "Jira Ticket 的意思是什么？",
+        "optionA": "Jira 项目看板",
+        "optionB": "Jira 任务工单",
+        "optionC": "Jira 用户账号",
+        "optionD": "Jira 发布报告",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Jira Ticket 的意思是 Jira 任务工单。",
+        "tags": [
+          "Jira Ticket"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0008",
+        "questionDetail": "Responsive (UI) 的意思是什么？",
+        "optionA": "交互式的界面",
+        "optionB": "响应式的（界面）",
+        "optionC": "静态的界面",
+        "optionD": "加密的界面",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Responsive (UI) 的意思是响应式的界面。",
+        "tags": [
+          "Responsive (UI)"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0009",
+        "questionDetail": "Accessibility 的意思是什么？",
+        "optionA": "可扩展性",
+        "optionB": "无障碍访问 / 可访问性",
+        "optionC": "可维护性",
+        "optionD": "可移植性",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Accessibility 的意思是无障碍访问或可访问性。",
+        "tags": [
+          "Accessibility"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0010",
+        "questionDetail": "Sprint 的意思是什么？",
+        "optionA": "迭代 / 冲刺",
+        "optionB": "项目总结",
+        "optionC": "需求池",
+        "optionD": "产品路线图",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "Sprint 的意思是迭代或冲刺。",
+        "tags": [
+          "Sprint"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0011",
+        "questionDetail": "Backlog 的意思是什么？",
+        "optionA": "已完成任务列表",
+        "optionB": "待办事项列表",
+        "optionC": "缺陷报告",
+        "optionD": "版本发布记录",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Backlog 的意思是待办事项列表。",
+        "tags": [
+          "Backlog"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0012",
+        "questionDetail": "Daily Standup 的意思是什么？",
+        "optionA": "每日站会",
+        "optionB": "每日培训",
+        "optionC": "每日代码发布",
+        "optionD": "每日客户访谈",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "Daily Standup 的意思是每日站会。",
+        "tags": [
+          "Daily Standup"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0013",
+        "questionDetail": "Task Board 的意思是什么？",
+        "optionA": "任务说明书",
+        "optionB": "任务看板",
+        "optionC": "任务日志",
+        "optionD": "任务审批表",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Task Board 的意思是任务看板。",
+        "tags": [
+          "Task Board"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0014",
+        "questionDetail": "Version Control 的意思是什么？",
+        "optionA": "版本控制",
+        "optionB": "版本发布",
+        "optionC": "版本测试",
+        "optionD": "版本加密",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "Version Control 的意思是版本控制。",
+        "tags": [
+          "Version Control"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0015",
+        "questionDetail": "Cloud Engineer 的意思是什么？",
+        "optionA": "数据分析工程师",
+        "optionB": "云计算工程师",
+        "optionC": "网络安全工程师",
+        "optionD": "测试工程师",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Cloud Engineer 的意思是云计算工程师。",
+        "tags": [
+          "Cloud Engineer"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0016",
+        "questionDetail": "AI Application Developer 的意思是什么？",
+        "optionA": "AI 应用开发工程师",
+        "optionB": "人工智能研究科学家",
+        "optionC": "数据库应用管理员",
+        "optionD": "自动化测试工程师",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "AI Application Developer 的意思是 AI 应用开发工程师。",
+        "tags": [
+          "AI Application Developer"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0017",
+        "questionDetail": "Front-End Developer 的意思是什么？",
+        "optionA": "后端开发工程师",
+        "optionB": "前端开发工程师",
+        "optionC": "产品运营经理",
+        "optionD": "用户体验研究员",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Front-End Developer 的意思是前端开发工程师。",
+        "tags": [
+          "Front-End Developer"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0018",
+        "questionDetail": "CI/CD Pipeline 的意思是什么？",
+        "optionA": "持续集成/持续部署流水线",
+        "optionB": "代码审查流程",
+        "optionC": "用户反馈渠道",
+        "optionD": "数据库备份方案",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "CI/CD Pipeline 的意思是持续集成/持续部署流水线。",
+        "tags": [
+          "CI/CD Pipeline"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0019",
+        "questionDetail": "Docker / Kubernetes 的意思是什么？",
+        "optionA": "数据库与缓存工具",
+        "optionB": "容器与编排工具",
+        "optionC": "前端与后端框架",
+        "optionD": "测试与监控工具",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Docker / Kubernetes 的意思是容器与编排工具。",
+        "tags": [
+          "Docker / Kubernetes"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0020",
+        "questionDetail": "TensorFlow / PyTorch 的意思是什么？",
+        "optionA": "AI 开发框架",
+        "optionB": "云存储服务",
+        "optionC": "数据可视化软件",
+        "optionD": "版本控制系统",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "TensorFlow / PyTorch 的意思是 AI 开发框架。",
+        "tags": [
+          "TensorFlow / PyTorch"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0021",
+        "questionDetail": "Prompt Engineering 的意思是什么？",
+        "optionA": "模型部署工程",
+        "optionB": "提示词工程",
+        "optionC": "数据清洗工程",
+        "optionD": "软件测试工程",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Prompt Engineering 的意思是提示词工程。",
+        "tags": [
+          "Prompt Engineering"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0022",
+        "questionDetail": "Responsive Design 的意思是什么？",
+        "optionA": "响应式设计",
+        "optionB": "无障碍设计",
+        "optionC": "极简设计",
+        "optionD": "面向对象设计",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "Responsive Design 的意思是响应式设计。",
+        "tags": [
+          "Responsive Design"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0023",
+        "questionDetail": "Web Accessibility (WCAG) 的意思是什么？",
+        "optionA": "网页性能测试标准",
+        "optionB": "网页无障碍标准",
+        "optionC": "网页安全加密标准",
+        "optionD": "网页布局设计规范",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Web Accessibility (WCAG) 的意思是网页无障碍标准。",
+        "tags": [
+          "Web Accessibility (WCAG)"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0024",
+        "questionDetail": "Skill Mapping 的意思是什么？",
+        "optionA": "技能对标 / 技能匹配",
+        "optionB": "技能培训计划",
+        "optionC": "技能考试认证",
+        "optionD": "技能薪酬评估",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "Skill Mapping 的意思是技能对标或技能匹配。",
+        "tags": [
+          "Skill Mapping"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0025",
+        "questionDetail": "Skill Gap 的意思是什么？",
+        "optionA": "技能证书",
+        "optionB": "技能短板 / 差距",
+        "optionC": "技能兴趣",
+        "optionD": "技能等级",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Skill Gap 的意思是技能短板或差距。",
+        "tags": [
+          "Skill Gap"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0026",
+        "questionDetail": "Portfolio 的意思是什么？",
+        "optionA": "项目作品集",
+        "optionB": "个人简历",
+        "optionC": "项目计划书",
+        "optionD": "项目预算表",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "Portfolio 的意思是项目作品集。",
+        "tags": [
+          "Portfolio"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0027",
+        "questionDetail": "Career Pitch 的意思是什么？",
+        "optionA": "职业自我介绍",
+        "optionB": "职业技能考试",
+        "optionC": "职业规划报告",
+        "optionD": "职业薪资谈判",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "Career Pitch 的意思是职业自我介绍。",
+        "tags": [
+          "Career Pitch"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0028",
+        "questionDetail": "Action Plan 的意思是什么？",
+        "optionA": "工作总结",
+        "optionB": "提升行动计划",
+        "optionC": "风险清单",
+        "optionD": "岗位说明书",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Action Plan 的意思是提升行动计划。",
+        "tags": [
+          "Action Plan"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0029",
+        "questionDetail": "Job Description (JD) 的意思是什么？",
+        "optionA": "岗位招聘简章",
+        "optionB": "求职推荐信",
+        "optionC": "员工绩效报告",
+        "optionD": "公司组织架构",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "Job Description (JD) 的意思是岗位招聘简章。",
+        "tags": [
+          "Job Description (JD)"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0030",
+        "questionDetail": "Proficiency 的意思是什么？",
+        "optionA": "兴趣爱好",
+        "optionB": "精通，熟练掌握",
+        "optionC": "初步了解",
+        "optionD": "培训资格",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Proficiency 的意思是精通或熟练掌握。",
+        "tags": [
+          "Proficiency"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0031",
+        "questionDetail": "Qualification 的意思是什么？",
+        "optionA": "任职要求，资质",
+        "optionB": "工作职责",
+        "optionC": "薪资福利",
+        "optionD": "晋升路径",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "Qualification 的意思是任职要求或资质。",
+        "tags": [
+          "Qualification"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0032",
+        "questionDetail": "Hands-on Experience 的意思是什么？",
+        "optionA": "理论学习经历",
+        "optionB": "实操经验，实战经历",
+        "optionC": "团队管理职位",
+        "optionD": "海外工作机会",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Hands-on Experience 的意思是实操经验或实战经历。",
+        "tags": [
+          "Hands-on Experience"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0033",
+        "questionDetail": "Required 的意思是什么？",
+        "optionA": "可选的",
+        "optionB": "优先加分的",
+        "optionC": "硬性必备（要求）",
+        "optionD": "正在培训的",
+        "correctOption": "C",
+        "type": "single_choice",
+        "explanation": "Required 的意思是硬性必备的要求。",
+        "tags": [
+          "Required"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0034",
+        "questionDetail": "Preferred 的意思是什么？",
+        "optionA": "法律规定的",
+        "optionB": "硬性必备的",
+        "optionC": "优先加分（非必需）",
+        "optionD": "已经取消的",
+        "correctOption": "C",
+        "type": "single_choice",
+        "explanation": "Preferred 的意思是优先加分但非必需。",
+        "tags": [
+          "Preferred"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0035",
+        "questionDetail": "Core Competency 的意思是什么？",
+        "optionA": "核心能力",
+        "optionB": "岗位薪资",
+        "optionC": "日常任务",
+        "optionD": "培训证书",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "Core Competency 的意思是核心能力。",
+        "tags": [
+          "Core Competency"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0036",
+        "questionDetail": "Cross-functional Collaboration 的意思是什么？",
+        "optionA": "跨地域竞争",
+        "optionB": "跨部门协作",
+        "optionC": "跨平台测试",
+        "optionD": "跨版本迁移",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Cross-functional Collaboration 的意思是跨部门协作。",
+        "tags": [
+          "Cross-functional Collaboration"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0037",
+        "questionDetail": "Infrastructure as Code 的意思是什么？",
+        "optionA": "基础设施即代码",
+        "optionB": "代码质量管理",
+        "optionC": "应用程序即服务",
+        "optionD": "基础设施手工运维",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "Infrastructure as Code 的意思是基础设施即代码。",
+        "tags": [
+          "Infrastructure as Code"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0038",
+        "questionDetail": "Cloud Computing 的意思是什么？",
+        "optionA": "边缘计算",
+        "optionB": "云计算",
+        "optionC": "量子计算",
+        "optionD": "本地计算",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Cloud Computing 的意思是云计算。",
+        "tags": [
+          "Cloud Computing"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0039",
+        "questionDetail": "Digital Transformation 的意思是什么？",
+        "optionA": "数字化转型",
+        "optionB": "数字内容翻译",
+        "optionC": "数据备份转换",
+        "optionD": "电子设备升级",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "Digital Transformation 的意思是数字化转型。",
+        "tags": [
+          "Digital Transformation"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0040",
+        "questionDetail": "Infrastructure as a Service (IaaS) 的意思是什么？",
+        "optionA": "平台即服务",
+        "optionB": "软件即服务",
+        "optionC": "基础设施即服务",
+        "optionD": "数据即服务",
+        "correctOption": "C",
+        "type": "single_choice",
+        "explanation": "Infrastructure as a Service (IaaS) 的意思是基础设施即服务。",
+        "tags": [
+          "Infrastructure as a Service (IaaS)"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0041",
+        "questionDetail": "Platform as a Service (PaaS) 的意思是什么？",
+        "optionA": "基础设施即服务",
+        "optionB": "平台即服务",
+        "optionC": "软件即服务",
+        "optionD": "网络即服务",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Platform as a Service (PaaS) 的意思是平台即服务。",
+        "tags": [
+          "Platform as a Service (PaaS)"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0042",
+        "questionDetail": "Software as a Service (SaaS) 的意思是什么？",
+        "optionA": "基础设施即服务",
+        "optionB": "平台即服务",
+        "optionC": "软件即服务",
+        "optionD": "存储即服务",
+        "correctOption": "C",
+        "type": "single_choice",
+        "explanation": "Software as a Service (SaaS) 的意思是软件即服务。",
+        "tags": [
+          "Software as a Service (SaaS)"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0043",
+        "questionDetail": "Content Delivery Network (CDN) 的意思是什么？",
+        "optionA": "内容分发网络",
+        "optionB": "中央数据库节点",
+        "optionC": "云端开发网络",
+        "optionD": "内容数据备份",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "Content Delivery Network (CDN) 的意思是内容分发网络。",
+        "tags": [
+          "Content Delivery Network (CDN)"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0044",
+        "questionDetail": "SDLC (Software Development Life Cycle) 的意思是什么？",
+        "optionA": "软件开发生命周期",
+        "optionB": "软件部署连接协议",
+        "optionC": "系统数据日志中心",
+        "optionD": "安全开发许可协议",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "SDLC 是 Software Development Life Cycle 的缩写，意思是软件开发生命周期。",
+        "tags": [
+          "SDLC (Software Development Life Cycle)"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0045",
+        "questionDetail": "Feasibility Study 的意思是什么？",
+        "optionA": "可行性研究",
+        "optionB": "市场营销调查",
+        "optionC": "用户验收测试",
+        "optionD": "项目结项审计",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "Feasibility Study 的意思是可行性研究。",
+        "tags": [
+          "Feasibility Study"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0046",
+        "questionDetail": "User Acceptance Testing (UAT) 的意思是什么？",
+        "optionA": "单元测试",
+        "optionB": "用户验收测试",
+        "optionC": "压力测试",
+        "optionD": "安全渗透测试",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "User Acceptance Testing (UAT) 的意思是用户验收测试。",
+        "tags": [
+          "User Acceptance Testing (UAT)"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0047",
+        "questionDetail": "Canary Deployment 的意思是什么？",
+        "optionA": "蓝绿部署",
+        "optionB": "滚动回滚",
+        "optionC": "灰度发布 / 金丝雀发布",
+        "optionD": "离线部署",
+        "correctOption": "C",
+        "type": "single_choice",
+        "explanation": "Canary Deployment 的意思是灰度发布或金丝雀发布。",
+        "tags": [
+          "Canary Deployment"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0048",
+        "questionDetail": "Wireframes 的意思是什么？",
+        "optionA": "线框图",
+        "optionB": "流程图",
+        "optionC": "网络拓扑图",
+        "optionD": "数据报表",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "Wireframes 的意思是线框图。",
+        "tags": [
+          "Wireframes"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0049",
+        "questionDetail": "Repository 的意思是什么？",
+        "optionA": "代码仓库",
+        "optionB": "代码编译器",
+        "optionC": "代码运行环境",
+        "optionD": "代码许可证",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "Repository 的意思是代码仓库。",
+        "tags": [
+          "Repository"
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "questionId": "Q0050",
+        "questionDetail": "在本次迭代开始前，团队先确定了 <strong>Sprint Goal</strong>，并把相关任务放入 Backlog。Sprint Goal 的意思是什么？",
+        "optionA": "迭代目标",
+        "optionB": "待办事项列表",
+        "optionC": "迭代回顾会",
+        "optionD": "任务看板",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "Sprint Goal 表示本次迭代希望达成的核心目标。",
+        "tags": [
+          "Sprint Goal",
+          "Backlog"
+        ],
+        "difficulty": "normal"
+      },
+      {
+        "questionId": "Q0051",
+        "questionDetail": "开发者完成修改后进行 <strong>Code Commit</strong>，随后 CI/CD Pipeline 自动运行测试。Code Commit 的意思是什么？",
+        "optionA": "代码部署",
+        "optionB": "代码提交",
+        "optionC": "代码审查",
+        "optionD": "代码回滚",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Code Commit 指将代码变更提交到版本控制系统。",
+        "tags": [
+          "Code Commit",
+          "CI/CD Pipeline"
+        ],
+        "difficulty": "normal"
+      },
+      {
+        "questionId": "Q0052",
+        "questionDetail": "发布前发现一个严重的 <strong>Blocker</strong>，导致团队无法继续开发。它的意思是什么？",
+        "optionA": "优先任务",
+        "optionB": "功能需求",
+        "optionC": "阻碍 / 障碍",
+        "optionD": "风险评估",
+        "correctOption": "C",
+        "type": "single_choice",
+        "explanation": "Blocker 指阻碍工作继续进行的问题或障碍。",
+        "tags": [
+          "Blocker"
+        ],
+        "difficulty": "normal"
+      },
+      {
+        "questionId": "Q0053",
+        "questionDetail": "产品经理把“用户可以重置密码”写成一个 <strong>User Story</strong>，并在 Jira Ticket 中跟踪进度。User Story 的意思是什么？",
+        "optionA": "用户故事",
+        "optionB": "用户权限",
+        "optionC": "用户画像",
+        "optionD": "用户反馈",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "User Story 是从用户角度描述需求的用户故事。",
+        "tags": [
+          "User Story",
+          "Jira Ticket"
+        ],
+        "difficulty": "normal"
+      },
+      {
+        "questionId": "Q0054",
+        "questionDetail": "团队用 <strong>Story Points</strong> 估算任务工作量，而不是直接估算开发小时数。它的意思是什么？",
+        "optionA": "故事点（工作量估算单位）",
+        "optionB": "项目时间表",
+        "optionC": "任务优先级",
+        "optionD": "用户满意度分数",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "Story Points 是敏捷开发中用于估算相对工作量的故事点。",
+        "tags": [
+          "Story Points"
+        ],
+        "difficulty": "normal"
+      },
+      {
+        "questionId": "Q0055",
+        "questionDetail": "每个迭代结束后，团队召开 <strong>Retrospective</strong>，讨论哪些做法需要改进。它的意思是什么？",
+        "optionA": "需求评审会",
+        "optionB": "迭代回顾会",
+        "optionC": "项目启动会",
+        "optionD": "发布验收会",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Retrospective 指迭代回顾会，用于总结经验并制定改进措施。",
+        "tags": [
+          "Retrospective"
+        ],
+        "difficulty": "normal"
+      },
+      {
+        "questionId": "Q0056",
+        "questionDetail": "请在 <strong>Jira Ticket</strong> 中记录这个缺陷的复现步骤和处理状态。它的意思是什么？",
+        "optionA": "Jira 项目看板",
+        "optionB": "Jira 任务工单",
+        "optionC": "Jira 用户账号",
+        "optionD": "Jira 发布报告",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Jira Ticket 是 Jira 中用于跟踪任务、缺陷或需求的任务工单。",
+        "tags": [
+          "Jira Ticket"
+        ],
+        "difficulty": "normal"
+      },
+      {
+        "questionId": "Q0057",
+        "questionDetail": "这个页面会随着屏幕尺寸自动调整布局，说明它是 <strong>Responsive (UI)</strong>。它的意思是什么？",
+        "optionA": "交互式的界面",
+        "optionB": "响应式的（界面）",
+        "optionC": "静态的界面",
+        "optionD": "加密的界面",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Responsive (UI) 表示界面能够根据屏幕尺寸自适应布局。",
+        "tags": [
+          "Responsive (UI)"
+        ],
+        "difficulty": "normal"
+      },
+      {
+        "questionId": "Q0058",
+        "questionDetail": "设计师检查网站的 <strong>Accessibility</strong>，确保视障用户也能使用。它的意思是什么？",
+        "optionA": "可扩展性",
+        "optionB": "无障碍访问 / 可访问性",
+        "optionC": "可维护性",
+        "optionD": "可移植性",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Accessibility 指让不同能力的用户都能访问和使用产品的可访问性。",
+        "tags": [
+          "Accessibility"
+        ],
+        "difficulty": "normal"
+      },
+      {
+        "questionId": "Q0059",
+        "questionDetail": "团队计划用两周完成一次 <strong>Sprint</strong>，并在结束时展示可交付成果。它的意思是什么？",
+        "optionA": "迭代 / 冲刺",
+        "optionB": "项目总结",
+        "optionC": "需求池",
+        "optionD": "产品路线图",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "Sprint 是敏捷开发中固定周期的迭代或冲刺。",
+        "tags": [
+          "Sprint"
+        ],
+        "difficulty": "normal"
+      },
+      {
+        "questionId": "Q0060",
+        "questionDetail": "产品经理把所有未完成需求放入 <strong>Backlog</strong>，再根据优先级安排开发。它的意思是什么？",
+        "optionA": "已完成任务列表",
+        "optionB": "待办事项列表",
+        "optionC": "缺陷报告",
+        "optionD": "版本发布记录",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Backlog 指按优先级管理的待办事项列表。",
+        "tags": [
+          "Backlog"
+        ],
+        "difficulty": "normal"
+      },
+      {
+        "questionId": "Q0061",
+        "questionDetail": "开发团队每天上午参加 <strong>Daily Standup</strong>，快速同步昨天完成的工作和今天的计划。它的意思是什么？",
+        "optionA": "每日站会",
+        "optionB": "每日培训",
+        "optionC": "每日代码发布",
+        "optionD": "每日客户访谈",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "Daily Standup 是每日站会，团队通常快速同步进展和障碍。",
+        "tags": [
+          "Daily Standup"
+        ],
+        "difficulty": "normal"
+      },
+      {
+        "questionId": "Q0062",
+        "questionDetail": "请把任务状态更新到 <strong>Task Board</strong> 上，方便所有成员查看工作进展。它的意思是什么？",
+        "optionA": "任务说明书",
+        "optionB": "任务看板",
+        "optionC": "任务日志",
+        "optionD": "任务审批表",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Task Board 是用来可视化管理任务状态的任务看板。",
+        "tags": [
+          "Task Board"
+        ],
+        "difficulty": "normal"
+      },
+      {
+        "questionId": "Q0063",
+        "questionDetail": "团队使用 Git 进行 <strong>Version Control</strong>，以便追踪每次代码变更。它的意思是什么？",
+        "optionA": "版本控制",
+        "optionB": "版本发布",
+        "optionC": "版本测试",
+        "optionD": "版本加密",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "Version Control 指记录、管理和追踪文件变更的版本控制。",
+        "tags": [
+          "Version Control"
+        ],
+        "difficulty": "normal"
+      },
+      {
+        "questionId": "Q0064",
+        "questionDetail": "公司正在招聘一名负责云平台维护的 <strong>Cloud Engineer</strong>。它的意思是什么？",
+        "optionA": "数据分析工程师",
+        "optionB": "云计算工程师",
+        "optionC": "网络安全工程师",
+        "optionD": "测试工程师",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Cloud Engineer 指负责云基础设施、服务和平台的云计算工程师。",
+        "tags": [
+          "Cloud Engineer"
+        ],
+        "difficulty": "normal"
+      },
+      {
+        "questionId": "Q0065",
+        "questionDetail": "这个岗位需要开发基于大模型的产品，因此招聘 <strong>AI Application Developer</strong>。它的意思是什么？",
+        "optionA": "AI 应用开发工程师",
+        "optionB": "人工智能研究科学家",
+        "optionC": "数据库应用管理员",
+        "optionD": "自动化测试工程师",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "AI Application Developer 指开发人工智能应用的 AI 应用开发工程师。",
+        "tags": [
+          "AI Application Developer"
+        ],
+        "difficulty": "normal"
+      },
+      {
+        "questionId": "Q0066",
+        "questionDetail": "负责网页交互和页面展示的 <strong>Front-End Developer</strong> 加入了项目。它的意思是什么？",
+        "optionA": "后端开发工程师",
+        "optionB": "前端开发工程师",
+        "optionC": "产品运营经理",
+        "optionD": "用户体验研究员",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Front-End Developer 指负责网页前端界面和交互开发的前端开发工程师。",
+        "tags": [
+          "Front-End Developer"
+        ],
+        "difficulty": "normal"
+      },
+      {
+        "questionId": "Q0067",
+        "questionDetail": "提交代码后，<strong>CI/CD Pipeline</strong> 会自动执行测试和部署。它的意思是什么？",
+        "optionA": "持续集成/持续部署流水线",
+        "optionB": "代码审查流程",
+        "optionC": "用户反馈渠道",
+        "optionD": "数据库备份方案",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "CI/CD Pipeline 指持续集成和持续部署的自动化流水线。",
+        "tags": [
+          "CI/CD Pipeline"
+        ],
+        "difficulty": "normal"
+      },
+      {
+        "questionId": "Q0068",
+        "questionDetail": "项目使用 <strong>Docker / Kubernetes</strong> 管理应用容器。它们指什么？",
+        "optionA": "数据库与缓存工具",
+        "optionB": "容器与编排工具",
+        "optionC": "前端与后端框架",
+        "optionD": "测试与监控工具",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Docker 用于容器化，Kubernetes 用于容器编排，合称容器与编排工具。",
+        "tags": [
+          "Docker / Kubernetes"
+        ],
+        "difficulty": "normal"
+      },
+      {
+        "questionId": "Q0069",
+        "questionDetail": "研究人员使用 <strong>TensorFlow / PyTorch</strong> 训练机器学习模型。它们指什么？",
+        "optionA": "AI 开发框架",
+        "optionB": "云存储服务",
+        "optionC": "数据可视化软件",
+        "optionD": "版本控制系统",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "TensorFlow 和 PyTorch 都是常用的 AI 开发框架。",
+        "tags": [
+          "TensorFlow / PyTorch"
+        ],
+        "difficulty": "normal"
+      },
+      {
+        "questionId": "Q0070",
+        "questionDetail": "为了让模型更准确地理解任务，团队学习 <strong>Prompt Engineering</strong>。它的意思是什么？",
+        "optionA": "模型部署工程",
+        "optionB": "提示词工程",
+        "optionC": "数据清洗工程",
+        "optionD": "软件测试工程",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Prompt Engineering 指设计和优化给人工智能模型的提示词。",
+        "tags": [
+          "Prompt Engineering"
+        ],
+        "difficulty": "normal"
+      },
+      {
+        "questionId": "Q0071",
+        "questionDetail": "设计师采用 <strong>Responsive Design</strong>，让网页适配手机、平板和电脑。它的意思是什么？",
+        "optionA": "响应式设计",
+        "optionB": "无障碍设计",
+        "optionC": "极简设计",
+        "optionD": "面向对象设计",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "Responsive Design 是根据设备和屏幕尺寸自适应布局的响应式设计。",
+        "tags": [
+          "Responsive Design"
+        ],
+        "difficulty": "normal"
+      },
+      {
+        "questionId": "Q0072",
+        "questionDetail": "团队根据 <strong>Web Accessibility (WCAG)</strong> 检查网站是否方便残障用户使用。它指什么？",
+        "optionA": "网页性能测试标准",
+        "optionB": "网页无障碍标准",
+        "optionC": "网页安全加密标准",
+        "optionD": "网页布局设计规范",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Web Accessibility (WCAG) 指网页无障碍标准，WCAG 是相关指南体系。",
+        "tags": [
+          "Web Accessibility (WCAG)"
+        ],
+        "difficulty": "normal"
+      },
+      {
+        "questionId": "Q0073",
+        "questionDetail": "公司通过 <strong>Skill Mapping</strong> 对比员工能力与岗位要求。它的意思是什么？",
+        "optionA": "技能对标 / 技能匹配",
+        "optionB": "技能培训计划",
+        "optionC": "技能考试认证",
+        "optionD": "技能薪酬评估",
+        "correctOption": "A",
+        "type": "single_choice",
+        "explanation": "Skill Mapping 指将人员技能与岗位、任务或能力模型进行对照匹配。",
+        "tags": [
+          "Skill Mapping"
+        ],
+        "difficulty": "normal"
+      },
+      {
+        "questionId": "Q0074",
+        "questionDetail": "培训结果显示团队存在明显的 <strong>Skill Gap</strong>，因此公司安排了专项培训。它的意思是什么？",
+        "optionA": "技能证书",
+        "optionB": "技能短板 / 差距",
+        "optionC": "技能兴趣",
+        "optionD": "技能等级",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Skill Gap 指现有技能与目标岗位要求之间的技能短板或差距。",
+        "tags": [
+          "Skill Gap"
+        ],
+        "difficulty": "normal"
+      },
+      {
+        "questionId": "Q0075",
+        "questionDetail": "In the sentence “Before the <strong>Canary Deployment</strong>, the team reviewed the wireframes, checked the Repository, and completed User Acceptance Testing (UAT).”, what does Canary Deployment mean?",
+        "optionA": "用户验收测试",
+        "optionB": "代码仓库",
+        "optionC": "灰度发布 / 金丝雀发布",
+        "optionD": "线框图",
+        "correctOption": "C",
+        "type": "single_choice",
+        "explanation": "Canary Deployment 指先向少量用户发布并观察效果，再逐步扩大范围的灰度发布。",
+        "tags": [
+          "Canary Deployment",
+          "Wireframes",
+          "Repository",
+          "User Acceptance Testing (UAT)"
+        ],
+        "difficulty": "hard"
+      },
+      {
+        "questionId": "Q0076",
+        "questionDetail": "In the sentence “The <strong>Repository</strong> stored the project code, while the team used Version Control, a CI/CD Pipeline, and Docker / Kubernetes to manage releases.”, what does Repository mean?",
+        "optionA": "版本控制",
+        "optionB": "代码仓库",
+        "optionC": "持续集成/持续部署流水线",
+        "optionD": "容器与编排工具",
+        "correctOption": "B",
+        "type": "single_choice",
+        "explanation": "Repository 指用于存放和管理代码及其版本记录的代码仓库。",
+        "tags": [
+          "Repository",
+          "Version Control",
+          "CI/CD Pipeline",
+          "Docker / Kubernetes"
+        ],
+        "difficulty": "hard"
+      },
+      {
+        "questionId": "Q0077",
+        "questionDetail": "In the sentence “Her <strong>Proficiency</strong> in Cloud Computing helped her work as a Cloud Engineer, improve the Action Plan, and identify the team’s Skill Gap.”, what does Proficiency mean?",
+        "optionA": "云计算",
+        "optionB": "云计算工程师",
+        "optionC": "提升行动计划",
+        "optionD": "精通，熟练掌握",
+        "correctOption": "D",
+        "type": "single_choice",
+        "explanation": "Proficiency 表示某项技能的熟练程度，题中指精通或熟练掌握。",
+        "tags": [
+          "Proficiency",
+          "Cloud Computing",
+          "Cloud Engineer",
+          "Action Plan",
+          "Skill Gap"
+        ],
+        "difficulty": "hard"
+      },
+      {
+        "questionId": "Q0078",
+        "questionDetail": "In the sentence “<strong>Cloud Computing</strong> allowed the AI Application Developer to deploy the model with TensorFlow / PyTorch, use Infrastructure as Code, and support Digital Transformation.”, what does Cloud Computing mean?",
+        "optionA": "人工智能应用开发工程师",
+        "optionB": "AI 开发框架",
+        "optionC": "基础设施即代码",
+        "optionD": "云计算",
+        "correctOption": "D",
+        "type": "single_choice",
+        "explanation": "Cloud Computing 指通过网络按需使用计算、存储等云端资源的云计算。",
+        "tags": [
+          "Cloud Computing",
+          "AI Application Developer",
+          "TensorFlow / PyTorch",
+          "Infrastructure as Code",
+          "Digital Transformation"
+        ],
+        "difficulty": "hard"
+      },
+      {
+        "questionId": "Q0079",
+        "questionDetail": "In the sentence “The team improved <strong>Accessibility</strong> by applying Responsive Design, reviewing Web Accessibility (WCAG), and asking a Front-End Developer to test the interface.”, what does Accessibility mean?",
+        "optionA": "响应式设计",
+        "optionB": "网页无障碍标准",
+        "optionC": "前端开发工程师",
+        "optionD": "无障碍访问 / 可访问性",
+        "correctOption": "D",
+        "type": "single_choice",
+        "explanation": "Accessibility 指让不同能力的用户都能访问和使用产品的无障碍访问或可访问性。",
+        "tags": [
+          "Accessibility",
+          "Responsive Design",
+          "Web Accessibility (WCAG)",
+          "Front-End Developer"
+        ],
+        "difficulty": "hard"
+      }
+    ]
+  }
+}

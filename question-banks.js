@@ -1,4 +1,4 @@
-import { normalizeQuestions } from './game-core.js';
+import { normalizeQuestions, validateRatios, buildJourney } from './game-core.js';
 
 export const BANK_KEY = 'knowledge-quest-bank-v1';
 export function describeBank(data, id) {
@@ -6,8 +6,11 @@ export function describeBank(data, id) {
   const name = [metadata?.title, metadata?.name].find(value => typeof value === 'string' && value.trim());
   const entry = { id, title: name?.trim() || '未命名题库', questions: [], error: '' };
   try {
+    entry.totalQuestionRatio = metadata?.totalQuestionRatio;
+    entry.ratios = validateRatios(metadata?.encounterRatios, entry.totalQuestionRatio);
     entry.questions = normalizeQuestions([data]);
     if (entry.questions.length < 2) throw new Error('至少需要 2 道不同的单选题');
+    buildJourney(entry.questions, entry.ratios, () => .5, entry.totalQuestionRatio);
   } catch (error) { entry.error = error.message; }
   return entry;
 }

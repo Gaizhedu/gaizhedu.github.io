@@ -3,6 +3,12 @@
   "questionBank": {
     "title": "IT基础概念题库",
     "description": "示例题库，支持后续扩展更多题型、分类、难度和解析",
+    "totalQuestionRatio": 0.3,
+    "encounterRatios": {
+      "monster": { "ratio": 0.7, "difficulties": ["easy"] },
+      "chest": { "ratio": 0.2, "difficulties": ["easy"] },
+      "headChest": { "ratio": 0.1, "difficulties": ["easy"] }
+    },
     "questions": [
       {
         "questionId": "Q0001",

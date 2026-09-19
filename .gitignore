@@ -15,9 +15,11 @@ desktop.ini
 .idea/
 *.swp
 
-# 非运行必需：文档、测试与本地启动脚本
-/*.md
-/tests/
+# 本地工作记录与启动脚本（项目说明和测试纳入版本管理）
+/task_plan.md
+/findings.md
+/progress.md
+/.planning/
 /start-game.cmd
 
 # 素材白名单：仅保留运行时实际加载的文件

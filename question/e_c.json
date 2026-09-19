@@ -3,6 +3,12 @@
   "questionBank": {
     "title": "英语技术与职场词汇题库",
     "description": "根据 e_c 词汇表生成的情境问答单选题，考查指定英文词汇的中文含义",
+    "totalQuestionRatio": 0.3,
+    "encounterRatios": {
+      "monster": { "ratio": 0.7, "difficulties": ["easy"] },
+      "chest": { "ratio": 0.2, "difficulties": ["easy"] },
+      "headChest": { "ratio": 0.1, "difficulties": ["easy"] }
+    },
     "questions": [
       {
         "questionId": "Q0001",

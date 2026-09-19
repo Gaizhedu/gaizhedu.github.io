@@ -49,6 +49,10 @@ function prepareEncounter() {
   monsterBody = new Jumper(monster ? terrain.heightAt(monster.position + 130) : 0);
 }
 function encounterDistance() { return monster?.position ?? session.currentEvent.distance; }
+function movementLimit() {
+  if (session.currentEvent?.head) return session.encounters[session.eventIndex + 1]?.distance ?? Infinity;
+  return Math.min(session.currentEvent.distance, encounterDistance());
+}
 function canMove() { return session && !effect && ['explore', 'walking'].includes(session.phase) && !drawer.open && !bankDrawer.open && !resultDialog.open; }
 function clearInput(stop = false) {
   heldInput.clear();
@@ -67,7 +71,7 @@ function renderReady() {
 }
 function startGame() {
   if (resultDialog.open) resultDialog.close();
-  const events = buildJourney(bank, config.questionRatio);
+  const events = buildJourney(bank, selectedBank.ratios, Math.random, selectedBank.totalQuestionRatio);
   session = new GameSession(events.map(event => event.question), events);
   movement = new StepMovement();clearInput();
   terrain = new Terrain(events);jumper = new Jumper();effect = null;chestBump = 0;
@@ -75,13 +79,13 @@ function startGame() {
   runId = crypto.randomUUID();recorded = false;
   renderControls();
   $('#advance-button').focus({ preventScroll: true });
-  announce('游戏开始。左右移动，上箭头跳上台阶；悬空宝箱需要从下方跳起顶开。');
+  announce('游戏开始。左右移动，上箭头跳上台阶；悬空宝箱可跳起顶开，也可直接路过。');
 }
 function renderControls() {
   panel.className = '';
   panel.innerHTML = '<div class="movement-controls"><button class="arrow-button left" id="retreat-button" aria-label="后退"><img src="assets/ui/left.png" alt="" draggable="false"></button><button class="arrow-button up" id="jump-button" aria-label="跳跃"><img src="assets/ui/upper.png" alt="" draggable="false"></button><button class="arrow-button right" id="advance-button" aria-label="前进"><img src="assets/ui/right.png" alt="" draggable="false"></button></div>';
   const hint = document.createElement('div');hint.className = 'movement-hint';
-  hint.textContent = session.currentEvent?.head ? '走到悬空宝箱下方，按 ↑ 跳起顶开' : '← → 移动 · ↑ 跳上台阶';panel.append(hint);
+  hint.textContent = session.currentEvent?.head ? '↑ 顶开悬空宝箱 · 也可直接路过' : '← → 移动 · ↑ 跳上台阶';panel.append(hint);
   $('#jump-button').addEventListener('click', jump);
   for (const [id, direction] of [['retreat-button', -1], ['advance-button', 1]]) {
     const button = $('#' + id);
@@ -100,7 +104,7 @@ function jump() {
 }
 function move(direction) {
   if (!canMove()) return;
-  if (movement.step(direction, encounterDistance())) session.advance();
+  if (movement.step(direction, movementLimit())) session.advance();
 }
 function renderBattle() {
   clearInput(true);
@@ -142,11 +146,14 @@ function finishAnswerEffect() {
 }
 function showResult() {
   if (!recorded) {
-    history = addResult(history, { id: runId, at: Date.now(), correct: session.correct, total: session.questions.length });
+    history = addResult(history, { id: runId, at: Date.now(), correct: session.correct, total: session.answers.length });
     recorded = true;historySaved = saveHistory(storage, history);updateHistoryCount();
   }
-  resultDialog.innerHTML = `<h2 id="result-title">游戏结束</h2><p class="result-score">答对 <strong>${session.correct}</strong><span>/ ${session.questions.length} 题</span></p><p class="result-points">${session.score} 分</p><details class="review"><summary>题目详情</summary>${session.answers.map((record, index) => `<article class="review-item"><h3>${index + 1}. ${record.kind === 'chest' ? '【宝箱】' : ''}${formatQuestionText(record.question.question)}</h3><ul class="review-options">${LETTERS.map((letter, i) => `<li>${letter}. ${formatQuestionText(record.question.options[i])}</li>`).join('')}</ul><p class="${record.isCorrect ? 'answer-right' : 'answer-wrong'}">你的答案：${record.selected}（${record.isCorrect ? '正确' : '错误'}）</p><p class="answer-right">正确答案：${record.question.correct}. ${formatQuestionText(record.question.options[LETTERS.indexOf(record.question.correct)])}</p><p>${formatQuestionText(record.question.explanation || '本题暂无补充解析。')}</p></article>`).join('')}</details><div class="result-actions"><button id="result-history-button" class="secondary-button">游玩记录</button><button id="replay-button" class="pixel-button">重新开始</button></div>`;
+  resultDialog.innerHTML = `<h2 id="result-title">游戏结束</h2><p class="result-score">答对 <strong>${session.correct}</strong><span>/ ${session.answers.length} 题</span></p><p class="result-points">${session.score} 分</p><details class="review"><summary>题目详情</summary>${session.answers.map((record, index) => `<article class="review-item"><h3>${index + 1}. ${record.head ? '【头顶宝箱】' : record.kind === 'chest' ? '【路上宝箱】' : ''}${formatQuestionText(record.question.question)}</h3><ul class="review-options">${LETTERS.map((letter, i) => `<li>${letter}. ${formatQuestionText(record.question.options[i])}</li>`).join('')}</ul><p class="${record.isCorrect ? 'answer-right' : 'answer-wrong'}">你的答案：${record.selected}（${record.isCorrect ? '正确' : '错误'}）</p><p class="answer-right">正确答案：${record.question.correct}. ${formatQuestionText(record.question.options[LETTERS.indexOf(record.question.correct)])}</p><p>${formatQuestionText(record.question.explanation || '本题暂无补充解析。')}</p></article>`).join('')}</details><div class="result-actions"><button id="result-history-button" class="secondary-button">游玩记录</button><button id="replay-button" class="pixel-button">重新开始</button></div>`;
   const bankAction = document.createElement('button');bankAction.className = 'secondary-button';bankAction.textContent = '切换题库';
+  const counts = document.createElement('p');counts.className = 'result-counts';
+  counts.textContent = `击败怪物及完成路上宝箱：${session.roadCompleted} 题；开启头顶宝箱：${session.headOpened} / ${session.encounters.filter(event => event.head).length} 个。`;
+  resultDialog.querySelector('.result-points').after(counts);
   bankAction.addEventListener('click', openBanks);$('.result-actions').append(bankAction);
   $('#replay-button').addEventListener('click', startGame);
   $('#result-history-button').addEventListener('click', openHistory);
@@ -274,7 +281,7 @@ function draw(time) {
       let touched = false;
       if (movement.moving) {
         const previousPosition = movement.position;
-        touched = movement.tick(delta, encounterDistance());
+        touched = movement.tick(delta, movementLimit());
         const allowed = terrain.limit(previousPosition, movement.position, jumper.feet);
         if (allowed !== movement.position) {
           movement.position = allowed;movement.stop();touched = false;
@@ -295,6 +302,12 @@ function draw(time) {
         if (touched) { jumper.feet = chestBottom(event) - playerHeight();jumper.velocity = 0;chestBump = 260; }
       }
       if (touched) { session.advance();if (session.encounter()) renderBattle(); }
+      else if (session.skipHeadChest(movement.position)) {
+        prepareEncounter();
+        const hint = panel.querySelector('.movement-hint');
+        if (hint) hint.textContent = session.currentEvent?.head ? '↑ 顶开悬空宝箱 · 也可直接路过' : '← → 移动 · ↑ 跳上台阶';
+        announce('已路过可选宝箱，继续探索。');
+      }
     }
   }
   const scroll = movement.position * scale;
@@ -311,12 +324,20 @@ function draw(time) {
     ctx.fillStyle = '#bcadcf88';ctx.fillRect(Math.floor(x), Math.floor(top), Math.ceil(tile) + 1, 2);
   }
   drawSprite(images.player, config.player, playerPosition(), movement.moving, jumper.feet * scale, movement.direction === -1 ? config.player.leftRow : config.player.row);
+  // Chests occupy fixed world positions from the beginning, including future encounters.
+  for (let i = session?.eventIndex ?? 0; session && i < session.encounters.length; i++) {
+    const chest = session.encounters[i];
+    if (chest.kind !== 'chest') continue;
+    const position = chest.distance + (chest.head ? 0 : 130), x = worldX(position);
+    if (x < -155 * scale || x > width + 155 * scale) continue;
+    const opacity = chest.head ? Math.max(0, Math.min(1, (chest.distance + 220 - movement.position) / 60)) : 1;
+    drawChest(chest, position, opacity);
+  }
   const event = session?.currentEvent;
   if (effect) drawAnswerEffect();
-  else if (event) {
+  else if (event?.kind === 'monster') {
     const position = encounterDistance() + (event.head ? 0 : 130), x = worldX(position);
-    if (event.kind === 'chest') drawChest(event, position);
-    else {
+    {
       const elevation = event.kind === 'monster' ? monsterBody.feet : terrain.heightAt(position);
       drawSprite(images.enemy, config.enemy, x, canMove(), elevation * scale);
       if (event.final) {
@@ -343,7 +364,6 @@ document.addEventListener('visibilitychange', () => { if (document.hidden) clear
 async function init() {
   try {
     config = await getJSON('config.json');
-    if (!Number.isFinite(config.questionRatio) || config.questionRatio <= 0 || config.questionRatio > 1) throw new Error('questionRatio 必须大于 0 且不超过 1。');
     let files;try { files = await getJSON('question/index.json'); } catch { files = config.questionFiles; }
     if (!Array.isArray(files) || !files.length) throw new Error('question 文件夹中没有 JSON 题库。');
     const sources = [config.player.src, config.enemy.src, 'assets/Background/bookshelf.png', 'assets/ground/single_block.png', 'assets/ui/upper.png', 'assets/ui/right.png', 'assets/ui/left.png', 'assets/items/chest_1.png', 'assets/items/chest_2.png', 'assets/items/diamond.png', 'assets/items/sword.png', 'assets/items/chest_head.png'];
