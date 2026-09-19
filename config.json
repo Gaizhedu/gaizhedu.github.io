@@ -1,6 +1,26 @@
 {
   "background": "bookshelf",
-  "questionFiles": ["09_17.json", "e_c.json"],
-  "player": { "src": "assets/player2.png", "row": 7, "leftRow": 3, "frames": 3, "cellSize": 384, "baseline": 318, "leftBaseline": 309 },
-  "enemy": { "src": "assets/enemies/evil_3x.png", "row": 3, "frames": 6, "cellSize": 384, "baseline": 330 }
+  "questionFiles": [
+    "09_17.json",
+    "e_c.json",
+    "tiku_all_easy.json",
+    "tiku_plus.json",
+    "tiku_pro.json"
+  ],
+  "player": {
+    "src": "assets/player2.png",
+    "row": 7,
+    "leftRow": 3,
+    "frames": 3,
+    "cellSize": 384,
+    "baseline": 318,
+    "leftBaseline": 309
+  },
+  "enemy": {
+    "src": "assets/enemies/evil_3x.png",
+    "row": 3,
+    "frames": 6,
+    "cellSize": 384,
+    "baseline": 330
+  }
 }
