@@ -71,12 +71,12 @@ export function buildJourney(bank, ratio, random = Math.random) {
   if (bank.length < 2) throw new Error('怪物和宝箱至少需要 2 道不同的题目。');
   const shuffled = sampleQuestions(bank, 1, random);
   let monsters = sampleQuestions(bank, ratio, random).length;
-  const chestCount = count => Math.max(1, Math.ceil(count * .3));
+  const chestCount = count => Math.min(bank.length - 1, Math.max(1, Math.ceil(count * .3)) + 1);
   while (monsters + chestCount(monsters) > bank.length) monsters--;
   const chests = chestCount(monsters);
   const events = Array.from({ length: monsters - 1 }, () => ({ kind: 'monster', final: false }));
   const firstSkin = random() < .5 ? 1 : 2;
-  for (let i = 0; i < chests; i++) events.push({ kind: 'chest', variant: (firstSkin + i - 1) % 2 + 1, final: false });
+  for (let i = 0; i < chests; i++) events.push({ kind: 'chest', head: i === chests - 1, variant: (firstSkin + i - 1) % 2 + 1, final: false });
   for (let i = events.length - 1; i > 0; i--) {
     const j = Math.floor(random() * (i + 1));
     [events[i], events[j]] = [events[j], events[i]];
@@ -121,4 +121,18 @@ export class HeldDirection {
     this.elapsed += milliseconds;
     return this.elapsed >= 300 && !moving ? this.direction : 0;
   }
+}
+
+export class MonsterApproach {
+  constructor(position, speed = 95) { this.position = position;this.speed = speed; }
+  tick(milliseconds, playerPosition) {
+    this.position = Math.max(playerPosition, this.position - this.speed * milliseconds / 1000);
+    return this.position <= playerPosition;
+  }
+}
+
+export class AnswerDelay {
+  constructor(delay = 500) { this.delay = delay;this.readyAt = Infinity; }
+  start(now) { this.readyAt = now + this.delay; }
+  ready(now) { return now >= this.readyAt; }
 }

@@ -23,6 +23,7 @@ desktop.ini
 # 素材白名单：仅保留运行时实际加载的文件
 /assets/*
 !/assets/player_3x.png
+!/assets/player2.png
 !/assets/Background/
 !/assets/ground/
 !/assets/ui/
@@ -47,3 +48,7 @@ desktop.ini
 
 /assets/enemies/*
 !/assets/enemies/evil_3x.png
+
+!/assets/items/sword.png
+!/assets/items/chest_head.png
+!/assets/items/castle.png

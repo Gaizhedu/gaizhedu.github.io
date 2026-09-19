@@ -9,10 +9,12 @@
 </head>
 <body>
   <main id="game" aria-label="答题冒险游戏">
+    <button id="bank-button" class="bank-button" aria-label="切换题库" title="切换题库" aria-haspopup="dialog" aria-controls="bank-drawer" aria-expanded="false" disabled><img src="assets/items/castle.png" alt="" draggable="false"></button>
     <button id="history-button" class="history-button" aria-haspopup="dialog">游玩次数 <span id="play-count">0</span></button>
     <canvas id="game-canvas" role="img" aria-label="书架前的骑士与怪物"></canvas>
     <section id="action-panel" aria-label="游戏操作"><button id="start-button" class="pixel-button" disabled>开始游戏</button></section>
   </main>
+  <dialog id="bank-drawer" aria-labelledby="bank-title"><div class="drawer-header"><h2 id="bank-title">切换题库</h2><button id="close-bank" aria-label="关闭题库选择">×</button></div><p class="bank-note">选择题库后将自动重新开始游戏。</p><div id="bank-list"></div></dialog>
   <dialog id="result-dialog" aria-labelledby="result-title"></dialog>
   <dialog id="history-drawer" aria-labelledby="history-title"><div class="drawer-header"><h2 id="history-title">最近游玩</h2><button id="close-history" aria-label="关闭游玩记录">×</button></div><div id="history-content"></div></dialog>
   <div id="announcement" class="sr-only" role="status" aria-live="polite"></div>
