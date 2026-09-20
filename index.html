@@ -13,12 +13,12 @@
     <button id="history-button" class="history-button" aria-haspopup="dialog">游玩次数 <span id="play-count">0</span></button>
     <button id="settings-button" class="bank-button settings-button" aria-label="游戏设置" aria-haspopup="dialog" aria-controls="settings-dialog"><img src="assets/items/spring.png" alt="" draggable="false"></button>
     <div id="correct-notice" hidden><img src="assets/items/right.png" alt="回答正确"></div>
-    <canvas id="game-canvas" role="img" aria-label="书架前的小猫与怪物"></canvas>
+    <canvas id="game-canvas" role="img" aria-label="冒险场景中的小猫与怪物"></canvas>
     <section id="action-panel" aria-label="游戏操作"><button id="start-button" class="pixel-button" disabled>开始游戏</button></section>
   </main>
   <dialog id="bank-drawer" aria-labelledby="bank-title"><div class="drawer-header"><h2 id="bank-title">切换题库</h2><button id="close-bank" aria-label="关闭题库选择">×</button></div><p class="bank-note">选择题库后将自动重新开始游戏。</p><div id="bank-list"></div></dialog>
   <dialog id="result-dialog" aria-labelledby="result-title"></dialog>
-  <dialog id="settings-dialog" aria-labelledby="settings-title"><div class="drawer-header"><h2 id="settings-title">游戏设置</h2><button id="close-settings" aria-label="关闭设置">×</button></div><label class="auto-skip-option"><input id="auto-skip-correct" type="checkbox" checked>自动跳过答对的题目</label></dialog>
+  <dialog id="settings-dialog" aria-labelledby="settings-title"><div class="drawer-header"><h2 id="settings-title">游戏设置</h2><button id="close-settings" aria-label="关闭设置">×</button></div><label class="background-option" for="background-select">游戏背景<select id="background-select"><option value="sky">天空（默认）</option><option value="bookshelf">书架（bookshelf）</option></select></label><label class="auto-skip-option"><input id="auto-skip-correct" type="checkbox" checked>自动跳过答对的题目</label></dialog>
   <dialog id="history-drawer" aria-labelledby="history-title"><div class="drawer-header"><h2 id="history-title">最近游玩</h2><button id="close-history" aria-label="关闭游玩记录">×</button></div><div id="history-content"></div></dialog>
   <div id="announcement" class="sr-only" role="status" aria-live="polite"></div>
   <script type="module" src="app.js"></script>

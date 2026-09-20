@@ -1,5 +1,5 @@
 {
-  "background": "bookshelf",
+  "background": "sky",
   "questionFiles": [
     "09_17.json",
     "e_c.json",
@@ -19,10 +19,8 @@
     "jumpBaseline": 955
   },
   "enemy": {
-    "src": "assets/enemies/evil_3x.png",
-    "row": 3,
-    "frames": 6,
-    "cellSize": 384,
-    "baseline": 330
+    "blueSrc": "assets/items/maoxian_blue.png",
+    "redSrc": "assets/items/maoxian_red.png",
+    "diameter": 150
   }
 }

@@ -39,3 +39,5 @@
 #correct-notice img{display:block;max-width:min(65vw,360px);max-height:35dvh;object-fit:contain}
 
 .result-bank{text-align:center;color:#d5c3e4;font-size:14px;line-height:1.6;margin:-10px 0 20px;overflow-wrap:anywhere}
+
+.background-option{display:grid;gap:10px;margin-bottom:24px;font-size:16px}.background-option select{width:100%;padding:10px;border:1px solid #a995c9;border-radius:3px;background:#382d46;color:#f3eaff;font:inherit}.background-option select:focus-visible{outline:3px solid #e1d5ff;outline-offset:3px}

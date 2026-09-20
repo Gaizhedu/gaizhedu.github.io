@@ -29,10 +29,11 @@ desktop.ini
 !/assets/ground/
 !/assets/ui/
 !/assets/items/
-!/assets/enemies/
 
 /assets/Background/*
 !/assets/Background/bookshelf.png
+!/assets/Background/sky_2.png
+!/assets/Background/pillar.png
 
 /assets/ground/*
 !/assets/ground/single_block.png
@@ -43,13 +44,11 @@ desktop.ini
 !/assets/ui/right.png
 
 /assets/items/*
+!/assets/items/maoxian_blue.png
+!/assets/items/maoxian_red.png
 !/assets/items/fish_can_[1-6].png
 !/assets/items/diamond.png
 
-/assets/enemies/*
-!/assets/enemies/evil_3x.png
-
-!/assets/items/sword.png
 !/assets/items/chest_head.png
 !/assets/items/castle.png
 !/assets/items/spring.png

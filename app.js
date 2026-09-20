@@ -13,6 +13,8 @@ const drawer = $('#history-drawer');
 const bankDrawer = $('#bank-drawer');
 const settingsDialog = $('#settings-dialog');
 const autoSkipCheckbox = $('#auto-skip-correct');
+const backgroundSelect = $('#background-select');
+let background = 'sky', monsterRotation = 0;
 const correctNotice = $('#correct-notice');
 let bankCatalog = [], selectedBank = null;
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -43,6 +45,10 @@ autoSkipCheckbox.addEventListener('change', () => {
     if (feedback) feedback.hidden = effect.autoContinue;
   }
 });
+backgroundSelect.addEventListener('change', () => {
+  background = backgroundSelect.value;
+  try { storage?.setItem('knowledge-quest-background', background); } catch { /* Use this visit's selection. */ }
+});
 let history = loadHistory(storage), historySaved = true;
 
 async function getJSON(url) {
@@ -66,6 +72,8 @@ function prepareEncounter() {
   const nextDistance = session.encounters[session.eventIndex + 1]?.distance ?? Infinity;
   monster = event?.kind === 'monster' ? new MonsterApproach(Math.min(nextDistance - 48, Math.max(event.distance,
     movement.position + (width - playerPosition() + spriteSize() / 2) / scale - 130))) : null;
+  monsterRotation = 0;
+  if (monster) monster.variant = session.encounters.slice(0, session.eventIndex + 1).filter(event => event.kind === 'monster').length % 2 ? 'blue' : 'red';
   monsterBody = new Jumper(monster ? terrain.heightAt(monster.position + 130) : 0);
 }
 function encounterDistance() { return monster?.position ?? session.currentEvent.distance; }
@@ -249,11 +257,37 @@ function resizeCanvas() {
   floor = panel.offsetTop;scale = Math.max(.45, Math.min(width / 603, height / 904));
 }
 function spriteSize() { return Math.min(384 * scale, floor * .72); }
-function drawSprite(image, definition, x, walking, jumpOffset = 0, row = definition.row) {
-  const size = spriteSize();
-  const baseline = row === definition.leftRow ? (definition.leftBaseline ?? definition.baseline) : definition.baseline;
-  const frame = walking && !reducedMotion ? Math.floor(elapsed / 115) % definition.frames : 0;
-  ctx.drawImage(image, frame * definition.cellSize, (row - 1) * definition.cellSize, definition.cellSize, definition.cellSize, Math.round(x - size / 2), Math.round(floor - size * baseline / definition.cellSize - jumpOffset), size, size);
+function drawMonster(x, elevation) {
+  const size = config.enemy.diameter * scale;
+  const image = monster.variant === 'red' ? images.enemyRed : images.enemyBlue;
+  ctx.save();
+  ctx.translate(x, floor - elevation * scale - size * .43);
+  if (!reducedMotion) ctx.rotate(monsterRotation);
+  ctx.drawImage(image, -size / 2, -size / 2, size, size);
+  ctx.restore();
+}
+function drawBackground() {
+  const scroll = movement.position * scale * .65;
+  if (background === 'bookshelf') {
+    const w = Math.max(1, Math.round(images.bookshelf.width * scale));
+    const h = Math.max(1, Math.round(images.bookshelf.height * scale));
+    const offset = (scroll + w * .78) % w;
+    for (let y = floor - h; y > -h; y -= h)
+      for (let x = -offset; x < width; x += w) ctx.drawImage(images.bookshelf, Math.floor(x), Math.floor(y), w + 1, h + 1);
+    return;
+  }
+  // Repeated sky panels and their seam pillars share the same scroll coordinates.
+  const skyHeight = floor + 2;
+  const cycle = skyHeight * images.sky2.width / images.sky2.height;
+  const offset = (scroll + cycle * .72) % cycle;
+  const pillarHeight = Math.max(floor + 12 * scale, floor * 1.06);
+  const pillarWidth = pillarHeight * images.pillar.width / images.pillar.height;
+  for (let x = -offset - cycle; x < width + pillarWidth; x += cycle) {
+    ctx.drawImage(images.sky2, x, -1, cycle + 1, skyHeight);
+  }
+  for (let x = -offset - cycle; x < width + pillarWidth; x += cycle) {
+    ctx.drawImage(images.pillar, x - pillarWidth / 2, floor - pillarHeight + 2, pillarWidth, pillarHeight);
+  }
 }
 function playerWidth() { return spriteSize() * .85 / scale; }
 function playerHeight() { return playerWidth() * config.player.jumpBaseline / config.player.frameWidth; }
@@ -298,17 +332,10 @@ function drawAnswerEffect() {
       ctx.translate(x + recoil * 80 * scale, foot - Math.sin(recoil * Math.PI) * 36 * scale);
       ctx.rotate(recoil * 1.35);ctx.translate(-x, -foot);
     }
-    drawSprite(images.enemy, config.enemy, x, false, effect.elevation * scale);
+    drawMonster(x, effect.elevation);
     ctx.restore();
   } else drawChest(effect.event, effect.position, 1 - recoil, reducedMotion ? 0 : recoil * 36 * scale);
-  const x = playerPosition(), y = floor - (jumper.feet + playerHeight() + 44) * scale;
-  const swordSize = 86 * scale;
-  ctx.save();ctx.globalAlpha = Math.min(1, p * 8) * Math.min(1, (1 - p) * 5);
-  ctx.translate(x, y - (reducedMotion ? 0 : Math.sin(p * Math.PI) * 22 * scale));
-  if (!reducedMotion) ctx.rotate(-.9 + p * 2.1);
-  const pop = reducedMotion ? 1 : .7 + .3 * Math.sin(Math.min(1, p * 3) * Math.PI / 2);
-  ctx.scale(pop, pop);ctx.drawImage(images.sword, -swordSize / 2, -swordSize / 2, swordSize, swordSize);
-  ctx.restore();
+
 }
 function draw(time) {
   requestAnimationFrame(draw);
@@ -347,6 +374,7 @@ function draw(time) {
         if (terrain.heightAt(oldX - 8) > monsterBody.feet) monsterBody.jump();
         monster.tick(delta, movement.position);
         monster.position = terrain.limit(oldX, monster.position + 130, monsterBody.feet) - 130;
+        monsterRotation += (monster.position + 130 - oldX) / (config.enemy.diameter * .43);
         touched = monster.position <= movement.position;
       }
       if (event.head) {
@@ -365,11 +393,8 @@ function draw(time) {
       }
     }
   }
-  const scroll = movement.position * scale;
   ctx.fillStyle = '#262533';ctx.fillRect(0, 0, width, height);
-  const bgWidth = Math.round(images.bookshelf.width * scale), bgHeight = Math.round(images.bookshelf.height * scale);
-  const bgOffset = (scroll * .65 + bgWidth * .78) % bgWidth;
-  for (let y = floor - bgHeight; y > -bgHeight; y -= bgHeight) for (let x = -bgOffset; x < width; x += bgWidth) ctx.drawImage(images.bookshelf, Math.floor(x), Math.floor(y), bgWidth + 1, bgHeight + 1);
+  drawBackground();
   const tile = BLOCK * scale;
   const firstColumn = Math.floor((movement.position - playerPosition() / scale) / BLOCK);
   const lastColumn = Math.ceil((movement.position + (width - playerPosition()) / scale) / BLOCK);
@@ -394,10 +419,10 @@ function draw(time) {
     const position = encounterDistance() + (event.head ? 0 : 130), x = worldX(position);
     {
       const elevation = event.kind === 'monster' ? monsterBody.feet : terrain.heightAt(position);
-      drawSprite(images.enemy, config.enemy, x, canMove(), elevation * scale);
+      drawMonster(x, elevation);
       if (event.final) {
         const itemWidth = 58 * scale, itemHeight = itemWidth * images.diamond.height / images.diamond.width;
-        ctx.drawImage(images.diamond, x - itemWidth / 2, floor - elevation * scale - spriteSize() * .68 - itemHeight - 15 * scale, itemWidth, itemHeight);
+        ctx.drawImage(images.diamond, x - itemWidth / 2, floor - elevation * scale - config.enemy.diameter * scale - itemHeight - 15 * scale, itemWidth, itemHeight);
       }
     }
   }
@@ -422,10 +447,11 @@ async function init() {
     config = await getJSON('config.json');
     let files;try { files = await getJSON('question/index.json'); } catch { files = config.questionFiles; }
     if (!Array.isArray(files) || !files.length) throw new Error('question 文件夹中没有 JSON 题库。');
-    const assets = { player: config.player.src, playerJump: config.player.jumpSrc, enemy: config.enemy.src,
+    const assets = { player: config.player.src, playerJump: config.player.jumpSrc, enemyBlue: config.enemy.blueSrc, enemyRed: config.enemy.redSrc,
+      sky2: 'assets/Background/sky_2.png', pillar: 'assets/Background/pillar.png',
       bookshelf: 'assets/Background/bookshelf.png', ground: 'assets/ground/single_block.png',
       upper: 'assets/ui/upper.png', right: 'assets/ui/right.png', left: 'assets/ui/left.png',
-      diamond: 'assets/items/diamond.png', sword: 'assets/items/sword.png', headChest: 'assets/items/chest_head.png', correct: 'assets/items/right.png',
+      diamond: 'assets/items/diamond.png', headChest: 'assets/items/chest_head.png', correct: 'assets/items/right.png',
       ...Object.fromEntries(Array.from({ length: 6 }, (_, i) => ['fishCan' + (i + 1), `assets/items/fish_can_${i + 1}.png`])) };
     const sources = Object.values(assets);
     const [banks, loaded] = await Promise.all([Promise.allSettled(files.map(file => getJSON(`question/${encodeURIComponent(file)}`))), Promise.all(sources.map(loadImage))]);
@@ -445,10 +471,13 @@ async function init() {
     const player = config.player;
     if (images.player.width !== player.frameWidth * player.frames || images.player.height !== player.frameHeight * 2 ||
       images.playerJump.width !== player.frameWidth || images.playerJump.height !== player.frameHeight) throw new Error('player 精灵图配置无效。');
-    for (const key of ['enemy']) {
-      const def = config[key];
-      if (![def.row, def.frames, def.cellSize, def.baseline].every(value => Number.isInteger(value) && value > 0) || def.baseline > def.cellSize || def.row * def.cellSize > images[key].height || def.frames * def.cellSize > images[key].width) throw new Error(`${key} 精灵图配置无效。`);
-    }
+    if (!(config.enemy.diameter > 0)) throw new Error('怪物尺寸配置无效。');
+    background = config.background === 'bookshelf' ? 'bookshelf' : 'sky';
+    try {
+      const savedBackground = storage?.getItem('knowledge-quest-background');
+      if (['sky', 'bookshelf'].includes(savedBackground)) background = savedBackground;
+    } catch { /* Keep the configured default. */ }
+    backgroundSelect.value = background;
     renderReady();resizeCanvas();new ResizeObserver(resizeCanvas).observe(canvas);requestAnimationFrame(draw);
     if (requested) startGame();
   } catch (error) {
