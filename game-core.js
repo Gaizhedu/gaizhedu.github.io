@@ -48,6 +48,10 @@ export class GameSession {
   }
   get current() { return this.currentEvent?.question; }
   get currentEvent() { return this.encounters[this.eventIndex]; }
+  travelLimit(monsterPosition) {
+    if (this.currentEvent?.head) return this.encounters[this.eventIndex + 1]?.distance ?? Infinity;
+    return monsterPosition ?? this.currentEvent?.distance ?? Infinity;
+  }
   get score() { return this.answers.length ? Math.round(this.correct / this.answers.length * 100) : 0; }
   get roadCompleted() { return this.answers.filter(answer => !answer.head).length; }
   get headOpened() { return this.answers.filter(answer => answer.head).length; }
@@ -163,9 +167,9 @@ export function buildJourney(bank, ratios = DEFAULT_RATIOS, random = Math.random
   for (let i = 0; i < heads; i++) addSlot('headChest');
   const finalMonster = slots.shift();
   const events = slots.map(slot => ({ kind: slot.category === 'monster' ? 'monster' : 'chest', head: slot.category === 'headChest', final: false, question: slot.question }));
-  const firstSkin = random() < .5 ? 1 : 2;
+  const firstSkin = Math.floor(random() * 6) + 1;
   let chestIndex = 0;
-  for (const event of events) if (event.kind === 'chest') event.variant = (firstSkin + chestIndex++ - 1) % 2 + 1;
+  for (const event of events) if (event.kind === 'chest' && !event.head) event.variant = (firstSkin + chestIndex++ - 1) % 6 + 1;
   for (let i = events.length - 1; i > 0; i--) {
     const j = Math.floor(random() * (i + 1));
     [events[i], events[j]] = [events[j], events[i]];

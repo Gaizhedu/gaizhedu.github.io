@@ -8,13 +8,15 @@
     "tiku_pro.json"
   ],
   "player": {
-    "src": "assets/player2.png",
-    "row": 7,
-    "leftRow": 3,
+    "src": "assets/player/cat_player.png",
+    "jumpSrc": "assets/player/cat_jump.png",
+    "row": 1,
+    "leftRow": 2,
     "frames": 3,
-    "cellSize": 384,
-    "baseline": 318,
-    "leftBaseline": 309
+    "frameWidth": 1536,
+    "frameHeight": 1024,
+    "baseline": 920,
+    "jumpBaseline": 955
   },
   "enemy": {
     "src": "assets/enemies/evil_3x.png",

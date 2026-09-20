@@ -11,6 +11,9 @@ const ctx = canvas.getContext('2d');
 const resultDialog = $('#result-dialog');
 const drawer = $('#history-drawer');
 const bankDrawer = $('#bank-drawer');
+const settingsDialog = $('#settings-dialog');
+const autoSkipCheckbox = $('#auto-skip-correct');
+const correctNotice = $('#correct-notice');
 let bankCatalog = [], selectedBank = null;
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const escapeHTML = value => String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -24,6 +27,20 @@ let monster = null, monsterBody = new Jumper(), answersLocked = false;
 let runId = '', recorded = false;
 let storage;
 try { storage = localStorage; } catch { storage = null; }
+try { autoSkipCheckbox.checked = storage?.getItem('knowledge-quest-auto-skip-correct') !== 'false'; } catch { /* Default on without storage. */ }
+$('#settings-button').addEventListener('click', () => { clearInput(true);settingsDialog.showModal(); });
+$('#close-settings').addEventListener('click', () => settingsDialog.close());
+settingsDialog.addEventListener('click', event => { if (event.target === settingsDialog) {
+  const rect = settingsDialog.getBoundingClientRect();
+  if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) settingsDialog.close();
+} });
+autoSkipCheckbox.addEventListener('change', () => {
+  try { storage?.setItem('knowledge-quest-auto-skip-correct', String(autoSkipCheckbox.checked)); } catch { /* Preference remains usable for this visit. */ }
+  if (effect?.isCorrect) {
+    effect.autoContinue = autoSkipCheckbox.checked;
+    correctNotice.hidden = !effect.autoContinue;
+  }
+});
 let history = loadHistory(storage), historySaved = true;
 
 async function getJSON(url) {
@@ -43,17 +60,17 @@ function announce(message) { $('#announcement').textContent = message; }
 function playerPosition() { return width / 2 - Math.min(width * .255, height * .22); }
 function prepareEncounter() {
   const event = session.currentEvent;
-  // Keep the entire sprite beyond the right edge before it starts walking in.
-  monster = event?.kind === 'monster' ? new MonsterApproach(Math.max(event.distance,
-    movement.position + (width - playerPosition() + spriteSize() / 2) / scale - 130)) : null;
+  // Enter from the right, but stay before the next encounter on wide screens.
+  const nextDistance = session.encounters[session.eventIndex + 1]?.distance ?? Infinity;
+  monster = event?.kind === 'monster' ? new MonsterApproach(Math.min(nextDistance - 48, Math.max(event.distance,
+    movement.position + (width - playerPosition() + spriteSize() / 2) / scale - 130))) : null;
   monsterBody = new Jumper(monster ? terrain.heightAt(monster.position + 130) : 0);
 }
 function encounterDistance() { return monster?.position ?? session.currentEvent.distance; }
 function movementLimit() {
-  if (session.currentEvent?.head) return session.encounters[session.eventIndex + 1]?.distance ?? Infinity;
-  return Math.min(session.currentEvent.distance, encounterDistance());
+  return session.travelLimit(monster?.position);
 }
-function canMove() { return session && !effect && ['explore', 'walking'].includes(session.phase) && !drawer.open && !bankDrawer.open && !resultDialog.open; }
+function canMove() { return session && !effect && ['explore', 'walking'].includes(session.phase) && !drawer.open && !bankDrawer.open && !resultDialog.open && !settingsDialog.open; }
 function clearInput(stop = false) {
   heldInput.clear();
   if (stop) { movement.stop();session?.stopWalking(); }
@@ -75,17 +92,18 @@ function startGame() {
   session = new GameSession(events.map(event => event.question), events);
   movement = new StepMovement();clearInput();
   terrain = new Terrain(events);jumper = new Jumper();effect = null;chestBump = 0;
+  correctNotice.hidden = true;
   prepareEncounter();answersLocked = false;
   runId = crypto.randomUUID();recorded = false;
   renderControls();
   $('#advance-button').focus({ preventScroll: true });
-  announce('游戏开始。左右移动，上箭头跳上台阶；悬空宝箱可跳起顶开，也可直接路过。');
+  announce('游戏开始。左右移动；悬空宝箱可按上箭头跳起顶开，也可直接路过。');
 }
 function renderControls() {
   panel.className = '';
   panel.innerHTML = '<div class="movement-controls"><button class="arrow-button left" id="retreat-button" aria-label="后退"><img src="assets/ui/left.png" alt="" draggable="false"></button><button class="arrow-button up" id="jump-button" aria-label="跳跃"><img src="assets/ui/upper.png" alt="" draggable="false"></button><button class="arrow-button right" id="advance-button" aria-label="前进"><img src="assets/ui/right.png" alt="" draggable="false"></button></div>';
   const hint = document.createElement('div');hint.className = 'movement-hint';
-  hint.textContent = session.currentEvent?.head ? '↑ 顶开悬空宝箱 · 也可直接路过' : '← → 移动 · ↑ 跳上台阶';panel.append(hint);
+  hint.textContent = session.currentEvent?.head ? '↑ 顶开悬空宝箱 · 也可直接路过' : '← → 移动 · ↑ 跳跃';panel.append(hint);
   $('#jump-button').addEventListener('click', jump);
   for (const [id, direction] of [['retreat-button', -1], ['advance-button', 1]]) {
     const button = $('#' + id);
@@ -111,7 +129,7 @@ function renderBattle() {
   const question = session.current;
   const event = session.currentEvent;
   panel.className = event.kind === 'chest' ? 'battle treasure' : 'battle';
-  canvas.setAttribute('aria-label', event.kind === 'chest' ? '骑士遇到了宝箱' : event.final ? '骑士遇到了头顶钻石的最后一只怪物' : '骑士遇到了怪物');
+  canvas.setAttribute('aria-label', event.kind === 'chest' ? '小猫遇到了宝箱' : event.final ? '小猫遇到了头顶钻石的最后一只怪物' : '小猫遇到了怪物');
   panel.innerHTML = `<div class="question-panel">${event.kind === 'chest' ? `<div class="encounter-label">${event.head ? '顶头宝箱挑战' : '宝箱挑战'}</div>` : ''}<h1 id="question-title">${formatQuestionText(question.question)}</h1><div class="options" role="group" aria-labelledby="question-title">${LETTERS.map((letter, i) => `<button class="option" data-answer="${letter}"><span>${letter}.</span><span>${formatQuestionText(question.options[i])}</span></button>`).join('')}</div></div>`;
   answerDelay.start(performance.now());answersLocked = true;
   panel.querySelectorAll('[data-answer]').forEach(button => {
@@ -123,18 +141,31 @@ function renderBattle() {
   announce(`${event.kind === 'chest' ? '宝箱' : '怪物'}题目：${plainQuestionText(question.question)}`);
 }
 function submitAnswer(letter) {
-  if (bankDrawer.open || drawer.open || effect || session?.phase !== 'battle' || !answerDelay.ready(performance.now())) return;
+  if (settingsDialog.open || bankDrawer.open || drawer.open || effect || session?.phase !== 'battle' || !answerDelay.ready(performance.now())) return;
   const event = session.currentEvent;
   const position = encounterDistance() + (event.head ? 0 : 130);
   const elevation = event.kind === 'monster' ? monsterBody.feet : terrain.heightAt(position);
-  if (!session?.answer(letter)) return;
+  const record = session.answer(letter);
+  if (!record) return;
   clearInput(true);answersLocked = false;
   effect = new AnswerEffect(event, position, elevation);
-  panel.className = '';panel.replaceChildren();
-  announce('挥剑！');
+  effect.isCorrect = record.isCorrect;
+  effect.autoContinue = record.isCorrect && autoSkipCheckbox.checked;
+  correctNotice.hidden = !effect.autoContinue;
+  panel.querySelectorAll('[data-answer]').forEach(button => {
+    button.disabled = true;
+    if (button.dataset.answer === letter) button.classList.add(record.isCorrect ? 'selected-right' : 'selected-wrong');
+  });
+  const feedback = document.createElement('div');feedback.className = 'answer-feedback';
+  feedback.innerHTML = `<p class="${record.isCorrect ? 'answer-right' : 'answer-wrong'}" role="status">${record.isCorrect ? '回答正确！' : '回答错误，正确答案是 ' + record.question.correct + '。'}</p><details><summary>查看详情</summary><p>正确答案：${record.question.correct}. ${formatQuestionText(record.question.options[LETTERS.indexOf(record.question.correct)])}</p><p>${formatQuestionText(record.question.explanation || '本题暂无补充解析。')}</p></details><button id="continue-button" class="secondary-button" disabled>${session.phase === 'finished' ? '查看结果' : '继续'}</button>`;
+  panel.querySelector('.question-panel').append(feedback);
+  feedback.scrollIntoView({ block: 'end' });
+  $('#continue-button').addEventListener('click', () => { if (effect?.done) finishAnswerEffect(); });
+  announce(record.isCorrect ? '回答正确！可展开查看详情。' : `回答错误，正确答案是 ${record.question.correct}。可展开查看详情。`);
 }
 function finishAnswerEffect() {
   effect = null;
+  correctNotice.hidden = true;
   if (session.phase === 'finished') {
     panel.className = '';panel.replaceChildren();showResult();
   } else {
@@ -217,7 +248,19 @@ function drawSprite(image, definition, x, walking, jumpOffset = 0, row = definit
   const frame = walking && !reducedMotion ? Math.floor(elapsed / 115) % definition.frames : 0;
   ctx.drawImage(image, frame * definition.cellSize, (row - 1) * definition.cellSize, definition.cellSize, definition.cellSize, Math.round(x - size / 2), Math.round(floor - size * baseline / definition.cellSize - jumpOffset), size, size);
 }
-function playerHeight() { return spriteSize() / scale * .69; }
+function playerHeight() { return spriteSize() / scale * .48; }
+function drawPlayer() {
+  const def = config.player, jumping = !jumper.grounded;
+  const frame = movement.moving && !reducedMotion ? Math.floor(elapsed / 115) % def.frames : 0;
+  const size = spriteSize() * .85, drawHeight = size * def.frameHeight / def.frameWidth;
+  const baseline = jumping ? def.jumpBaseline : def.baseline;
+  ctx.save();ctx.translate(playerPosition(), floor - jumper.feet * scale);
+  if (jumping && movement.direction === -1) ctx.scale(-1, 1);
+  ctx.drawImage(jumping ? images.playerJump : images.player,
+    jumping ? 0 : frame * def.frameWidth, jumping ? 0 : ((movement.direction === -1 ? def.leftRow : def.row) - 1) * def.frameHeight,
+    def.frameWidth, def.frameHeight, -size / 2, -drawHeight * baseline / def.frameHeight, size, drawHeight);
+  ctx.restore();
+}
 function chestBottom(event) { return terrain.heightAt(event.distance) + playerHeight() + 42; }
 function worldX(position) { return playerPosition() + (position - movement.position) * scale; }
 function drawChest(event, position, opacity = 1, lift = 0) {
@@ -233,7 +276,7 @@ function drawChest(event, position, opacity = 1, lift = 0) {
       ctx.fillText('↑', x, floor - chestBottom(event) * scale + 25 * scale);
     }
   } else {
-    const image = images['chest' + event.variant], itemWidth = 155 * scale, itemHeight = itemWidth * image.height / image.width;
+    const image = images['fishCan' + event.variant], itemWidth = 110 * scale, itemHeight = itemWidth * image.height / image.width;
     ctx.drawImage(image, x - itemWidth / 2, floor - terrain.heightAt(position) * scale - itemHeight - lift, itemWidth, itemHeight);
   }
   ctx.restore();
@@ -263,14 +306,17 @@ function draw(time) {
   requestAnimationFrame(draw);
   const delta = previousTime ? Math.min(time - previousTime, 50) : 0;previousTime = time;
   if (document.hidden) return;
-  const paused = drawer.open || bankDrawer.open || resultDialog.open;
+  const paused = drawer.open || bankDrawer.open || resultDialog.open || settingsDialog.open;
   if (!paused) elapsed += delta;
   if (answersLocked && session?.phase === 'battle' && answerDelay.ready(performance.now())) {
     panel.querySelectorAll('[data-answer]').forEach(button => { button.disabled = false; });answersLocked = false;
   }
   if (!paused) {
     if (chestBump > 0) chestBump = Math.max(0, chestBump - delta);
-    if (effect && effect.tick(delta)) finishAnswerEffect();
+    if (effect && effect.tick(delta)) {
+      if (effect.autoContinue) finishAnswerEffect();
+      else $('#continue-button').disabled = false;
+    }
     const previousFeet = jumper.feet, wasRising = jumper.velocity > 0;
     jumper.tick(delta, terrain.heightAt(movement.position));
     if (monster) monsterBody.tick(delta, terrain.heightAt(monster.position + 130));
@@ -282,7 +328,7 @@ function draw(time) {
       if (movement.moving) {
         const previousPosition = movement.position;
         touched = movement.tick(delta, movementLimit());
-        const allowed = terrain.limit(previousPosition, movement.position, jumper.feet);
+        const allowed = terrain.walk(previousPosition, movement.position, jumper);
         if (allowed !== movement.position) {
           movement.position = allowed;movement.stop();touched = false;
         }
@@ -305,7 +351,7 @@ function draw(time) {
       else if (session.skipHeadChest(movement.position)) {
         prepareEncounter();
         const hint = panel.querySelector('.movement-hint');
-        if (hint) hint.textContent = session.currentEvent?.head ? '↑ 顶开悬空宝箱 · 也可直接路过' : '← → 移动 · ↑ 跳上台阶';
+        if (hint) hint.textContent = session.currentEvent?.head ? '↑ 顶开悬空宝箱 · 也可直接路过' : '← → 移动 · ↑ 跳跃';
         announce('已路过可选宝箱，继续探索。');
       }
     }
@@ -323,7 +369,7 @@ function draw(time) {
     for (let y = top; y < height; y += tile) ctx.drawImage(images.ground, Math.floor(x), Math.floor(y), Math.ceil(tile) + 1, Math.ceil(tile) + 1);
     ctx.fillStyle = '#bcadcf88';ctx.fillRect(Math.floor(x), Math.floor(top), Math.ceil(tile) + 1, 2);
   }
-  drawSprite(images.player, config.player, playerPosition(), movement.moving, jumper.feet * scale, movement.direction === -1 ? config.player.leftRow : config.player.row);
+  drawPlayer();
   // Chests occupy fixed world positions from the beginning, including future encounters.
   for (let i = session?.eventIndex ?? 0; session && i < session.encounters.length; i++) {
     const chest = session.encounters[i];
@@ -348,6 +394,7 @@ function draw(time) {
   }
 }
 document.addEventListener('keydown', event => {
+  if (settingsDialog.open) return;
   if (event.altKey || event.ctrlKey || event.metaKey || resultDialog.open || drawer.open || bankDrawer.open || !bank) return;
   if (event.target.closest('#bank-button') && ['Space', 'Enter'].includes(event.code)) return;
   if (!session && ['Space', 'Enter'].includes(event.code)) { if (!event.repeat) { event.preventDefault();startGame(); }return; }
@@ -366,7 +413,12 @@ async function init() {
     config = await getJSON('config.json');
     let files;try { files = await getJSON('question/index.json'); } catch { files = config.questionFiles; }
     if (!Array.isArray(files) || !files.length) throw new Error('question 文件夹中没有 JSON 题库。');
-    const sources = [config.player.src, config.enemy.src, 'assets/Background/bookshelf.png', 'assets/ground/single_block.png', 'assets/ui/upper.png', 'assets/ui/right.png', 'assets/ui/left.png', 'assets/items/chest_1.png', 'assets/items/chest_2.png', 'assets/items/diamond.png', 'assets/items/sword.png', 'assets/items/chest_head.png'];
+    const assets = { player: config.player.src, playerJump: config.player.jumpSrc, enemy: config.enemy.src,
+      bookshelf: 'assets/Background/bookshelf.png', ground: 'assets/ground/single_block.png',
+      upper: 'assets/ui/upper.png', right: 'assets/ui/right.png', left: 'assets/ui/left.png',
+      diamond: 'assets/items/diamond.png', sword: 'assets/items/sword.png', headChest: 'assets/items/chest_head.png', correct: 'assets/items/right.png',
+      ...Object.fromEntries(Array.from({ length: 6 }, (_, i) => ['fishCan' + (i + 1), `assets/items/fish_can_${i + 1}.png`])) };
+    const sources = Object.values(assets);
     const [banks, loaded] = await Promise.all([Promise.allSettled(files.map(file => getJSON(`question/${encodeURIComponent(file)}`))), Promise.all(sources.map(loadImage))]);
 
     bankCatalog = banks.map((result, i) => result.status === 'fulfilled' ? describeBank(result.value, files[i]) :
@@ -380,8 +432,11 @@ async function init() {
     $('#bank-button').disabled = false;
     $('#bank-button').title = `切换题库：${selectedBank.title}`;
     $('#bank-button').setAttribute('aria-label', `切换题库：${selectedBank.title}`);
-    images = Object.fromEntries(['player', 'enemy', 'bookshelf', 'ground', 'upper', 'right', 'left', 'chest1', 'chest2', 'diamond', 'sword', 'headChest'].map((key, index) => [key, loaded[index]]));
-    for (const key of ['player', 'enemy']) {
+    images = Object.fromEntries(Object.keys(assets).map((key, index) => [key, loaded[index]]));
+    const player = config.player;
+    if (images.player.width !== player.frameWidth * player.frames || images.player.height !== player.frameHeight * 2 ||
+      images.playerJump.width !== player.frameWidth || images.playerJump.height !== player.frameHeight) throw new Error('player 精灵图配置无效。');
+    for (const key of ['enemy']) {
       const def = config[key];
       if (![def.row, def.frames, def.cellSize, def.baseline].every(value => Number.isInteger(value) && value > 0) || def.baseline > def.cellSize || def.row * def.cellSize > images[key].height || def.frames * def.cellSize > images[key].width) throw new Error(`${key} 精灵图配置无效。`);
     }
@@ -393,4 +448,3 @@ async function init() {
   }
 }
 init();
-

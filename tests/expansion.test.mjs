@@ -134,3 +134,19 @@ test('every question rejects answers before 500ms and unlocks at exactly 500ms',
     assert.equal(delay.ready(start + 500), true);
   }
 });
+
+test('travel follows the real monster instead of blocking at its scheduled spawn', () => {
+  const question = {correct:'A'};
+  const session = new GameSession([question]);
+  const movement = new StepMovement();
+  for (let i = 0; i < 20; i++) movement.step(1, session.travelLimit(900));
+  movement.tick(3000, session.travelLimit(900));
+  assert.ok(movement.position > session.currentEvent.distance);
+  assert.equal(session.travelLimit(700), 700);
+  assert.equal(session.travelLimit(), 380);
+  const optional = new GameSession([question, question], [
+    {kind:'chest', head:true, distance:380, question},
+    {kind:'chest', distance:760, question}
+  ]);
+  assert.equal(optional.travelLimit(), 760);
+});

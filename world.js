@@ -1,19 +1,25 @@
 export const BLOCK = 64;
-const PROFILE = [0, 0, 0, 0, 1, 1, 2, 2, 1, 1, 0, 0, 0, 1, 1, 0];
 export class Terrain {
-  constructor(events = []) { this.events = events; }
-  heightAt(x) {
-    const column = Math.floor(x / BLOCK);
-    if (column < 3) return 0;
-    // Treasure encounters have a broad, reachable landing below them.
-    if (this.events.some(e => e.kind === 'chest' && Math.abs((column + .5) * BLOCK - e.distance) < 130)) return BLOCK;
-    return PROFILE[((column % PROFILE.length) + PROFILE.length) % PROFILE.length] * BLOCK;
-  }
+  heightAt() { return 0; }
   limit(from, to, feet) {
     const direction = Math.sign(to - from);
     for (let x = from; direction && direction * (to - x) > 0; ) {
       const next = x + direction * Math.min(2, Math.abs(to - x));
       if (this.heightAt(next) > feet + .01) return x;
+      x = next;
+    }
+    return to;
+  }
+  walk(from, to, body) {
+    const direction = Math.sign(to - from);
+    for (let x = from; direction && direction * (to - x) > 0; ) {
+      const next = x + direction * Math.min(2, Math.abs(to - x));
+      const ground = this.heightAt(next);
+      if (ground > body.feet + .01) {
+        if (!body.grounded || ground - body.feet > BLOCK + .01) return x;
+        body.feet = ground;
+        body.velocity = 0;
+      } else if (ground < body.feet - .01) body.grounded = false;
       x = next;
     }
     return to;

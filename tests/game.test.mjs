@@ -40,7 +40,7 @@ test('one question per enemy, both outcomes continue, double submission is ignor
   assert.equal(game.advance(), false);
   assert.equal(new GameSession(sampleQuestions(bank, .3)).answers.length, 0);
 });
-test('answers immediately unlock travel or finish, without a feedback phase', () => {
+test('answer records advance the session while the UI controls feedback dismissal', () => {
   const game = new GameSession(bank.slice(0, 2));
   game.advance();game.encounter();
   game.answer(game.current.correct);

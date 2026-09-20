@@ -24,8 +24,7 @@ desktop.ini
 
 # 素材白名单：仅保留运行时实际加载的文件
 /assets/*
-!/assets/player_3x.png
-!/assets/player2.png
+!/assets/player/
 !/assets/Background/
 !/assets/ground/
 !/assets/ui/
@@ -44,8 +43,7 @@ desktop.ini
 !/assets/ui/right.png
 
 /assets/items/*
-!/assets/items/chest_1.png
-!/assets/items/chest_2.png
+!/assets/items/fish_can_[1-6].png
 !/assets/items/diamond.png
 
 /assets/enemies/*
@@ -54,3 +52,12 @@ desktop.ini
 !/assets/items/sword.png
 !/assets/items/chest_head.png
 !/assets/items/castle.png
+!/assets/items/spring.png
+!/assets/items/right.png
+
+/assets/player/*
+!/assets/player/cat_player.png
+!/assets/player/cat_jump.png
+
+# Photoshop source files are never runtime assets
+*.[pP][sS][dD]
