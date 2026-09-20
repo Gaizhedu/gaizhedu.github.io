@@ -25,6 +25,20 @@ test('head chest triggers only when aligned and crossing its bottom while rising
   assert.equal(hitsHeadChest({...hit, previousHead: 320}), false);
 });
 
+test('the full cat sprite can bump a chest with its front or tail at any display scale', () => {
+  for (const width of [200, 326.4, 384]) {
+    const hit = {playerX: 0, chestX: 0, playerHalfWidth: width / 2, chestHalfWidth: 50,
+      previousHead: 300, head: 320, bottom: 310, rising: true};
+    for (const side of [-1, 1]) {
+      const edge = side * (width / 2 + 50);
+      assert.equal(hitsHeadChest({...hit, chestX: edge}), true);
+      assert.equal(hitsHeadChest({...hit, chestX: edge + side}), false);
+      assert.equal(hitsHeadChest({...hit, chestX: edge, rising: false}), false);
+      assert.equal(hitsHeadChest({...hit, chestX: edge, head: 309}), false);
+    }
+  }
+});
+
 test('small banks remain playable and default bank includes both chest types without repeats', () => {
   const bank = Array.from({length: 10}, (_, i) => ({id: i, correct: 'A'}));
   for (let n = 2; n <= 10; n++) {

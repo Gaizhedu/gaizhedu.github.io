@@ -1,5 +1,5 @@
 import { formatQuestionText, plainQuestionText } from './question-format.js';
-import { LETTERS, buildJourney, GameSession, StepMovement, HeldDirection, MonsterApproach, AnswerDelay } from './game-core.js';
+import { LETTERS, buildJourney, shuffleOptions, GameSession, StepMovement, HeldDirection, MonsterApproach, AnswerDelay } from './game-core.js';
 import { BANK_KEY, describeBank, selectBank } from './question-banks.js';
 import { loadHistory, addResult, saveHistory } from './history.js';
 import { BLOCK, Terrain, Jumper, hitsHeadChest, AnswerEffect } from './world.js';
@@ -39,6 +39,8 @@ autoSkipCheckbox.addEventListener('change', () => {
   if (effect?.isCorrect) {
     effect.autoContinue = autoSkipCheckbox.checked;
     correctNotice.hidden = !effect.autoContinue;
+    const feedback = panel.querySelector('.answer-feedback');
+    if (feedback) feedback.hidden = effect.autoContinue;
   }
 });
 let history = loadHistory(storage), historySaved = true;
@@ -88,7 +90,8 @@ function renderReady() {
 }
 function startGame() {
   if (resultDialog.open) resultDialog.close();
-  const events = buildJourney(bank, selectedBank.ratios, Math.random, selectedBank.totalQuestionRatio);
+  const events = buildJourney(bank, selectedBank.ratios, Math.random, selectedBank.totalQuestionRatio)
+    .map(event => ({ ...event, question: shuffleOptions(event.question) }));
   session = new GameSession(events.map(event => event.question), events);
   movement = new StepMovement();clearInput();
   terrain = new Terrain(events);jumper = new Jumper();effect = null;chestBump = 0;
@@ -159,9 +162,10 @@ function submitAnswer(letter) {
   const feedback = document.createElement('div');feedback.className = 'answer-feedback';
   feedback.innerHTML = `<p class="${record.isCorrect ? 'answer-right' : 'answer-wrong'}" role="status">${record.isCorrect ? '回答正确！' : '回答错误，正确答案是 ' + record.question.correct + '。'}</p><details><summary>查看详情</summary><p>正确答案：${record.question.correct}. ${formatQuestionText(record.question.options[LETTERS.indexOf(record.question.correct)])}</p><p>${formatQuestionText(record.question.explanation || '本题暂无补充解析。')}</p></details><button id="continue-button" class="secondary-button" disabled>${session.phase === 'finished' ? '查看结果' : '继续'}</button>`;
   panel.querySelector('.question-panel').append(feedback);
-  feedback.scrollIntoView({ block: 'end' });
+  feedback.hidden = effect.autoContinue;
+  if (!feedback.hidden) feedback.scrollIntoView({ block: 'end' });
   $('#continue-button').addEventListener('click', () => { if (effect?.done) finishAnswerEffect(); });
-  announce(record.isCorrect ? '回答正确！可展开查看详情。' : `回答错误，正确答案是 ${record.question.correct}。可展开查看详情。`);
+  announce(record.isCorrect ? (effect.autoContinue ? '回答正确！即将自动继续。' : '回答正确！可展开查看详情。') : `回答错误，正确答案是 ${record.question.correct}。可展开查看详情。`);
 }
 function finishAnswerEffect() {
   effect = null;
@@ -182,6 +186,9 @@ function showResult() {
   }
   resultDialog.innerHTML = `<h2 id="result-title">游戏结束</h2><p class="result-score">答对 <strong>${session.correct}</strong><span>/ ${session.answers.length} 题</span></p><p class="result-points">${session.score} 分</p><details class="review"><summary>题目详情</summary>${session.answers.map((record, index) => `<article class="review-item"><h3>${index + 1}. ${record.head ? '【头顶宝箱】' : record.kind === 'chest' ? '【路上宝箱】' : ''}${formatQuestionText(record.question.question)}</h3><ul class="review-options">${LETTERS.map((letter, i) => `<li>${letter}. ${formatQuestionText(record.question.options[i])}</li>`).join('')}</ul><p class="${record.isCorrect ? 'answer-right' : 'answer-wrong'}">你的答案：${record.selected}（${record.isCorrect ? '正确' : '错误'}）</p><p class="answer-right">正确答案：${record.question.correct}. ${formatQuestionText(record.question.options[LETTERS.indexOf(record.question.correct)])}</p><p>${formatQuestionText(record.question.explanation || '本题暂无补充解析。')}</p></article>`).join('')}</details><div class="result-actions"><button id="result-history-button" class="secondary-button">游玩记录</button><button id="replay-button" class="pixel-button">重新开始</button></div>`;
   const bankAction = document.createElement('button');bankAction.className = 'secondary-button';bankAction.textContent = '切换题库';
+  const bankName = document.createElement('p');bankName.className = 'result-bank';
+  bankName.textContent = `本局题库：${selectedBank.title}`;
+  resultDialog.querySelector('#result-title').after(bankName);
   const counts = document.createElement('p');counts.className = 'result-counts';
   counts.textContent = `击败怪物及完成路上宝箱：${session.roadCompleted} 题；开启头顶宝箱：${session.headOpened} / ${session.encounters.filter(event => event.head).length} 个。`;
   resultDialog.querySelector('.result-points').after(counts);
@@ -248,11 +255,12 @@ function drawSprite(image, definition, x, walking, jumpOffset = 0, row = definit
   const frame = walking && !reducedMotion ? Math.floor(elapsed / 115) % definition.frames : 0;
   ctx.drawImage(image, frame * definition.cellSize, (row - 1) * definition.cellSize, definition.cellSize, definition.cellSize, Math.round(x - size / 2), Math.round(floor - size * baseline / definition.cellSize - jumpOffset), size, size);
 }
-function playerHeight() { return spriteSize() / scale * .48; }
+function playerWidth() { return spriteSize() * .85 / scale; }
+function playerHeight() { return playerWidth() * config.player.jumpBaseline / config.player.frameWidth; }
 function drawPlayer() {
   const def = config.player, jumping = !jumper.grounded;
   const frame = movement.moving && !reducedMotion ? Math.floor(elapsed / 115) % def.frames : 0;
-  const size = spriteSize() * .85, drawHeight = size * def.frameHeight / def.frameWidth;
+  const size = playerWidth() * scale, drawHeight = size * def.frameHeight / def.frameWidth;
   const baseline = jumping ? def.jumpBaseline : def.baseline;
   ctx.save();ctx.translate(playerPosition(), floor - jumper.feet * scale);
   if (jumping && movement.direction === -1) ctx.scale(-1, 1);
@@ -343,6 +351,7 @@ function draw(time) {
       }
       if (event.head) {
         touched = hitsHeadChest({playerX: movement.position, chestX: event.distance,
+          playerHalfWidth: playerWidth() / 2, chestHalfWidth: 50,
           previousHead: previousFeet + playerHeight(), head: jumper.feet + playerHeight(),
           bottom: chestBottom(event), rising: wasRising});
         if (touched) { jumper.feet = chestBottom(event) - playerHeight();jumper.velocity = 0;chestBump = 260; }

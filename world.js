@@ -42,8 +42,8 @@ export class Jumper {
     }
   }
 }
-export function hitsHeadChest({playerX, chestX, previousHead, head, bottom, rising}) {
-  return rising && Math.abs(playerX - chestX) <= 46 && previousHead <= bottom && head >= bottom;
+export function hitsHeadChest({playerX, chestX, playerHalfWidth = 0, chestHalfWidth = 46, previousHead, head, bottom, rising}) {
+  return rising && Math.abs(playerX - chestX) <= playerHalfWidth + chestHalfWidth && previousHead <= bottom && head >= bottom;
 }
 export class AnswerEffect {
   constructor(event, position, elevation) {

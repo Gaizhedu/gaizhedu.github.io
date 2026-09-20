@@ -37,3 +37,5 @@
 #settings-dialog::backdrop{background:#100c1980}.auto-skip-option{display:flex;align-items:center;gap:12px;font-size:16px;line-height:1.6;cursor:pointer}.auto-skip-option input{width:20px;height:20px;accent-color:#a78bda;flex-shrink:0}
 #correct-notice{position:absolute;z-index:3;inset:0;display:grid;place-items:center;pointer-events:none}
 #correct-notice img{display:block;max-width:min(65vw,360px);max-height:35dvh;object-fit:contain}
+
+.result-bank{text-align:center;color:#d5c3e4;font-size:14px;line-height:1.6;margin:-10px 0 20px;overflow-wrap:anywhere}

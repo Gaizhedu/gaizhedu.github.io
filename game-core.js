@@ -1,5 +1,18 @@
 export const LETTERS = ['A', 'B', 'C', 'D'];
 
+export function shuffleOptions(question, random = Math.random) {
+  const order = LETTERS.map((_, index) => index);
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  return {
+    ...question,
+    options: order.map(index => question.options[index]),
+    correct: LETTERS[order.indexOf(LETTERS.indexOf(question.correct))],
+  };
+}
+
 export function normalizeQuestions(banks) {
   const result = [];
   const seen = new Set();
