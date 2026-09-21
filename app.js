@@ -445,8 +445,8 @@ document.addEventListener('visibilitychange', () => { if (document.hidden) clear
 async function init() {
   try {
     config = await getJSON('config.json');
-    let files;try { files = await getJSON('question/index.json'); } catch { files = config.questionFiles; }
-    if (!Array.isArray(files) || !files.length) throw new Error('question 文件夹中没有 JSON 题库。');
+    const files = config.questionFiles;
+    if (!Array.isArray(files) || !files.length) throw new Error('请在 config.json 中至少启用一个题库。');
     const assets = { player: config.player.src, playerJump: config.player.jumpSrc, enemyBlue: config.enemy.blueSrc, enemyRed: config.enemy.redSrc,
       sky3: 'assets/Background/sky_3.png', pillar: 'assets/Background/pillar.png',
       bookshelf: 'assets/Background/bookshelf.png', ground: 'assets/ground/single_block.png',

@@ -21,6 +21,7 @@ desktop.ini
 /progress.md
 /.planning/
 /start-game.cmd
+/bank-manager.local.html
 
 # 素材白名单：仅保留运行时实际加载的文件
 /assets/*

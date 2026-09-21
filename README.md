@@ -71,11 +71,11 @@
 
 ## 添加题库
 
-将 JSON 放进 `question` 文件夹并刷新。自带服务器自动发现题库，每局只使用当前选中的题库，相同题干与选项会在该题库内去重。
+将 JSON 放进 `question` 文件夹，并在 `config.json` 的 `questionFiles` 中列出要启用的文件名。游戏在本地和发布后均只显示此列表中的题库；未列出的题库不会显示。每局只使用当前选中的题库，相同题干与选项会在该题库内去重。
 
 支持 `questionBank.questions`、顶层 `questions` 或题目数组。必需字段为 `questionDetail`、`optionA`–`optionD`、`correctOption`（A–D）。`explanation` 可选，`type` 为 `single_choice` 或省略。
 
-若使用其他静态服务器，在 `config.json` 的 `questionFiles` 列出题库文件名，或提供 `question/index.json` 文件名数组。
+修改启用列表后，提交并推送 `config.json`；新增题库时还需提交对应的 JSON 文件。
 
 ## 验证
 

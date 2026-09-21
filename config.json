@@ -1,8 +1,6 @@
 {
   "background": "sky",
   "questionFiles": [
-    "09_17.json",
-    "e_c.json",
     "tiku_all_easy.json",
     "tiku_plus.json",
     "tiku_pro.json"

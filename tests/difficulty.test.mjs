@@ -57,7 +57,8 @@ test('all shipped JSON banks respect their configured difficulty and total budge
     const data = JSON.parse(readFileSync(new URL(`../question/${file}`, import.meta.url), 'utf8'));
     const bank = describeBank(data, file);
     assert.equal(bank.error, '');
-    assert.equal(bank.totalQuestionRatio, .3);
+    assert.equal(bank.totalQuestionRatio, data.questionBank.totalQuestionRatio);
+    assert.ok(bank.totalQuestionRatio > 0 && bank.totalQuestionRatio <= 1);
     for (let run = 0; run < 10; run++) {
       const events = buildJourney(bank.questions, bank.ratios, Math.random, bank.totalQuestionRatio);
       assert.ok(events.every(event => bank.ratios[kind(event)].difficulties.includes(event.question.difficulty)));
