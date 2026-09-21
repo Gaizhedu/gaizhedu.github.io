@@ -278,12 +278,12 @@ function drawBackground() {
   }
   // Repeated sky panels and their seam pillars share the same scroll coordinates.
   const skyHeight = floor + 2;
-  const cycle = skyHeight * images.sky2.width / images.sky2.height;
+  const cycle = skyHeight * images.sky3.width / images.sky3.height;
   const offset = (scroll + cycle * .72) % cycle;
   const pillarHeight = Math.max(floor + 12 * scale, floor * 1.06);
   const pillarWidth = pillarHeight * images.pillar.width / images.pillar.height;
   for (let x = -offset - cycle; x < width + pillarWidth; x += cycle) {
-    ctx.drawImage(images.sky2, x, -1, cycle + 1, skyHeight);
+    ctx.drawImage(images.sky3, x, -1, cycle + 1, skyHeight);
   }
   for (let x = -offset - cycle; x < width + pillarWidth; x += cycle) {
     ctx.drawImage(images.pillar, x - pillarWidth / 2, floor - pillarHeight + 2, pillarWidth, pillarHeight);
@@ -448,7 +448,7 @@ async function init() {
     let files;try { files = await getJSON('question/index.json'); } catch { files = config.questionFiles; }
     if (!Array.isArray(files) || !files.length) throw new Error('question 文件夹中没有 JSON 题库。');
     const assets = { player: config.player.src, playerJump: config.player.jumpSrc, enemyBlue: config.enemy.blueSrc, enemyRed: config.enemy.redSrc,
-      sky2: 'assets/Background/sky_2.png', pillar: 'assets/Background/pillar.png',
+      sky3: 'assets/Background/sky_3.png', pillar: 'assets/Background/pillar.png',
       bookshelf: 'assets/Background/bookshelf.png', ground: 'assets/ground/single_block.png',
       upper: 'assets/ui/upper.png', right: 'assets/ui/right.png', left: 'assets/ui/left.png',
       diamond: 'assets/items/diamond.png', headChest: 'assets/items/chest_head.png', correct: 'assets/items/right.png',

@@ -62,7 +62,7 @@
 所有图片在 `assets` 中：
 
 - `Background/bookshelf.png`：按单片原比例循环。
-- 默认天空背景循环使用 `Background/sky_2.png`，`pillar.png` 覆盖接缝并略超出画面顶部。右上角设置可切换天空/书架，即时生效并在刷新后保留选择。
+- 默认天空背景循环使用 `Background/sky_3.png`，`pillar.png` 覆盖接缝并略超出画面顶部。右上角设置可切换天空/书架，即时生效并在刷新后保留选择。
 - `ground/single_block.png`：64 单位方块拼接的平坦地面。
 - `player/cat_player.png`：单帧 1536×1024，实际文件为两排、每排三帧，上排向右、下排向左。`player/cat_jump.png` 为单帧跳跃，向左跳时镜像。
 - `items/maoxian_blue.png`、`items/maoxian_red.png`：交替出现的毛线球怪物，按移动距离滚动，停下时停止旋转。
