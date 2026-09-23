@@ -14,7 +14,7 @@ const bankDrawer = $('#bank-drawer');
 const settingsDialog = $('#settings-dialog');
 const autoSkipCheckbox = $('#auto-skip-correct');
 const backgroundSelect = $('#background-select');
-let background = 'sky', monsterRotation = 0;
+let background = 'mount', monsterRotation = 0;
 const correctNotice = $('#correct-notice');
 let bankCatalog = [], selectedBank = null;
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -40,7 +40,7 @@ autoSkipCheckbox.addEventListener('change', () => {
   try { storage?.setItem('knowledge-quest-auto-skip-correct', String(autoSkipCheckbox.checked)); } catch { /* Preference remains usable for this visit. */ }
   if (effect?.isCorrect) {
     effect.autoContinue = autoSkipCheckbox.checked;
-    correctNotice.hidden = !effect.autoContinue;
+    correctNotice.hidden = !effect.autoContinue || effect.done;
     const feedback = panel.querySelector('.answer-feedback');
     if (feedback) feedback.hidden = effect.autoContinue;
   }
@@ -139,7 +139,7 @@ function renderBattle() {
   clearInput(true);
   const question = session.current;
   const event = session.currentEvent;
-  panel.className = event.kind === 'chest' ? 'battle treasure' : 'battle';
+  panel.className = `battle difficulty-${question.difficulty ?? 'easy'}${event.kind === 'chest' ? ' treasure' : ''}`;
   canvas.setAttribute('aria-label', event.kind === 'chest' ? '小猫遇到了宝箱' : event.final ? '小猫遇到了头顶钻石的最后一只怪物' : '小猫遇到了怪物');
   panel.innerHTML = `<div class="question-panel">${event.kind === 'chest' ? `<div class="encounter-label">${event.head ? '顶头宝箱挑战' : '宝箱挑战'}</div>` : ''}<h1 id="question-title">${formatQuestionText(question.question)}</h1><div class="options" role="group" aria-labelledby="question-title">${LETTERS.map((letter, i) => `<button class="option" data-answer="${letter}"><span>${letter}.</span><span>${formatQuestionText(question.options[i])}</span></button>`).join('')}</div></div>`;
   answerDelay.start(performance.now());answersLocked = true;
@@ -159,8 +159,9 @@ function submitAnswer(letter) {
   const record = session.answer(letter);
   if (!record) return;
   clearInput(true);answersLocked = false;
-  effect = new AnswerEffect(event, position, elevation);
-  effect.isCorrect = record.isCorrect;
+  effect = new AnswerEffect(event, position, elevation, record.isCorrect);
+  panel.classList.add('reacting');
+  correctNotice.classList.toggle('celebrating', effect.celebrating);
   effect.autoContinue = record.isCorrect && autoSkipCheckbox.checked;
   correctNotice.hidden = !effect.autoContinue;
   panel.querySelectorAll('[data-answer]').forEach(button => {
@@ -172,7 +173,15 @@ function submitAnswer(letter) {
   panel.querySelector('.question-panel').append(feedback);
   feedback.hidden = effect.autoContinue;
   if (!feedback.hidden) feedback.scrollIntoView({ block: 'end' });
-  $('#continue-button').addEventListener('click', () => { if (effect?.done) finishAnswerEffect(); });
+  $('#continue-button').addEventListener('click', () => {
+    if (!effect?.done) return;
+    if (effect.isCorrect) finishAnswerEffect();
+    else if (effect.beginRecovery()) {
+      clearInput(true);
+      panel.classList.add('reacting');
+      $('#continue-button').disabled = true;
+    }
+  });
   announce(record.isCorrect ? (effect.autoContinue ? '回答正确！即将自动继续。' : '回答正确！可展开查看详情。') : `回答错误，正确答案是 ${record.question.correct}。可展开查看详情。`);
 }
 function finishAnswerEffect() {
@@ -254,7 +263,8 @@ function resizeCanvas() {
   width = rect.width;height = rect.height;
   canvas.width = Math.round(width * dpr);canvas.height = Math.round(height * dpr);
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);ctx.imageSmoothingEnabled = false;
-  floor = panel.offsetTop;scale = Math.max(.45, Math.min(width / 603, height / 904));
+  floor = height * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--floor')) / 100;
+  scale = Math.max(.45, Math.min(width / 603, height / 904));
 }
 function spriteSize() { return Math.min(384 * scale, floor * .72); }
 function drawMonster(x, elevation) {
@@ -268,6 +278,23 @@ function drawMonster(x, elevation) {
 }
 function drawBackground() {
   const scroll = movement.position * scale * .65;
+  if (background === 'mount') {
+    const h = floor + 2;
+    const panels = [images.mount1, images.mount2];
+    const widths = panels.map(image => h * image.width / image.height);
+    const cycle = widths[0] + widths[1];
+    const offset = (scroll + widths[0] * .72) % cycle;
+    const pillarHeight = floor * 1.06;
+    const pillarWidth = pillarHeight * images.mountPillar.width / images.mountPillar.height;
+    const seams = [];
+    for (let x = -offset - cycle; x < width + pillarWidth; x += cycle) {
+      ctx.drawImage(panels[0], x, -1, widths[0] + 1, h);
+      ctx.drawImage(panels[1], x + widths[0], -1, widths[1] + 1, h);
+      seams.push(x, x + widths[0]);
+    }
+    for (const x of seams) ctx.drawImage(images.mountPillar, x - pillarWidth / 2, floor - pillarHeight + 2, pillarWidth, pillarHeight);
+    return;
+  }
   if (background === 'bookshelf') {
     const w = Math.max(1, Math.round(images.bookshelf.width * scale));
     const h = Math.max(1, Math.round(images.bookshelf.height * scale));
@@ -292,15 +319,27 @@ function drawBackground() {
 function playerWidth() { return spriteSize() * .85 / scale; }
 function playerHeight() { return playerWidth() * config.player.jumpBaseline / config.player.frameWidth; }
 function drawPlayer() {
-  const def = config.player, jumping = !jumper.grounded;
+  const def = config.player, celebrating = effect?.celebrating && !effect.done;
+  const failed = effect && !effect.isCorrect;
+  const jumping = !failed && (!jumper.grounded || celebrating);
   const frame = movement.moving && !reducedMotion ? Math.floor(elapsed / 115) % def.frames : 0;
   const size = playerWidth() * scale, drawHeight = size * def.frameHeight / def.frameWidth;
-  const baseline = jumping ? def.jumpBaseline : def.baseline;
-  ctx.save();ctx.translate(playerPosition(), floor - jumper.feet * scale);
-  if (jumping && movement.direction === -1) ctx.scale(-1, 1);
-  ctx.drawImage(jumping ? images.playerJump : images.player,
-    jumping ? 0 : frame * def.frameWidth, jumping ? 0 : ((movement.direction === -1 ? def.leftRow : def.row) - 1) * def.frameHeight,
+  const baseline = failed ? 950 : jumping ? def.jumpBaseline : def.baseline;
+  const lift = celebrating ? effect.celebrationLift : 0;
+  ctx.save();ctx.translate(playerPosition(), floor - (jumper.feet + lift) * scale);
+  if (celebrating && !reducedMotion) {
+    const pivot = -drawHeight * .48;
+    ctx.translate(0, pivot);ctx.rotate(effect.celebrationRotation);ctx.translate(0, -pivot);
+  }
+  if ((jumping || failed) && movement.direction === -1) ctx.scale(-1, 1);
+  ctx.drawImage(failed ? images.playerFail : jumping ? images.playerJump : images.player,
+    jumping || failed ? 0 : frame * def.frameWidth, jumping || failed ? 0 : ((movement.direction === -1 ? def.leftRow : def.row) - 1) * def.frameHeight,
     def.frameWidth, def.frameHeight, -size / 2, -drawHeight * baseline / def.frameHeight, size, drawHeight);
+  if (failed) {
+    const markSize = size * .23;
+    const bob = reducedMotion ? 0 : Math.sin(effect.elapsed / 180) * 4 * scale;
+    ctx.drawImage(images.playerQuestion, size * .34, -drawHeight * .87 + bob, markSize, markSize);
+  }
   ctx.restore();
 }
 function chestBottom(event) { return terrain.heightAt(event.distance) + playerHeight() + 42; }
@@ -337,6 +376,42 @@ function drawAnswerEffect() {
   } else drawChest(effect.event, effect.position, 1 - recoil, reducedMotion ? 0 : recoil * 36 * scale);
 
 }
+function drawCelebrationCannons() {
+  if (!effect?.celebrating || effect.done) return;
+  const p = effect.progress;
+  const colors = ['#ffd166', '#ff6b8a', '#83e8ff', '#b4f28c', '#c7a4ff', '#fff2bf'];
+  const unit = Math.max(.65, Math.min(width / 700, height / 700, 1.5));
+  // Screen-space origins keep both bursts attached to the edges while the world scrolls.
+  for (const side of [-1, 1]) {
+    // Asset suffixes describe the muzzle direction, not the screen edge.
+    const cannon = side === -1 ? images.saluteCannonRight : images.saluteCannonLeft;
+    const cannonWidth = Math.min(150 * unit, width * .28);
+    const cannonHeight = cannonWidth * cannon.height / cannon.width;
+    const cannonX = side === -1 ? 0 : width - cannonWidth;
+    const cannonY = height * .8 - cannonHeight * .42;
+    const originX = cannonX + cannonWidth * (side === -1 ? .65 : .35);
+    const originY = cannonY + cannonHeight * .42;
+    const inward = -side;
+    ctx.save();
+    ctx.globalAlpha = Math.min(1, (1 - p) * 4);
+    ctx.drawImage(cannon, cannonX, cannonY, cannonWidth, cannonHeight);
+    ctx.restore();
+    for (let i = 0; i < 42; i++) {
+      const t = reducedMotion ? .38 : Math.max(0, (p - (i % 3) * .035) / .93);
+      const spread = ((i * 17) % 43) / 43;
+      const speed = .2 + spread * .36;
+      const x = originX + inward * width * speed * t;
+      const y = originY - height * (.35 + ((i * 13) % 31) / 60) * t + height * .5 * t * t;
+      const size = (5 + i % 5) * unit;
+      ctx.save();ctx.globalAlpha = Math.min(1, (1 - p) * 4);
+      ctx.translate(x, y);
+      ctx.rotate(i + (reducedMotion ? 0 : t * (i % 2 ? 12 : -10)));
+      ctx.fillStyle = colors[i % colors.length];
+      ctx.fillRect(-size / 2, -size / 3, size, size * .65);
+      ctx.restore();
+    }
+  }
+}
 function draw(time) {
   requestAnimationFrame(draw);
   const delta = previousTime ? Math.min(time - previousTime, 50) : 0;previousTime = time;
@@ -348,7 +423,11 @@ function draw(time) {
   }
   if (!paused) {
     if (chestBump > 0) chestBump = Math.max(0, chestBump - delta);
-    if (effect && effect.tick(delta)) {
+    if (effect && effect.recoveryRemaining !== null) {
+      if (effect.tickRecovery(delta)) finishAnswerEffect();
+    } else if (effect && effect.tick(delta)) {
+      correctNotice.hidden = true;
+      panel.classList.remove('reacting');
       if (effect.autoContinue) finishAnswerEffect();
       else $('#continue-button').disabled = false;
     }
@@ -400,8 +479,8 @@ function draw(time) {
   const lastColumn = Math.ceil((movement.position + (width - playerPosition()) / scale) / BLOCK);
   for (let column = firstColumn; column <= lastColumn; column++) {
     const x = worldX(column * BLOCK), top = floor - terrain.heightAt(column * BLOCK) * scale;
-    for (let y = top; y < height; y += tile) ctx.drawImage(images.ground, Math.floor(x), Math.floor(y), Math.ceil(tile) + 1, Math.ceil(tile) + 1);
-    ctx.fillStyle = '#bcadcf88';ctx.fillRect(Math.floor(x), Math.floor(top), Math.ceil(tile) + 1, 2);
+    for (let y = top; y < height; y += tile) ctx.drawImage(background === 'mount' ? images.mountTile : images.ground, Math.floor(x), Math.floor(y), Math.ceil(tile) + 1, Math.ceil(tile) + 1);
+    ctx.fillStyle = background === 'mount' ? '#bdd58c88' : '#bcadcf88';ctx.fillRect(Math.floor(x), Math.floor(top), Math.ceil(tile) + 1, 2);
   }
   drawPlayer();
   // Chests occupy fixed world positions from the beginning, including future encounters.
@@ -426,6 +505,7 @@ function draw(time) {
       }
     }
   }
+  drawCelebrationCannons();
 }
 document.addEventListener('keydown', event => {
   if (settingsDialog.open) return;
@@ -449,6 +529,10 @@ async function init() {
     if (!Array.isArray(files) || !files.length) throw new Error('请在 config.json 中至少启用一个题库。');
     const assets = { player: config.player.src, playerJump: config.player.jumpSrc, enemyBlue: config.enemy.blueSrc, enemyRed: config.enemy.redSrc,
       sky3: 'assets/Background/sky_3.png', pillar: 'assets/Background/pillar.png',
+      mount1: 'assets/Background/mount_background_1.png', mount2: 'assets/Background/mount_background_2.png',
+      mountPillar: 'assets/Background/mount_pillar.png', mountTile: 'assets/ground/mount_tile.png',
+      playerFail: 'assets/player/cat_fail.png', playerQuestion: 'assets/player/cat_fail_2.png',
+      saluteCannonRight: 'assets/items/salute_cannon_right.png', saluteCannonLeft: 'assets/items/salute_cannon_left.png',
       bookshelf: 'assets/Background/bookshelf.png', ground: 'assets/ground/single_block.png',
       upper: 'assets/ui/upper.png', right: 'assets/ui/right.png', left: 'assets/ui/left.png',
       diamond: 'assets/items/diamond.png', headChest: 'assets/items/chest_head.png', correct: 'assets/items/right.png',
@@ -472,10 +556,10 @@ async function init() {
     if (images.player.width !== player.frameWidth * player.frames || images.player.height !== player.frameHeight * 2 ||
       images.playerJump.width !== player.frameWidth || images.playerJump.height !== player.frameHeight) throw new Error('player 精灵图配置无效。');
     if (!(config.enemy.diameter > 0)) throw new Error('怪物尺寸配置无效。');
-    background = config.background === 'bookshelf' ? 'bookshelf' : 'sky';
+    background = ['sky', 'bookshelf', 'mount'].includes(config.background) ? config.background : 'mount';
     try {
       const savedBackground = storage?.getItem('knowledge-quest-background');
-      if (['sky', 'bookshelf'].includes(savedBackground)) background = savedBackground;
+      if (['sky', 'bookshelf', 'mount'].includes(savedBackground)) background = savedBackground;
     } catch { /* Keep the configured default. */ }
     backgroundSelect.value = background;
     renderReady();resizeCanvas();new ResizeObserver(resizeCanvas).observe(canvas);requestAnimationFrame(draw);

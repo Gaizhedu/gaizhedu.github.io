@@ -46,9 +46,25 @@ export function hitsHeadChest({playerX, chestX, playerHalfWidth = 0, chestHalfWi
   return rising && Math.abs(playerX - chestX) <= playerHalfWidth + chestHalfWidth && previousHead <= bottom && head >= bottom;
 }
 export class AnswerEffect {
-  constructor(event, position, elevation) {
-    this.event = event;this.position = position;this.elevation = elevation;this.elapsed = 0;this.duration = 720;
+  constructor(event, position, elevation, isCorrect = false) {
+    this.event = event;this.position = position;this.elevation = elevation;this.elapsed = 0;
+    this.isCorrect = isCorrect;
+    this.celebrating = isCorrect && event.kind === 'chest' && Boolean(event.head);
+    this.duration = !isCorrect ? 1220 : this.celebrating ? 1100 : 720;
+    this.recoveryRemaining = null;
   }
+  beginRecovery() {
+    if (this.isCorrect || !this.done || this.recoveryRemaining !== null) return false;
+    this.recoveryRemaining = 500;
+    return true;
+  }
+  tickRecovery(ms) {
+    if (this.recoveryRemaining === null) return false;
+    this.recoveryRemaining = Math.max(0, this.recoveryRemaining - ms);
+    return this.recoveryRemaining === 0;
+  }
+  get celebrationLift() { return this.celebrating ? 4 * 150 * this.progress * (1 - this.progress) : 0; }
+  get celebrationRotation() { return this.celebrating ? this.progress * Math.PI * 2 : 0; }
   tick(ms) { this.elapsed = Math.min(this.duration, this.elapsed + ms);return this.done; }
   get progress() { return this.elapsed / this.duration; }
   get done() { return this.elapsed >= this.duration; }

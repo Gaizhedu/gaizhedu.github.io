@@ -3,6 +3,25 @@ import assert from 'node:assert/strict';
 import { Terrain, Jumper, hitsHeadChest, AnswerEffect } from '../world.js';
 import { buildJourney, GameSession } from '../game-core.js';
 
+test('only correct head chests celebrate and continuation waits for a full turn and landing', () => {
+  const effect = new AnswerEffect({kind:'chest', head:true}, 380, 0, true);
+  assert.equal(effect.celebrationLift, 0);
+  assert.equal(effect.celebrationRotation, 0);
+  effect.tick(550);
+  assert.equal(effect.celebrationLift, 150);
+  assert.equal(effect.celebrationRotation, Math.PI);
+  assert.equal(effect.tick(170), false);
+  assert.equal(effect.tick(380), true);
+  assert.equal(effect.celebrationLift, 0);
+  assert.equal(effect.celebrationRotation, 2 * Math.PI);
+  for (const [event, correct] of [[{kind:'chest', head:true}, false], [{kind:'chest'}, true], [{kind:'monster'}, true]]) {
+    const ordinary = new AnswerEffect(event, 380, 0, correct);
+    assert.equal(ordinary.celebrating, false);
+    assert.equal(ordinary.celebrationLift, 0);
+    assert.equal(ordinary.tick(correct ? 720 : 1220), true);
+  }
+});
+
 test('the road stays flat including treasure locations; jumping lands back on the road', () => {
   const terrain = new Terrain([{kind:'chest', distance:380}, {kind:'chest', head:true, distance:760}]);
   const jumper = new Jumper();
@@ -55,7 +74,7 @@ test('small banks remain playable and default bank includes both chest types wit
 test('final enemy remains available throughout the effect after session finishes', () => {
   const question = {correct: 'A'};
   const session = new GameSession([question]);session.advance();session.encounter();
-  const effect = new AnswerEffect(session.currentEvent, 380, 64);
+  const effect = new AnswerEffect(session.currentEvent, 380, 64, true);
   session.answer('A');assert.equal(session.phase, 'finished');
   assert.equal(effect.event.kind, 'monster');
   assert.equal(effect.tick(500), false);assert.equal(effect.done, false);
@@ -107,4 +126,23 @@ test('road treasures use all six fish cans independently of optional head chests
   const events = buildJourney(bank, undefined, () => .5);
   const variants = new Set(events.filter(e => e.kind === 'chest' && !e.head).map(e => e.variant));
   assert.deepEqual([...variants].sort(), [1, 2, 3, 4, 5, 6]);
+});
+
+test('wrong answers crouch 500ms longer and recover for 500ms only after Continue', () => {
+  const effect = new AnswerEffect({kind:'monster'}, 380, 0, false);
+  assert.equal(effect.beginRecovery(), false);
+  assert.equal(effect.tickRecovery(1000), false);
+  assert.equal(effect.tick(720), false);
+  assert.equal(effect.tick(499), false);
+  assert.equal(effect.tick(1), true);
+  effect.tick(5000);
+  assert.equal(effect.recoveryRemaining, null);
+  assert.equal(effect.beginRecovery(), true);
+  assert.equal(effect.tickRecovery(499), false);
+  assert.equal(effect.beginRecovery(), false);
+  assert.equal(effect.recoveryRemaining, 1);
+  assert.equal(effect.tickRecovery(1), true);
+  const correct = new AnswerEffect({kind:'chest'}, 380, 0, true);
+  correct.tick(720);
+  assert.equal(correct.beginRecovery(), false);
 });

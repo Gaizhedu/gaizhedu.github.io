@@ -54,6 +54,8 @@ desktop.ini
 !/assets/items/castle.png
 !/assets/items/spring.png
 !/assets/items/right.png
+!/assets/items/salute_cannon_right.png
+!/assets/items/salute_cannon_left.png
 
 /assets/player/*
 !/assets/player/cat_player.png
@@ -61,3 +63,11 @@ desktop.ini
 
 # Photoshop source files are never runtime assets
 *.[pP][sS][dD]
+
+# Mountain scenery and answer reactions
+!/assets/Background/mount_background_1.png
+!/assets/Background/mount_background_2.png
+!/assets/Background/mount_pillar.png
+!/assets/ground/mount_tile.png
+!/assets/player/cat_fail.png
+!/assets/player/cat_fail_2.png
